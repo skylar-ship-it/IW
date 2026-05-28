@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IW Certified™ — The Full-Arch Standard | Implanted Wisdom</title>
+  <meta name="description" content="IW Certified is the credentialing standard for full-arch implantology. Built on 35 years of surgical outcomes, Patient Specific Protocol, and AI-assisted photogrammetric planning." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1E1612;
+      --espresso: #2D241F;
+      --gold: #C9A96E;
+      --gold-light: #DFC28E;
+      --gold-muted: rgba(201,169,110,0.35);
+      --teal: #245C5C;
+      --teal-light: #2D7070;
+      --cream: #F7F2EC;
+      --cream-muted: rgba(247,242,236,0.65);
+      --cream-dim: rgba(247,242,236,0.35);
+      --white: #FFFFFF;
+      --rule: rgba(201,169,110,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--espresso);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── UTILITY ─── */
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .section-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 28px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 56px;
+      height: 72px;
+      background: rgba(29,22,18,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo em {
+      color: var(--gold);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold) !important;
+      color: var(--ink) !important;
+      padding: 10px 24px !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.12em !important;
+    }
+
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--ink) !important; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 56px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-monogram {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(320px, 40vw, 520px);
+      font-weight: 600;
+      color: rgba(201,169,110,0.04);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 1s ease 0.2s forwards;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .hero-tag-line {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-tag-text {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--cream);
+      margin-bottom: 32px;
+      letter-spacing: -0.01em;
+    }
+
+    h1 em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--cream-muted);
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 15px 40px;
+      text-decoration: none;
+      border: 0.5px solid rgba(201,169,110,0.45);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    .hero-stats {
+      display: flex;
+      gap: 0;
+      margin-top: 72px;
+      border-top: 0.5px solid var(--rule);
+      padding-top: 40px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+
+    .hero-stat {
+      flex: 1;
+      padding-right: 40px;
+      border-right: 0.5px solid var(--rule);
+      margin-right: 40px;
+    }
+
+    .hero-stat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+    .hero-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-label {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--cream-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── PROBLEM ─── */
+    #problem {
+      background: var(--espresso);
+      padding: 120px 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+
+    h2 em { color: var(--gold); font-style: italic; }
+
+    .body-copy {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--cream-muted);
+    }
+
+    .body-copy + .body-copy { margin-top: 20px; }
+
+    .problem-quote {
+      border-left: 2px solid var(--gold);
+      padding: 20px 28px;
+      margin: 36px 0 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1.55;
+    }
+
+    .problem-quote cite {
+      display: block;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      font-style: normal;
+      letter-spacing: 0.18em;
+      color: var(--cream-dim);
+      margin-top: 12px;
+      text-transform: uppercase;
+    }
+
+    .problem-facts {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .fact-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .fact-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .fact-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+
+    .fact-text {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--cream-muted);
+      padding-top: 6px;
+    }
+
+    /* ─── AI / TECHNOLOGY ─── */
+    #technology {
+      background: var(--teal);
+      padding: 120px 56px;
+      border-bottom: 0.5px solid rgba(247,242,236,0.1);
+    }
+
+    .tech-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-bottom: 72px;
+      align-items: end;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(247,242,236,0.1);
+    }
+
+    .tech-card {
+      background: var(--teal);
+      padding: 40px 32px;
+      transition: background 0.25s;
+    }
+
+    .tech-card:hover { background: var(--teal-light); }
+
+    .tech-card-icon {
+      width: 40px;
+      height: 40px;
+      border: 0.5px solid var(--gold-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .tech-card-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+    .tech-card-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .tech-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .tech-card p {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(247,242,236,0.65);
+    }
+
+    /* ─── TIERS ─── */
+    #tiers {
+      background: var(--ink);
+      padding: 120px 56px;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .tiers-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-bottom: 72px;
+      align-items: end;
+    }
+
+    .tier-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .tier-card {
+      border: 0.5px solid var(--rule);
+      padding: 40px 32px;
+      position: relative;
+      transition: border-color 0.25s;
+    }
+
+    .tier-card:hover { border-color: rgba(201,169,110,0.45); }
+
+    .tier-card.featured {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.04);
+    }
+
+    .tier-featured-badge {
+      position: absolute;
+      top: -1px;
+      left: 32px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Courier Prime', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+    }
+
+    .tier-level {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .tier-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 6px;
+      line-height: 1;
+    }
+
+    .tier-who {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--cream-dim);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 0.5px solid var(--rule);
+      line-height: 1.6;
+    }
+
+    .tier-benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tier-benefits li {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--cream-muted);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .tier-benefits li::before {
+      content: "—";
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── PROCESS ─── */
+    #process {
+      background: var(--espresso);
+      padding: 120px 56px;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      border-top: 0.5px solid var(--rule);
+    }
+
+    .process-step {
+      padding: 48px 32px 48px 0;
+      border-right: 0.5px solid var(--rule);
+      margin-right: 32px;
+    }
+
+    .process-step:last-child {
+      border-right: none;
+      margin-right: 0;
+    }
+
+    .step-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: rgba(201,169,110,0.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+
+    .step-text {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--cream-muted);
+    }
+
+    /* ─── DIRECTORY PREVIEW ─── */
+    #directory {
+      background: var(--ink);
+      padding: 120px 56px;
+      border-bottom: 0.5px solid var(--rule);
+    }
+
+    .directory-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .directory-list {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .directory-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 0.5px solid var(--rule);
+      transition: padding-left 0.2s;
+    }
+
+    .directory-entry:hover { padding-left: 8px; }
+
+    .dir-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+    }
+
+    .dir-location {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      color: var(--cream-dim);
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+    }
+
+    .dir-badge {
+      font-family: 'Courier Prime', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+    }
+
+    .dir-badge.fellow { border: 0.5px solid var(--gold); color: var(--gold); }
+    .dir-badge.certified { border: 0.5px solid var(--teal); color: #6BBCBC; }
+    .dir-badge.candidate { border: 0.5px solid var(--cream-dim); color: var(--cream-dim); }
+
+    .directory-cta {
+      margin-top: 48px;
+      padding: 48px;
+      background: rgba(201,169,110,0.05);
+      border: 0.5px solid var(--gold-muted);
+    }
+
+    .directory-cta p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--cream-muted);
+      margin-bottom: 24px;
+    }
+
+    /* ─── CREDENTIALS ─── */
+    #credentials {
+      background: var(--teal);
+      padding: 120px 56px;
+      border-bottom: 0.5px solid rgba(247,242,236,0.1);
+    }
+
+    .credentials-inner {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .credentials-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--cream);
+      margin: 16px 0 24px;
+    }
+
+    .credentials-title {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    .credentials-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .credentials-list li {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(247,242,236,0.75);
+      padding: 14px 0;
+      border-bottom: 0.5px solid rgba(247,242,236,0.1);
+      display: grid;
+      grid-template-columns: 2px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .credentials-list li::before {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 14px;
+      background: var(--gold);
+      margin-top: 5px;
+    }
+
+    /* ─── APPLICATION ─── */
+    #application {
+      background: var(--espresso);
+      padding: 120px 56px;
+    }
+
+    .application-inner {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 80px;
+    }
+
+    .application-aside {
+      position: sticky;
+      top: 100px;
+    }
+
+    .aside-notice {
+      margin-top: 36px;
+      padding: 24px;
+      border: 0.5px solid var(--rule);
+      background: rgba(201,169,110,0.03);
+    }
+
+    .aside-notice p {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--cream-muted);
+    }
+
+    .aside-notice strong {
+      font-weight: 500;
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+    }
+
+    input, select, textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 0.5px solid rgba(201,169,110,0.3);
+      padding: 12px 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--cream);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--cream-dim);
+      font-weight: 300;
+    }
+
+    select {
+      background: transparent;
+      color: var(--cream-muted);
+      cursor: pointer;
+    }
+
+    select option {
+      background: var(--espresso);
+      color: var(--cream);
+    }
+
+    textarea {
+      resize: none;
+      min-height: 100px;
+      line-height: 1.7;
+    }
+
+    .form-divider {
+      height: 0.5px;
+      background: var(--rule);
+    }
+
+    .form-section-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: -8px;
+    }
+
+    .submit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .submit-note {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      color: var(--cream-dim);
+      letter-spacing: 0.08em;
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      padding: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 0.5px solid var(--rule);
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: rgba(247,242,236,0.3);
+    }
+
+    .footer-logo em {
+      color: rgba(201,169,110,0.4);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .footer-info {
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(201,169,110,0.35);
+      text-align: right;
+      line-height: 1.9;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+
+      #hero { padding: 120px 24px 64px; }
+      .hero-stats { gap: 0; flex-wrap: wrap; }
+      .hero-stat { min-width: 45%; flex: none; margin-bottom: 24px; }
+
+      #problem, .tech-header, .tiers-header, .directory-inner,
+      .credentials-inner, .application-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 80px 24px;
+      }
+
+      #technology, #tiers, #process, #directory, #credentials, #application {
+        padding: 80px 24px;
+      }
+
+      .tech-grid, .tier-row { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; margin-right: 0; padding-right: 0; }
+      .form-row { grid-template-columns: 1fr; }
+      .application-aside { position: static; }
+      .submit-row { flex-direction: column; gap: 16px; align-items: flex-start; }
+      footer { padding: 40px 24px; }
+      .footer-info { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Implanted <em>Wisdom.</em></a>
+    <ul class="nav-links">
+      <li><a href="#technology">The Standard</a></li>
+      <li><a href="#tiers">Certification</a></li>
+      <li><a href="#directory">Directory</a></li>
+      <li><a href="#credentials">Dr. Pulver</a></li>
+      <li><a href="#application" class="nav-cta">Apply</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-monogram" aria-hidden="true">IW</div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <div class="hero-tag-line"></div>
+        <span class="hero-tag-text">IW Certified™ · Surgeon Network · Est. 2026</span>
+      </div>
+      <h1>Not every<br>surgeon<br>earns <em>this.</em></h1>
+      <p class="hero-sub">IW Certified is the credentialing standard for full-arch implantology — built on 35 years of surgical outcomes, Patient Specific Protocol, and AI-assisted photogrammetric planning. Apply to find out where you qualify.</p>
+      <div class="btn-row">
+        <a href="#application" class="btn-primary">Apply for Certification</a>
+        <a href="#tiers" class="btn-ghost">See the Standard</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">35+</span>
+        <span class="hero-stat-label">Years placing full-arch implants</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">15,000+</span>
+        <span class="hero-stat-label">Implants placed by the founder</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">ABOMS</span>
+        <span class="hero-stat-label">Board Diplomate — Oral & Maxillofacial Surgery</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">ADA</span>
+        <span class="hero-stat-label">Innovation Advisory Committee Member</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem">
+    <div class="reveal">
+      <span class="eyebrow">The Clinical Problem</span>
+      <div class="section-rule"></div>
+      <h2>Full-arch is being marketed by providers who <em>took a weekend course.</em></h2>
+      <p class="body-copy">The complications end up in your chair. Across the country, full-arch restoration is increasingly being marketed — and performed — by providers with minimal surgical training. AOX weekend courses for general dentists have tripled in five years.</p>
+      <div class="problem-quote">
+        "We have a clinical responsibility to lead this market shift before it is led by people less qualified than we are. First, do no harm — that includes by absence."
+        <cite>— Dr. Eric Pulver, DDS, MD · Founder, Implanted Wisdom</cite>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="problem-facts">
+        <div class="fact-item">
+          <div class="fact-num">3×</div>
+          <p class="fact-text">Increase in AOX weekend certification courses for general dentists in the last five years. Most lack the surgical depth to manage complications.</p>
+        </div>
+        <div class="fact-item">
+          <div class="fact-num">DSO</div>
+          <p class="fact-text">DSO consolidation is absorbing traditional referral pipelines. Specialists who do not build direct-to-patient reach are losing volume to less qualified providers.</p>
+        </div>
+        <div class="fact-item">
+          <div class="fact-num">∅</div>
+          <p class="fact-text">There is currently no independent credentialing standard that distinguishes board-certified, high-volume full-arch surgeons from weekend-course providers. IW Certified is that standard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECHNOLOGY -->
+  <section id="technology">
+    <div class="tech-header reveal">
+      <div>
+        <span class="eyebrow">The IW Difference</span>
+        <div class="section-rule"></div>
+        <h2>AI-assisted.<br>Anatomy-driven.<br><em>Not a template.</em></h2>
+      </div>
+      <div>
+        <p class="body-copy" style="color:rgba(247,242,236,0.7);">IW Certified surgeons are trained on a methodology that does not exist anywhere else. Patient Specific Protocol, AI-guided 3D planning, and photogrammetric facial capture — built on 15,000 cases over 35 years.</p>
+        <p class="body-copy" style="color:rgba(247,242,236,0.7); margin-top:16px;">Every IW Certified case is designed around the individual patient's anatomy. Not a template. Not a protocol from a weekend course.</p>
+      </div>
+    </div>
+    <div class="tech-grid reveal">
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="tech-card-label">Photogrammetry</div>
+        <h3>3D Facial Capture</h3>
+        <p>Precise 3D mapping of the patient's exact facial anatomy before a single implant is planned. Every case designed around the individual — not a generalized arch template.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="tech-card-label">Patient Specific Protocol</div>
+        <h3>PSP Methodology</h3>
+        <p>IW's proprietary planning standard — built from 15,000+ surgical outcomes — governs placement angle, depth, and prosthetic design. Certified surgeons master this framework.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="tech-card-label">AI-Guided Planning</div>
+        <h3>Precision by Design</h3>
+        <p>AI-driven 3D treatment planning delivers exact placement, exact angle, exact fit — designed around the patient's anatomy with a precision that cannot be replicated by approximation.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="tech-card-label">Surgeon Network</div>
+        <h3>Peer Expertise Access</h3>
+        <p>IW Certified surgeons enter a vetted network of peers. Clinical questions, complex case consultation, and ongoing education — built around practitioners who meet the standard.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="tech-card-label">Patient Acquisition</div>
+        <h3>Full-Arch Marketing</h3>
+        <p>For practices ready to grow full-arch volume: IW builds the funnel. Landing pages, paid media strategy, CRM automation — the complete direct-to-patient acquisition system.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="tech-card-label">Certification Seal</div>
+        <h3>Patient-Facing Credential</h3>
+        <p>IW Certified surgeons are listed in the patient-facing directory on implantedwisdom.com — a signal patients learn to search for when choosing a full-arch provider.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="tiers">
+    <div class="tiers-header reveal">
+      <div>
+        <span class="eyebrow">Certification Tiers</span>
+        <div class="section-rule"></div>
+        <h2>Where you qualify depends on your <em>training and volume.</em></h2>
+      </div>
+      <div>
+        <p class="body-copy">Every applicant is evaluated individually. The tier reflects your current standard — and defines the training pathway available to you. Advanced surgeons may already qualify for IW Fellow. Early-career providers and GPs enter as Candidates with a defined pathway forward.</p>
+        <p class="body-copy" style="margin-top:16px;">All tiers include a customized plan. Your certification is not a package — it is designed around what your practice needs.</p>
+      </div>
+    </div>
+    <div class="tier-row reveal">
+      <div class="tier-card">
+        <div class="tier-level">Tier III · Entry</div>
+        <div class="tier-name">IW Candidate</div>
+        <p class="tier-who">Early-career surgeons, GPs, or providers who completed weekend certification courses. Application accepted — training pathway assigned.</p>
+        <ul class="tier-benefits">
+          <li>Application accepted &amp; reviewed</li>
+          <li>Customized training pathway assigned</li>
+          <li>Access to IW clinical curriculum</li>
+          <li>Pathway to IW Certified status</li>
+          <li>Probationary network access</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-level">Tier II · Certified</div>
+        <div class="tier-name">IW Certified™</div>
+        <p class="tier-who">Oral surgeons with significant implant volume who have completed IW training modules and passed clinical evaluation.</p>
+        <ul class="tier-benefits">
+          <li>IW Certified™ badge &amp; digital seal</li>
+          <li>Listed in patient-facing IW directory</li>
+          <li>Co-marketing materials and assets</li>
+          <li>Full training module library access</li>
+          <li>Peer network membership</li>
+          <li>Annual certification renewal</li>
+        </ul>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-featured-badge">Most Advanced</div>
+        <div class="tier-level">Tier I · Fellow</div>
+        <div class="tier-name">IW Fellow</div>
+        <p class="tier-who">Board-certified OMS with high annual volume and full mastery of Patient Specific Protocol. The highest IW designation.</p>
+        <ul class="tier-benefits">
+          <li>IW Fellow co-branding rights</li>
+          <li>Photogrammetry system licensing</li>
+          <li>Priority directory placement</li>
+          <li>Case referral network access</li>
+          <li>PSP advanced certification</li>
+          <li>Clinical co-training opportunities</li>
+          <li>Full-arch funnel build included</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="reveal">
+      <span class="eyebrow">The Process</span>
+      <div class="section-rule"></div>
+      <h2>Four steps to <em>IW Certified.</em></h2>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-number">01</div>
+        <div class="step-title">Apply</div>
+        <p class="step-text">Submit your credentials, specialty, training history, and annual implant volume. Every application is reviewed individually by the IW clinical team.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">02</div>
+        <div class="step-title">Evaluate</div>
+        <p class="step-text">IW assesses your clinical standard against the Patient Specific Protocol. Gaps are identified — not penalized. Your tier placement is determined here.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">03</div>
+        <div class="step-title">Train</div>
+        <p class="step-text">Complete your tier-appropriate training curriculum — from photogrammetry fundamentals to advanced PSP methodology and AI-guided planning integration.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">04</div>
+        <div class="step-title">Certify</div>
+        <p class="step-text">Receive your IW designation, co-branding assets, and directory listing. Certification renews annually to ensure the standard remains active.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECTORY -->
+  <section id="directory">
+    <div class="directory-inner">
+      <div class="reveal">
+        <span class="eyebrow">Find an IW Certified Surgeon</span>
+        <div class="section-rule"></div>
+        <h2>Patients are looking for the <em>standard.</em></h2>
+        <p class="body-copy">IW Certified surgeons are listed in the patient-facing directory on implantedwisdom.com — searchable by location. Patients searching for full-arch care see a curated list of credentialed providers. The stamp drives the patients.</p>
+        <p class="body-copy" style="margin-top:16px;">This is what makes IW Certified worth earning. It is not just a credential for peers — it is a signal patients learn to search for.</p>
+        <div style="margin-top:40px;">
+          <a href="#application" class="btn-primary">Earn Your Listing</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="directory-list">
+          <div class="directory-entry">
+            <div>
+              <div class="dir-name">West Michigan Oral &amp; Maxillofacial Surgery</div>
+              <div class="dir-location">Grand Rapids, MI · Multiple Locations</div>
+            </div>
+            <div class="dir-badge fellow">IW Fellow</div>
+          </div>
+          <div class="directory-entry">
+            <div>
+              <div class="dir-name">Lakeshore Oral Surgery Associates</div>
+              <div class="dir-location">Holland, MI</div>
+            </div>
+            <div class="dir-badge certified">IW Certified</div>
+          </div>
+          <div class="directory-entry">
+            <div>
+              <div class="dir-name">Dr. Sarah Chen, OMS</div>
+              <div class="dir-location">Chicago, IL</div>
+            </div>
+            <div class="dir-badge certified">IW Certified</div>
+          </div>
+          <div class="directory-entry">
+            <div>
+              <div class="dir-name">Northshore Implant &amp; Surgical Group</div>
+              <div class="dir-location">Evanston, IL</div>
+            </div>
+            <div class="dir-badge candidate">IW Candidate</div>
+          </div>
+          <div class="directory-entry">
+            <div>
+              <div class="dir-name">Great Lakes Oral Surgery</div>
+              <div class="dir-location">Grandville, MI</div>
+            </div>
+            <div class="dir-badge candidate">IW Candidate</div>
+          </div>
+        </div>
+        <div class="directory-cta">
+          <strong style="font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:12px;">Directory note</strong>
+          <p>Directory entries shown are illustrative. The live IW Certified directory will be searchable by zip code, specialty, and tier level at implantedwisdom.com/find.</p>
+          <a href="#application" class="btn-ghost" style="font-size:10px;padding:10px 24px;">Apply to be listed</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section id="credentials">
+    <div class="credentials-inner reveal">
+      <div>
+        <span class="eyebrow">The Standard Behind the Standard</span>
+        <div class="section-rule" style="background:rgba(247,242,236,0.3);"></div>
+        <div class="credentials-title">Founder &amp;<br>Chief Clinical Officer</div>
+        <div class="credentials-name">Dr. Eric<br>Pulver,<br>DDS, MD</div>
+      </div>
+      <ul class="credentials-list">
+        <li>35+ years placing full-arch dental implants — one of the longest active clinical records in the field</li>
+        <li>15,000+ implants placed across a career spanning general implantology and complex full-arch reconstruction</li>
+        <li>Diplomate, American Board of Oral &amp; Maxillofacial Surgery — the highest surgical credential in the specialty</li>
+        <li>Former Team Surgeon, Chicago Blackhawks NHL Organization (1999–2006) — maxillofacial trauma and surgical care at the professional level</li>
+        <li>Member, ADA Innovation Advisory Committee — advising on the integration of AI and advanced technology in dental practice</li>
+        <li>Originator of the Patient Specific Protocol — the proprietary planning methodology at the foundation of IW Certified training</li>
+        <li>Pioneer in AI-assisted photogrammetric implant planning — bringing aerospace-grade 3D capture into full-arch surgical design</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- APPLICATION -->
+  <section id="application">
+    <div class="application-inner">
+      <div class="application-aside reveal">
+        <span class="eyebrow">Surgeon Application</span>
+        <div class="section-rule"></div>
+        <h2>Apply for<br><em>IW Certification.</em></h2>
+        <p class="body-copy" style="margin-top:24px;">Not every application is accepted. Completing this form begins the evaluation process — your tier is determined after review by the IW clinical team.</p>
+        <div class="aside-notice">
+          <strong>What happens next</strong>
+          <p>Applications are reviewed within 5 business days. You will receive a tier recommendation and a customized practice evaluation — at no obligation. The evaluation alone is worth completing.</p>
+        </div>
+      </div>
+      <form onsubmit="return false;" class="reveal">
+        <div class="form-section-label">Personal &amp; Practice Information</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="Dr. First" />
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Last name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="doctor@practice.com" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="(000) 000-0000" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="practice">Practice Name</label>
+            <input type="text" id="practice" placeholder="Practice or group name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" placeholder="City" />
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" placeholder="State" />
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-section-label">Clinical Background</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="specialty">Specialty</label>
+            <select id="specialty">
+              <option value="" disabled selected>Select specialty</option>
+              <option>Oral &amp; Maxillofacial Surgery</option>
+              <option>Periodontist</option>
+              <option>General Dentist</option>
+              <option>Prosthodontist</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="board">Board Certification</label>
+            <select id="board">
+              <option value="" disabled selected>Select status</option>
+              <option>ABOMS Diplomate</option>
+              <option>Board eligible</option>
+              <option>Not board certified</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="volume">Annual Implant Volume</label>
+            <select id="volume">
+              <option value="" disabled selected>Select range</option>
+              <option>Under 25 implants/year</option>
+              <option>25–75 implants/year</option>
+              <option>75–150 implants/year</option>
+              <option>150+ implants/year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fullarch">Full-Arch Cases Per Year</label>
+            <select id="fullarch">
+              <option value="" disabled selected>Select range</option>
+              <option>0 — exploring the space</option>
+              <option>1–10 cases/year</option>
+              <option>10–25 cases/year</option>
+              <option>25+ cases/year</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="training">Training Background</label>
+          <input type="text" id="training" placeholder="Residency program, fellowship, or CE courses" />
+        </div>
+
+        <div class="form-divider"></div>
+        <div class="form-section-label">Your Goals</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="interest">Primary Interest</label>
+            <select id="interest">
+              <option value="" disabled selected>Select primary interest</option>
+              <option>Clinical training (PSP / photogrammetry)</option>
+              <option>Full-arch patient acquisition / marketing</option>
+              <option>AI planning tools &amp; technology</option>
+              <option>Network access &amp; peer consultation</option>
+              <option>All of the above</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tier">Tier You Believe You Qualify For</label>
+            <select id="tier">
+              <option value="" disabled selected>Self-assessment</option>
+              <option>IW Fellow (board-certified OMS, high volume)</option>
+              <option>IW Certified (solid volume, ready to train)</option>
+              <option>IW Candidate (early-career or GP)</option>
+              <option>Not sure — please evaluate</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Why do you want IW Certification?</label>
+          <textarea id="message" placeholder="Tell us briefly about your practice goals and what you're looking for from IW..."></textarea>
+        </div>
+
+        <div class="submit-row">
+          <span class="submit-note">Applications reviewed within 5 business days. Not every application is accepted.</span>
+          <button type="submit" class="btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Implanted <em>Wisdom.</em></div>
+    <div class="footer-info">
+      866-IMPLANT · IMPLANTEDWISDOM.COM<br>
+      2629 45TH ST, HIGHLAND, IN 46322<br>
+      © 2026 IMPLANTED WISDOM · PULVER ORAL SURGERY
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
