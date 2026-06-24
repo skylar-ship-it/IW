@@ -5,7 +5,267 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The System — Implanted Wisdom</title>
 <meta name="description" content="The Patient-Specific Protocol™ and the exportable IW operating system: the four pillars, the components, and the three-layer partnership model.">
-<link rel="stylesheet" href="styles.css">
+<style>
+/* ============================================================
+   IMPLANTED WISDOM — B2B PLATFORM SITE
+   Shared stylesheet. Brand tokens from Brand Identity System 2026.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+
+:root{
+  /* Color */
+  --ink:#1E1612;        /* Warm Ink — primary dark */
+  --espresso:#2D241F;   /* Espresso — hero/section dark */
+  --gold:#C9A96E;       /* Antique Gold — primary accent */
+  --gold-soft:#d9c099;
+  --teal:#245C5C;       /* Dark Teal — section/CTA accent */
+  --teal-deep:#1c4a4a;
+  --cream:#F7F2EC;      /* Warm Cream — card/quote bg */
+  --white:#FFFFFF;
+  --ink-70:rgba(30,22,18,.70);
+  --cream-70:rgba(247,242,236,.72);
+  --hairline:rgba(201,169,110,.30);
+
+  /* Type */
+  --display:'Cormorant Garamond', Georgia, serif;
+  --body:'Jost', system-ui, sans-serif;
+  --mono:'Courier Prime', monospace;
+
+  --maxw:1180px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:16px;
+  line-height:1.75;
+  color:var(--ink);
+  background:var(--white);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ---------- Typography helpers ---------- */
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.1;letter-spacing:.005em}
+h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:300}
+h2{font-size:clamp(2rem,4vw,3rem)}
+h3{font-size:clamp(1.4rem,2.4vw,1.9rem)}
+.italic-gold{font-style:italic;color:var(--gold);font-weight:300}
+.label{
+  font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.18em;font-size:.72rem;color:var(--gold);
+}
+.label.teal{color:var(--teal)}
+.mono{font-family:var(--mono);letter-spacing:.02em}
+.lead{font-size:1.15rem;line-height:1.7;color:var(--ink-70);max-width:62ch}
+.tm{font-size:.62em;vertical-align:.55em;font-family:var(--body);font-weight:500}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+section{padding:96px 0}
+.section-dark{background:var(--espresso);color:var(--cream)}
+.section-dark .lead{color:var(--cream-70)}
+.section-ink{background:var(--ink);color:var(--cream)}
+.section-ink .lead{color:var(--cream-70)}
+.section-cream{background:var(--cream)}
+.section-teal{background:var(--teal);color:var(--cream)}
+.section-teal .lead{color:var(--cream-70)}
+.section-teal .label{color:var(--gold-soft)}
+.eyebrow{margin-bottom:18px}
+.center{text-align:center}
+.center .lead{margin-left:auto;margin-right:auto}
+.narrow{max-width:760px}
+
+/* ---------- Header / Nav ---------- */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(30,22,18,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(201,169,110,.18);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;
+  height:74px;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.brand{display:flex;align-items:center;gap:13px;color:var(--cream)}
+.brand .brand-logo{height:44px;width:auto;display:block}
+.brand .mono-monogram{
+  font-family:var(--display);font-weight:600;font-size:1.05rem;
+  width:38px;height:38px;border:1px solid var(--gold);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+  letter-spacing:.02em;
+}
+.brand .wordmark{line-height:1.05}
+.brand .wordmark .name{font-family:var(--display);font-size:1.18rem;color:var(--cream)}
+.brand .wordmark .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.2em;font-size:.52rem;color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-family:var(--body);font-weight:400;font-size:.82rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--cream-70);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{
+  font-family:var(--body)!important;font-weight:500!important;
+  border:1px solid var(--gold);color:var(--gold)!important;
+  padding:9px 18px;border-radius:2px;letter-spacing:.1em!important;font-size:.74rem!important;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink)!important}
+.nav-toggle{display:none;background:none;border:0;color:var(--gold);font-size:1.5rem;cursor:pointer}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-block;font-family:var(--body);font-weight:500;
+  text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;
+  padding:15px 30px;border-radius:2px;cursor:pointer;transition:all .22s;border:1px solid transparent;
+}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-soft);transform:translateY(-1px)}
+.btn-outline{border-color:var(--gold);color:var(--gold);background:transparent}
+.btn-outline:hover{background:var(--gold);color:var(--ink)}
+.btn-outline-ink{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-outline-ink:hover{background:var(--ink);color:var(--cream)}
+.btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px}
+.center .btn-row{justify-content:center}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--espresso);color:var(--cream);
+  padding:120px 0 110px}
+.hero::after{ /* IW watermark */
+  content:"IW";position:absolute;right:-2%;top:46%;transform:translateY(-50%);
+  font-family:var(--display);font-weight:600;font-size:clamp(14rem,32vw,30rem);
+  color:rgba(201,169,110,.06);pointer-events:none;line-height:.8;
+}
+.hero .wrap{position:relative;z-index:2;max-width:880px}
+.hero h1{margin:14px 0 22px;color:var(--cream)}
+.hero .lead{color:var(--cream-70)}
+.hero-sub{font-family:var(--display);font-style:italic;color:var(--gold);
+  font-size:clamp(1.3rem,2.6vw,1.9rem);margin-top:8px;font-weight:300}
+
+/* ---------- Cards / grids ---------- */
+.grid{display:grid;gap:24px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--white);border:1px solid var(--hairline);border-radius:4px;
+  padding:34px 30px;transition:transform .2s,box-shadow .2s;
+}
+.section-cream .card{background:var(--white)}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(30,22,18,.08)}
+.card .num{font-family:var(--mono);color:var(--gold);font-size:.82rem;letter-spacing:.1em;display:block;margin-bottom:14px}
+.card h3{margin-bottom:12px}
+.card p{color:var(--ink-70);font-size:.96rem}
+.card-dark{background:rgba(247,242,236,.04);border-color:rgba(201,169,110,.22)}
+.card-dark h3{color:var(--cream)}
+.card-dark p{color:var(--cream-70)}
+
+/* stat */
+.stat .figure{font-family:var(--display);font-size:3rem;color:var(--gold);font-weight:300;line-height:1}
+.stat .cap{font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.12em;
+  font-size:.72rem;color:var(--ink-70);margin-top:10px}
+.section-dark .stat .cap,.section-teal .stat .cap{color:var(--cream-70)}
+.placeholder-tag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--teal);background:rgba(36,92,92,.10);
+  border:1px dashed rgba(36,92,92,.4);padding:2px 8px;border-radius:3px;margin-top:8px}
+.section-dark .placeholder-tag{color:var(--gold-soft);background:rgba(201,169,110,.08);border-color:rgba(201,169,110,.4)}
+
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.split.flip .split-media{order:-1}
+
+/* quote */
+.quote-block{background:var(--cream);border-left:3px solid var(--gold);padding:40px 44px;border-radius:4px}
+.quote-block p{font-family:var(--display);font-style:italic;font-size:1.5rem;color:var(--ink);line-height:1.45}
+.quote-block .who{font-family:var(--body);font-style:normal;font-weight:500;
+  text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;color:var(--teal);margin-top:18px}
+
+/* compare table */
+.compare{width:100%;border-collapse:collapse;margin-top:30px;background:var(--white);border-radius:4px;overflow:hidden}
+.compare th,.compare td{padding:18px 22px;text-align:left;border-bottom:1px solid var(--hairline);font-size:.95rem}
+.compare thead th{background:var(--ink);color:var(--cream);font-family:var(--body);font-weight:500;
+  text-transform:uppercase;letter-spacing:.1em;font-size:.74rem}
+.compare thead th:last-child{background:var(--teal)}
+.compare td:first-child{font-weight:500;color:var(--ink)}
+.compare td .x{color:#b06a52}
+.compare td .check{color:var(--teal);font-weight:600}
+
+/* steps */
+.steps{counter-reset:step;display:grid;gap:0}
+.step{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:30px 0;border-bottom:1px solid var(--hairline)}
+.step:last-child{border-bottom:0}
+.step .dot{counter-increment:step;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold);
+  color:var(--gold);font-family:var(--display);font-size:1.4rem;display:flex;align-items:center;justify-content:center}
+.step .dot::before{content:counter(step)}
+.step h3{margin-bottom:8px}
+.step p{color:var(--ink-70);max-width:60ch}
+
+/* model layers */
+.layer{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;
+  padding:30px;background:rgba(247,242,236,.04);border:1px solid rgba(201,169,110,.22);
+  border-radius:4px;margin-bottom:18px}
+.layer .lyr-label{font-family:var(--mono);color:var(--gold);font-size:.78rem;letter-spacing:.06em;
+  white-space:nowrap;padding-top:6px}
+.layer h3{color:var(--cream);margin-bottom:8px}
+.layer p{color:var(--cream-70);font-size:.96rem}
+
+/* ladder */
+.ladder{display:grid;gap:14px}
+.rung{display:flex;align-items:center;gap:20px;padding:22px 26px;border:1px solid var(--hairline);
+  border-radius:4px;background:var(--white)}
+.rung .tier{font-family:var(--mono);color:var(--teal);font-size:.78rem;letter-spacing:.08em;min-width:120px}
+.rung .desc{color:var(--ink-70);font-size:.95rem}
+.rung strong{color:var(--ink);font-weight:500}
+
+/* form */
+.form-card{background:var(--cream);border-radius:6px;padding:44px;border:1px solid var(--hairline)}
+.field{margin-bottom:20px}
+.field label{display:block;font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.72rem;color:var(--teal);margin-bottom:8px}
+.field input,.field select,.field textarea{
+  width:100%;padding:13px 14px;border:1px solid var(--hairline);border-radius:3px;
+  font-family:var(--body);font-size:.95rem;background:var(--white);color:var(--ink)}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+
+/* CTA band */
+.cta-band{background:var(--teal);color:var(--cream);text-align:center}
+.cta-band h2{color:var(--cream)}
+.cta-band .lead{margin:18px auto 0;color:var(--cream-70)}
+
+/* ---------- Footer ---------- */
+.site-footer{background:var(--ink);color:var(--cream-70);padding:64px 0 30px;font-size:.9rem}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:40px;
+  border-bottom:1px solid rgba(201,169,110,.18)}
+.footer-grid h4{font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.14em;
+  font-size:.72rem;color:var(--gold);margin-bottom:16px}
+.footer-grid a{display:block;color:var(--cream-70);margin-bottom:9px;transition:color .2s}
+.footer-grid a:hover{color:var(--gold)}
+.footer-contact .mono{display:block;color:var(--cream-70);margin-bottom:8px;font-size:.86rem}
+.footer-logo{height:54px;width:auto;display:block;margin-bottom:16px}
+.footer-brand .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
+.footer-brand .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.2em;font-size:.6rem;color:var(--gold);margin-top:4px}
+.footer-brand p{margin-top:16px;max-width:34ch;font-size:.88rem}
+.footer-legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  padding-top:24px;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:rgba(247,242,236,.5)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:880px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;position:absolute;top:74px;left:0;right:0;flex-direction:column;
+    gap:0;background:var(--ink);padding:10px 28px 22px;border-bottom:1px solid var(--hairline)}
+  .nav-links.open a{padding:12px 0;width:100%}
+  .nav-toggle{display:block}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr;gap:34px}
+  .split.flip .split-media{order:0}
+  .footer-grid{grid-template-columns:1fr}
+  section{padding:64px 0}
+  .layer{grid-template-columns:1fr;gap:12px}
+}
+
+</style>
 </head>
 <body>
 
@@ -34,7 +294,7 @@
   <div class="wrap">
     <p class="label eyebrow">The IW Operating System</p>
     <h1>The protocol <span class="italic-gold">is</span> the product.</h1>
-    <p class="lead" style="margin-top:24px">Anyone can claim personalized care. A named, proprietary system is harder to commoditize — once it's defined and owned, it's yours. That's the strategic core of what you deploy with Implanted Wisdom.</p>
+    <p class="lead" style="margin-top:24px">Anyone can claim personalized care. A named, proprietary system is harder to commoditize — once it's yours, it's yours.</p>
   </div>
 </section>
 
@@ -45,8 +305,7 @@
       <div>
         <p class="label teal eyebrow">The Core Promise</p>
         <h2>Patient-Specific Protocol<span class="tm">™</span></h2>
-        <p class="lead" style="margin-top:20px">PSP™ is a named, proprietary clinical system. Every case is planned from scratch — bone density, anatomy, and the patient's personal circumstances. No templates, no rotating handoffs, one surgeon responsible for the full outcome.</p>
-        <p class="lead" style="margin-top:16px">The ™ signals proprietary even ahead of federal registration. It wraps the entire promise inside something a competitor can't simply repeat in their next ad.</p>
+        <p class="lead" style="margin-top:20px">A named, proprietary clinical system. Every case planned from scratch — bone, anatomy, circumstances. No templates. The surgeon owns the full outcome.</p>
       </div>
       <div class="split-media">
         <div class="quote-block">
@@ -69,22 +328,22 @@
       <div class="card card-dark">
         <span class="num">Pillar 01</span>
         <h3>Surgeon Ownership</h3>
-        <p>A board-certified oral surgeon personally designs and delivers every case. Continuity of care is the differentiator, not an afterthought.</p>
+        <p>One board-certified surgeon designs and delivers every case.</p>
       </div>
       <div class="card card-dark">
         <span class="num">Pillar 02</span>
         <h3>Credential Anchoring</h3>
-        <p>Positioning is built on verifiable credentials and outcomes — the antidote to technology-and-marketing-first models that overpromise.</p>
+        <p>Built on verifiable credentials and outcomes — not marketing-first promises.</p>
       </div>
       <div class="card card-dark">
         <span class="num">Pillar 03</span>
         <h3>Patient-Specific Protocol<span class="tm">™</span></h3>
-        <p>The proprietary planning system that makes "personalized" real and defensible — every case from scratch.</p>
+        <p>The proprietary planning system that makes "personalized" real — every case from scratch.</p>
       </div>
       <div class="card card-dark">
         <span class="num">Pillar 04</span>
         <h3>Technology That Proves It</h3>
-        <p>AI-assisted photogrammetry and 3D planning make the protocol concrete and modern — specific technology that enables case-specific care.</p>
+        <p>AI photogrammetry and 3D planning make the protocol concrete — not just a claim.</p>
       </div>
     </div>
   </div>
@@ -98,12 +357,58 @@
       <h2>Everything that runs in our practice — packaged for yours.</h2>
     </div>
     <div class="grid grid-3">
-      <div class="card"><span class="num">Clinical</span><h3>PSP™ Case Planning</h3><p>The protocol, the planning method, and the standards that govern every full-arch case.</p></div>
-      <div class="card"><span class="num">Technology</span><h3>Photogrammetry &amp; 3D</h3><p>AI-assisted scanning and planning integrated into your digital workflow.</p></div>
-      <div class="card"><span class="num">Prosthetics</span><h3>Digital Workflow</h3><p>In-house printing, staining, and glazing with structured training.</p></div>
-      <div class="card"><span class="num">Demand</span><h3>Marketing Infrastructure</h3><p>Campaigns, landing pages, and creative engineered for full-arch — surgeon-led, never agency-styled.</p></div>
-      <div class="card"><span class="num">Conversion</span><h3>CRM &amp; Follow-Up</h3><p>Automated lead capture, nurture, and pipeline so qualified patients don't slip through.</p></div>
-      <div class="card"><span class="num">Network</span><h3>GP Referral Management</h3><p>Systems to build and manage the referring-dentist network that feeds the program.</p></div>
+      <div class="card"><span class="num">Clinical</span><h3>PSP™ Case Planning</h3><p>The planning standard for every case, FP1–FP3, with Dr. Pulver case review.</p></div>
+      <div class="card"><span class="num">Technology</span><h3>Photogrammetry &amp; 3D</h3><p>Scanning, photogrammetry, and 3D printing in your workflow — no lab tech.</p></div>
+      <div class="card"><span class="num">Prosthetics</span><h3>Digital Workflow</h3><p>In-house printing, staining, glazing, and delivery.</p></div>
+      <div class="card"><span class="num">Demand</span><h3>Marketing &amp; Landing Pages</h3><p>Direct-to-consumer campaigns and landing pages for full-arch.</p></div>
+      <div class="card"><span class="num">Conversion</span><h3>GHL CRM &amp; Follow-Up</h3><p>Lead capture, nurture, and pipeline in Go High Level.</p></div>
+      <div class="card"><span class="num">Performance</span><h3>KPI Scorecard</h3><p>A shared scorecard on 25/50/25 targets.</p></div>
+      <div class="card"><span class="num">Conversion</span><h3>Coordinator Training</h3><p>The Platinum Minute, call scripts, and a proven closing methodology.</p></div>
+      <div class="card"><span class="num">Network</span><h3>Inner Circle Referral</h3><p>A branded GP referral program that feeds the practice.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section class="section-cream" style="padding-top:0">
+  <div class="wrap">
+    <div class="center narrow" style="margin:0 auto 40px">
+      <p class="label teal eyebrow">Scope, Made Clear</p>
+      <h2>What's included, what's an add-on, what stays yours.</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="num" style="color:var(--teal)">Included</span>
+        <h3>Core Platform</h3>
+        <p style="margin-top:10px">
+          • PSP™ clinical standard + Dr. Pulver case review<br>
+          • Photogrammetry &amp; 3D planning integration<br>
+          • KPI tracking &amp; performance management (25/50/25)<br>
+          • Treatment-coordinator training &amp; closing methodology<br>
+          • GP Inner Circle referral network
+        </p>
+      </div>
+      <div class="card">
+        <span class="num" style="color:var(--gold)">Add-On</span>
+        <h3>Choose As You Scale</h3>
+        <p style="margin-top:10px">
+          • Digital workflow training (print / stain / glaze)<br>
+          • Cadaver course &amp; live-surgical training<br>
+          • Equipment integration &amp; preferred pricing<br>
+          • First-case implementation support<br>
+          • General marketing, SEO &amp; social (optional)
+        </p>
+      </div>
+      <div class="card card-dark" style="background:var(--espresso);border-color:var(--espresso)">
+        <span class="num">Yours</span>
+        <h3 style="color:var(--cream)">Owned by Your Practice</h3>
+        <p style="margin-top:10px">
+          • Clinical execution &amp; final case approval<br>
+          • Coordinator and surgical hires<br>
+          • The patient relationship<br><br>
+          <em>You stay the surgeon of record. We make the program around you stronger.</em>
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -114,28 +419,28 @@
     <div class="center narrow" style="margin:0 auto 46px">
       <p class="label eyebrow">How Partnership Works</p>
       <h2 style="color:var(--cream)">A three-layer model, aligned to your results.</h2>
-      <p class="lead" style="margin-top:18px">The structure is designed so the platform wins only as your full-arch program grows. Exact figures are tailored to your practice and shared in the partner session.</p>
+      <p class="lead" style="margin-top:18px">The platform wins only as your program grows. Figures are tailored to your practice.</p>
     </div>
 
     <div class="layer">
       <span class="lyr-label">Layer 1</span>
       <div>
         <h3>Partnership Retainer</h3>
-        <p>A fixed retainer that funds onboarding, system deployment, and ongoing platform support — paid across the engagement, not as a one-time setup fee. It keeps the program resourced from day one.</p>
+        <p>A fixed retainer that funds onboarding and ongoing support — paid across the engagement, not a one-time setup fee.</p>
       </div>
     </div>
     <div class="layer">
       <span class="lyr-label">Layer 2</span>
       <div>
         <h3>Performance-Aligned Fee</h3>
-        <p>A fee tied to your full-arch results. It scales in as volume grows rather than starting flat — so the platform is rewarded as the program produces, keeping incentives pointed the same direction as yours.</p>
+        <p>Tied to your results. It scales in as volume grows — rewarded only as the program produces.</p>
       </div>
     </div>
     <div class="layer">
       <span class="lyr-label">Layer 3</span>
       <div>
-        <h3>Optional Training &amp; Technology Add-Ons</h3>
-        <p>Choose what you need as you scale: cadaver and live-surgical training, digital-workflow training (printing, staining, glazing), photogrammetry and printer integration, and first-case implementation support.</p>
+        <h3>Optional Add-Ons</h3>
+        <p>Training, equipment integration, and first-case support — chosen as you scale.</p>
       </div>
     </div>
 
