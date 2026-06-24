@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partner Login — Implanted Wisdom</title>
+<meta name="description" content="Implanted Wisdom partner portal login.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;
+  --cream:#F7F2EC;--white:#fff;--ink-70:rgba(30,22,18,.70);--cream-70:rgba(247,242,236,.72);
+  --hairline:rgba(201,169,110,.30);
+  --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);font-weight:300;color:var(--cream);background:var(--espresso);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;position:relative;overflow:hidden}
+body::after{content:"IW";position:absolute;right:-4%;bottom:-12%;font-family:var(--display);font-weight:600;
+  font-size:42rem;color:rgba(201,169,110,.05);line-height:.7;pointer-events:none}
+a{color:inherit;text-decoration:none}
+.shell{position:relative;z-index:2;width:100%;max-width:430px}
+.brandhead{text-align:center;margin-bottom:30px}
+.brandhead img{height:64px;margin:0 auto 14px}
+.brandhead .name{font-family:var(--display);font-size:1.7rem;color:var(--cream)}
+.brandhead .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.22em;
+  font-size:.56rem;color:var(--gold);margin-top:4px}
+.card{background:rgba(247,242,236,.04);border:1px solid var(--hairline);border-radius:8px;padding:38px 34px;
+  backdrop-filter:blur(6px)}
+.tabs{display:flex;gap:6px;margin-bottom:26px;background:rgba(0,0,0,.18);padding:5px;border-radius:5px}
+.tab{flex:1;text-align:center;padding:10px;border-radius:4px;font-family:var(--body);font-weight:500;
+  font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--cream-70);cursor:pointer;transition:.2s}
+.tab.active{background:var(--gold);color:var(--ink)}
+.pane{display:none}.pane.active{display:block}
+.field{margin-bottom:18px}
+.field label{display:block;font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:.66rem;
+  color:var(--gold);margin-bottom:7px}
+.field input,.field select{width:100%;padding:12px 13px;border:1px solid var(--hairline);border-radius:4px;
+  background:rgba(0,0,0,.2);color:var(--cream);font-family:var(--body);font-size:.92rem}
+.field input::placeholder{color:rgba(247,242,236,.4)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold)}
+.btn{width:100%;padding:14px;border:0;border-radius:4px;background:var(--gold);color:var(--ink);
+  font-family:var(--body);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;
+  cursor:pointer;transition:.2s;margin-top:6px}
+.btn:hover{background:var(--gold-soft)}
+.row{display:flex;gap:12px}.row .field{flex:1}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:.74rem;color:var(--cream-70)}
+.meta a:hover{color:var(--gold)}
+.demo{text-align:center;font-family:var(--mono);font-size:.64rem;color:rgba(247,242,236,.45);margin-top:22px;letter-spacing:.03em}
+.back{display:block;text-align:center;margin-top:22px;font-size:.74rem;color:var(--cream-70);letter-spacing:.04em}
+.back:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="brandhead">
+      <img src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo.png" alt="Implanted Wisdom">
+      <div class="name">Implanted Wisdom</div>
+      <div class="sub">Partner Portal</div>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" data-pane="signin" onclick="pane(this)">Sign In</div>
+        <div class="tab" data-pane="create" onclick="pane(this)">Request Access</div>
+      </div>
+
+      <!-- SIGN IN -->
+      <form class="pane active" id="signin" onsubmit="enter(event)">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="you@yourpractice.com" required>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <button class="btn" type="submit">Sign In to Portal</button>
+        <div class="meta">
+          <label style="display:flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;color:var(--cream-70);font-size:.74rem">
+            <input type="checkbox" style="width:auto"> Remember me
+          </label>
+          <a href="#">Forgot password?</a>
+        </div>
+      </form>
+
+      <!-- CREATE -->
+      <form class="pane" id="create" onsubmit="enter(event)">
+        <div class="field">
+          <label>Practice / Group</label>
+          <input type="text" placeholder="West Michigan Oral Surgery" required>
+        </div>
+        <div class="row">
+          <div class="field"><label>Your Name</label><input type="text" placeholder="Dr. Jane Smith" required></div>
+          <div class="field"><label>Role</label>
+            <select><option>Surgeon / Owner</option><option>Surgeon</option><option>Treatment Coordinator</option><option>Practice Manager</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Work Email</label><input type="email" placeholder="you@yourpractice.com" required></div>
+        <div class="field"><label># of Surgeons</label>
+          <select><option>1</option><option>2–3</option><option selected>4–6</option><option>7+</option></select>
+        </div>
+        <button class="btn" type="submit">Create Partner Account</button>
+        <div class="demo" style="margin-top:14px">Access is granted after your partnership call.</div>
+      </form>
+
+      <div class="demo">Demo environment — any credentials open the portal.</div>
+    </div>
+
+    <a class="back" href="index.html">← Back to implantedwisdom.com</a>
+  </div>
+
+<script>
+function pane(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.pane).classList.add('active');
+}
+function enter(e){e.preventDefault();window.location.href='portal.html';}
+</script>
+</body>
+</html>
