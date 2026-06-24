@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Implanted Wisdom partner portal — the operating system for surgeon-led full-arch programs.">
+<meta name="theme-color" content="#1E1612">
+<meta name="color-scheme" content="light">
 <title>Partner Portal — Implanted Wisdom</title>
+<link rel="icon" href="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
 :root{
   --ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;
   --cream:#F7F2EC;--white:#fff;--ink-70:rgba(30,22,18,.70);--cream-70:rgba(247,242,236,.72);
@@ -122,12 +128,29 @@ tr:last-child td{border-bottom:0}
 .swatches{display:flex;gap:10px;flex-wrap:wrap}
 .sw{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent}
 .sw.sel{border-color:var(--ink)}
-@media(max-width:980px){
-  .sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:none}
-  .main{margin-left:0}.g4,.g3,.g2,.split{grid-template-columns:1fr}
-  .menu-btn{display:inline-flex!important}
-}
 .menu-btn{display:none;background:none;border:0;font-size:1.5rem;color:var(--ink);cursor:pointer;margin-right:6px}
+.backdrop{display:none;position:fixed;inset:0;background:rgba(20,14,10,.5);z-index:25}
+.backdrop.show{display:block}
+@media(max-width:1100px){ .g4{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:980px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.35)}
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .g4,.g3,.g2,.split{grid-template-columns:1fr}
+  .menu-btn{display:inline-flex!important}
+  .content{padding:22px}
+}
+@media(max-width:600px){
+  .topbar{padding:0 14px;height:58px}
+  .topbar .ttl{font-size:1.15rem}
+  .rolebox > span{display:none}
+  .rolebox select{font-size:.74rem;padding:6px 8px;max-width:140px}
+  .content{padding:15px}
+  .card{padding:18px;overflow-x:auto}
+  table{min-width:430px}
+  .kpi .big{font-size:2.1rem}
+  .preview-hero h3{font-size:1.45rem}
+}
 </style>
 </head>
 <body>
@@ -166,12 +189,13 @@ tr:last-child td{border-bottom:0}
       <a href="login.html">⏻ Log out</a>
     </div>
   </aside>
+  <div class="backdrop" id="backdrop" onclick="closeNav()"></div>
 
   <!-- ============ MAIN ============ -->
   <div class="main">
     <div class="topbar">
       <div style="display:flex;align-items:center">
-        <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">≡</button>
+        <button class="menu-btn" aria-label="Open menu" onclick="toggleNav()">≡</button>
         <span class="ttl" id="viewTitle">Dashboard</span>
       </div>
       <div class="topctrl">
@@ -492,6 +516,8 @@ var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case R
   coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
 
+function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
+function closeNav(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
 function go(el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
@@ -499,7 +525,7 @@ function go(el){
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
   document.getElementById(v).classList.add('active');
   document.getElementById('viewTitle').textContent=titles[v];
-  document.getElementById('sidebar').classList.remove('open');
+  closeNav();
   window.scrollTo(0,0);
 }
 function setRole(r){
