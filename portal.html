@@ -7,14 +7,14 @@
 <meta name="theme-color" content="#1E1612">
 <meta name="color-scheme" content="light">
 <title>Partner Portal — Implanted Wisdom</title>
-<link rel="icon" href="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo.png">
+<link rel="icon" href="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap">
 <style>
 :root{
   --ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;
-  --cream:#F7F2EC;--white:#fff;--ink-70:rgba(30,22,18,.70);--cream-70:rgba(247,242,236,.72);
+  --cream:#F7F2EC;--white:#fff;--ink-70:rgba(30,22,18,.82);--cream-70:rgba(247,242,236,.88);
   --hairline:rgba(201,169,110,.30);--line:#e9e0d2;--bg:#faf7f2;
   --accent:#245C5C; /* practice accent, changeable in Settings */
   --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;
@@ -33,21 +33,21 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 .brand{display:flex;align-items:center;gap:11px;padding:0 22px 20px;border-bottom:1px solid rgba(201,169,110,.15)}
 .brand img{height:38px}
 .brand .nm{font-family:var(--display);font-size:1.15rem}
-.brand .sb{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:.5rem;color:var(--gold)}
+.brand .sb{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:0.57rem;color:var(--gold)}
 .practice{padding:16px 22px;border-bottom:1px solid rgba(201,169,110,.12)}
-.practice .lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);margin-bottom:4px}
+.practice .lbl{font-size:0.67rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);margin-bottom:4px}
 .practice .pn{font-family:var(--display);font-size:1.18rem;color:var(--cream);line-height:1.1}
-.practice .tag{font-size:.66rem;color:var(--cream-70);margin-top:3px}
+.practice .tag{font-size:0.76rem;color:var(--cream-70);margin-top:3px}
 .navwrap{flex:1;overflow-y:auto;padding:14px 0}
-.navgroup{padding:6px 22px;font-size:.56rem;text-transform:uppercase;letter-spacing:.18em;color:rgba(247,242,236,.4);margin-top:10px}
-.nav-item{display:flex;align-items:center;gap:11px;padding:10px 22px;font-size:.86rem;color:var(--cream-70);
+.navgroup{padding:6px 22px;font-size:0.64rem;text-transform:uppercase;letter-spacing:.18em;color:rgba(247,242,236,.62);margin-top:10px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 22px;font-size:0.99rem;color:var(--cream-70);
   cursor:pointer;border-left:2px solid transparent;transition:.15s}
 .nav-item:hover{color:var(--cream);background:rgba(201,169,110,.06)}
 .nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(201,169,110,.08)}
 .nav-item .ic{width:17px;text-align:center;font-size:.95rem;opacity:.9}
 .nav-item.hide{display:none}
 .sidefoot{padding:14px 22px 2px;border-top:1px solid rgba(201,169,110,.12)}
-.sidefoot a{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--cream-70);padding:7px 0}
+.sidefoot a{display:flex;align-items:center;gap:10px;font-size:0.92rem;color:var(--cream-70);padding:7px 0}
 .sidefoot a:hover{color:var(--gold)}
 
 .main{margin-left:250px;flex:1;min-width:0}
@@ -55,8 +55,8 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
   display:flex;align-items:center;justify-content:space-between;padding:0 30px}
 .topbar .ttl{font-family:var(--display);font-size:1.45rem}
 .topctrl{display:flex;align-items:center;gap:16px}
-.rolebox{display:flex;align-items:center;gap:8px;font-size:.74rem;color:var(--ink-70)}
-.rolebox select{padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:.8rem;background:var(--white);color:var(--ink)}
+.rolebox{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--ink-70)}
+.rolebox select{padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:0.92rem;background:var(--white);color:var(--ink)}
 .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;
   justify-content:center;font-family:var(--display);font-size:1rem}
 .content{padding:30px}
@@ -70,30 +70,30 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 .g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:22px}
 .card h3{font-size:1.2rem;margin-bottom:4px}
-.card .sub{font-size:.78rem;color:var(--ink-70);margin-bottom:16px}
-.eyebrow{font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:.64rem;color:var(--accent);margin-bottom:14px}
+.card .sub{font-size:0.9rem;color:var(--ink-70);margin-bottom:16px}
+.eyebrow{font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:0.74rem;color:var(--accent);margin-bottom:14px}
 .kpi .big{font-family:var(--display);font-size:2.6rem;color:var(--ink);line-height:1}
-.kpi .lab{font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:.64rem;color:var(--ink-70);margin-top:8px}
-.kpi .delta{font-size:.74rem;margin-top:6px}.up{color:#3f7d57}.down{color:#b06a52}
-.demo-pill{display:inline-block;font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;
+.kpi .lab{font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:0.74rem;color:var(--ink-70);margin-top:8px}
+.kpi .delta{font-size:0.85rem;margin-top:6px}.up{color:#3f7d57}.down{color:#b06a52}
+.demo-pill{display:inline-block;font-family:var(--mono);font-size:0.67rem;letter-spacing:.06em;text-transform:uppercase;
   color:var(--accent);background:rgba(36,92,92,.09);border:1px dashed rgba(36,92,92,.35);padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:middle}
 .bar{height:9px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:8px}
 .bar > span{display:block;height:100%;background:var(--accent);border-radius:20px}
 .bar.gold > span{background:var(--gold)}
 .btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.1em;
-  font-size:.74rem;padding:11px 18px;border-radius:6px;cursor:pointer;border:1px solid transparent;transition:.18s}
+  font-size:0.85rem;padding:11px 18px;border-radius:6px;cursor:pointer;border:1px solid transparent;transition:.18s}
 .btn-gold{background:var(--gold);color:var(--ink)}.btn-gold:hover{background:var(--gold-soft)}
 .btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{filter:brightness(1.08)}
 .btn-out{border-color:var(--line);color:var(--ink-70);background:#fff}.btn-out:hover{border-color:var(--accent);color:var(--accent)}
-.badge{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:20px}
+.badge{font-size:0.71rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:20px}
 .b-green{background:#e3efe7;color:#3f7d57}.b-amber{background:#f6ecd9;color:#9a7b3a}.b-grey{background:#eee8dd;color:#8a7f6c}.b-teal{background:#dcebeb;color:var(--teal)}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem;color:var(--ink-70);
+th{text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:0.71rem;color:var(--ink-70);
   padding:11px 12px;border-bottom:1px solid var(--line)}
-td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:.88rem}
+td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:1.01rem}
 tr:last-child td{border-bottom:0}
 .field{margin-bottom:15px}
-.field label{display:block;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem;color:var(--accent);margin-bottom:6px}
+.field label{display:block;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:0.71rem;color:var(--accent);margin-bottom:6px}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:6px;
   font-family:var(--body);font-size:.9rem;background:#fff;color:var(--ink)}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
@@ -107,23 +107,23 @@ tr:last-child td{border-bottom:0}
 .module:last-child{border-bottom:0}
 .module .mt{flex:1}.module .mt .nm{font-weight:500;font-size:.92rem}.module .mt .bar{max-width:340px}
 .accordion .ac-h{padding:15px 0;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:.92rem}
-.accordion .ac-b{max-height:0;overflow:hidden;transition:max-height .3s;color:var(--ink-70);font-size:.88rem}
+.accordion .ac-b{max-height:0;overflow:hidden;transition:max-height .3s;color:var(--ink-70);font-size:1.01rem}
 .accordion .ac-b.open{max-height:400px;padding:6px 0 16px}
 .check{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .check:last-child{border-bottom:0}
 .check input{margin-top:3px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
-.check .ct{font-size:.9rem}.check .co{font-size:.72rem;color:var(--ink-70)}
+.check .ct{font-size:.9rem}.check .co{font-size:0.83rem;color:var(--ink-70)}
 .check.done .ct{text-decoration:line-through;color:var(--ink-70)}
 .preview-hero{background:var(--espresso);color:var(--cream);border-radius:9px;padding:30px;position:relative;overflow:hidden}
-.preview-hero .eb{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.preview-hero .eb{font-size:0.69rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .preview-hero h3{font-family:var(--display);font-size:1.8rem;color:var(--cream);margin:8px 0}
-.preview-hero .cta{display:inline-block;margin-top:12px;background:var(--gold);color:var(--ink);padding:9px 16px;border-radius:5px;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.preview-hero .cta{display:inline-block;margin-top:12px;background:var(--gold);color:var(--ink);padding:9px 16px;border-radius:5px;font-size:0.83rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
 .ad-card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff;max-width:330px}
 .ad-img{height:150px;background:repeating-linear-gradient(45deg,#efe7db,#efe7db 14px,#e7dccb 14px,#e7dccb 28px);
-  display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--teal);font-size:.74rem}
-.ad-body{padding:14px}.ad-body .sp{font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-70)}
-.ad-body .hl{font-weight:600;margin:4px 0;font-size:.94rem}.ad-body p{font-size:.8rem;color:var(--ink-70)}
-.callout{background:rgba(36,92,92,.06);border:1px solid rgba(36,92,92,.18);border-radius:9px;padding:18px 20px;font-size:.88rem;color:var(--ink-70)}
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--teal);font-size:0.85rem}
+.ad-body{padding:14px}.ad-body .sp{font-size:0.67rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-70)}
+.ad-body .hl{font-weight:600;margin:4px 0;font-size:.94rem}.ad-body p{font-size:0.92rem;color:var(--ink-70)}
+.callout{background:rgba(36,92,92,.06);border:1px solid rgba(36,92,92,.18);border-radius:9px;padding:18px 20px;font-size:1.01rem;color:var(--ink-70)}
 .result-box{display:none;margin-top:18px}
 .swatches{display:flex;gap:10px;flex-wrap:wrap}
 .sw{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent}
@@ -144,7 +144,7 @@ tr:last-child td{border-bottom:0}
   .topbar{padding:0 14px;height:58px}
   .topbar .ttl{font-size:1.15rem}
   .rolebox > span{display:none}
-  .rolebox select{font-size:.74rem;padding:6px 8px;max-width:140px}
+  .rolebox select{font-size:0.85rem;padding:6px 8px;max-width:140px}
   .content{padding:15px}
   .card{padding:18px;overflow-x:auto}
   table{min-width:430px}
@@ -159,7 +159,7 @@ tr:last-child td{border-bottom:0}
   <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <img src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo.png" alt="IW">
+      <img src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png" alt="IW">
       <div><div class="nm">Implanted Wisdom</div><div class="sb">Partner Portal</div></div>
     </div>
     <div class="practice">
@@ -227,10 +227,10 @@ tr:last-child td{border-bottom:0}
           <div class="card">
             <div class="eyebrow">Funnel · 25 / 50 / 25 Benchmark</div>
             <h3 style="margin-bottom:14px">This Month's Pipeline</h3>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:.82rem"><span>Leads</span><strong>48</strong></div><div class="bar"><span style="width:100%"></span></div></div>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:.82rem"><span>Booked Consults</span><strong>12</strong></div><div class="bar"><span style="width:25%"></span></div></div>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:.82rem"><span>Showed / Consulted</span><strong>8</strong></div><div class="bar"><span style="width:17%"></span></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-size:.82rem"><span>Closed Cases</span><strong>3</strong></div><div class="bar gold"><span style="width:6%"></span></div></div>
+            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Leads</span><strong>48</strong></div><div class="bar"><span style="width:100%"></span></div></div>
+            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Booked Consults</span><strong>12</strong></div><div class="bar"><span style="width:25%"></span></div></div>
+            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Showed / Consulted</span><strong>8</strong></div><div class="bar"><span style="width:17%"></span></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Closed Cases</span><strong>3</strong></div><div class="bar gold"><span style="width:6%"></span></div></div>
             <div class="callout" style="margin-top:18px">Booked-consult rate is healthy; the leak is consult→close. <strong>Recommended:</strong> coordinator closing refresh (Training Hub).</div>
           </div>
           <div class="card">
@@ -259,7 +259,7 @@ tr:last-child td{border-bottom:0}
           <div id="checklist">
             <label class="check done"><input type="checkbox" checked onchange="obSync()"><span><span class="ct">Partnership agreement signed</span></span></label>
             <label class="check done"><input type="checkbox" checked onchange="obSync()"><span><span class="ct">Landing page + brand assets live</span></span></label>
-            <label class="check done"><input type="checkbox" checked onchange="obSync()"><span><span class="ct">GHL CRM build + follow-up workflows</span></span></label>
+            <label class="check done"><input type="checkbox" checked onchange="obSync()"><span><span class="ct">CRM build + follow-up workflows</span></span></label>
             <label class="check done"><input type="checkbox" checked onchange="obSync()"><span><span class="ct">Meta ad creative + campaign setup</span></span></label>
             <label class="check"><input type="checkbox" onchange="obSync()"><span><span class="ct">Treatment coordinator training kit</span></span></label>
             <label class="check"><input type="checkbox" onchange="obSync()"><span><span class="ct">Digital workflow SOPs (print / stain / glaze)</span></span></label>
@@ -285,7 +285,7 @@ tr:last-child td{border-bottom:0}
               <div class="field"><label>Upload CBCT / scan / photogrammetry</label><input type="file" multiple></div>
               <div class="field"><label>Notes for review</label><textarea placeholder="Bone quality, anatomy notes, questions for Dr. Pulver…"></textarea></div>
               <button class="btn btn-accent" type="submit">Submit for Review</button>
-              <p class="co" style="font-size:.7rem;color:var(--ink-70);margin-top:10px">🔒 Encrypted. PHI handled under BAA. Demo upload — files not stored.</p>
+              <p class="co" style="font-size:0.8rem;color:var(--ink-70);margin-top:10px">🔒 Encrypted. PHI handled under BAA. Demo upload — files not stored.</p>
             </form>
           </div>
           <div class="card">
@@ -309,9 +309,9 @@ tr:last-child td{border-bottom:0}
       <section class="view" id="training">
         <p class="lead">Progress your team along the IW designation ladder.</p>
         <div class="grid g3" style="margin-bottom:22px">
-          <div class="ladder-step"><div class="dot done">✓</div><div><strong>IW Trained</strong><div class="co" style="font-size:.74rem;color:var(--ink-70)">Core training complete</div></div></div>
-          <div class="ladder-step"><div class="dot prog">◐</div><div><strong>IW Certified</strong><div class="co" style="font-size:.74rem;color:var(--ink-70)" id="certStatus">In progress · 68%</div></div></div>
-          <div class="ladder-step"><div class="dot lock">◌</div><div><strong>IW Fellow</strong><div class="co" style="font-size:.74rem;color:var(--ink-70)">Unlocks at full PSP™ mastery</div></div></div>
+          <div class="ladder-step"><div class="dot done">✓</div><div><strong>IW Trained</strong><div class="co" style="font-size:0.85rem;color:var(--ink-70)">Core training complete</div></div></div>
+          <div class="ladder-step"><div class="dot prog">◐</div><div><strong>IW Certified</strong><div class="co" style="font-size:0.85rem;color:var(--ink-70)" id="certStatus">In progress · 68%</div></div></div>
+          <div class="ladder-step"><div class="dot lock">◌</div><div><strong>IW Fellow</strong><div class="co" style="font-size:0.85rem;color:var(--ink-70)">Unlocks at full PSP™ mastery</div></div></div>
         </div>
         <div class="card">
           <div class="eyebrow">Modules</div>
@@ -321,8 +321,8 @@ tr:last-child td{border-bottom:0}
             <div class="module" data-p="60"><div class="mt"><div class="nm">Photogrammetry &amp; 3D Workflow</div><div class="bar"><span style="width:60%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="30"><div class="mt"><div class="nm">Printing, Staining &amp; Glazing</div><div class="bar"><span style="width:30%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="80"><div class="mt"><div class="nm">The Platinum Minute &amp; Closing Methodology</div><div class="bar"><span style="width:80%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
-            <div class="module" data-p="0"><div class="mt"><div class="nm">Cadaver Course — Phoenix</div><div class="co" style="font-size:.74rem;color:var(--ink-70)">Scheduled · Sep 12–13</div></div><span class="badge b-amber">Scheduled</span></div>
-            <div class="module" data-p="0"><div class="mt"><div class="nm">Live Treatment — Mexico</div><div class="co" style="font-size:.74rem;color:var(--ink-70)">Add-on · unlock after Certified</div></div><span class="badge b-grey">Locked</span></div>
+            <div class="module" data-p="0"><div class="mt"><div class="nm">Cadaver Course — Phoenix</div><div class="co" style="font-size:0.85rem;color:var(--ink-70)">Scheduled · Sep 12–13</div></div><span class="badge b-amber">Scheduled</span></div>
+            <div class="module" data-p="0"><div class="mt"><div class="nm">Live Treatment — Mexico</div><div class="co" style="font-size:0.85rem;color:var(--ink-70)">Add-on · unlock after Certified</div></div><span class="badge b-grey">Locked</span></div>
           </div>
         </div>
       </section>
@@ -343,9 +343,9 @@ tr:last-child td{border-bottom:0}
           <div class="card">
             <div class="eyebrow">Targets</div>
             <h3 style="margin-bottom:14px">Coordinator Scorecard</h3>
-            <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:.84rem"><span>Lead → Booked (target 25%)</span><strong class="up">26%</strong></div><div class="bar"><span style="width:26%"></span></div></div>
-            <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:.84rem"><span>Booked → Consulted (target 50%)</span><strong class="down">67%</strong></div><div class="bar"><span style="width:67%"></span></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-size:.84rem"><span>Consulted → Closed (target 25%)</span><strong class="down">38%</strong></div><div class="bar gold"><span style="width:38%"></span></div></div>
+            <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Lead → Booked (target 25%)</span><strong class="up">26%</strong></div><div class="bar"><span style="width:26%"></span></div></div>
+            <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Booked → Consulted (target 50%)</span><strong class="down">67%</strong></div><div class="bar"><span style="width:67%"></span></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Consulted → Closed (target 25%)</span><strong class="down">38%</strong></div><div class="bar gold"><span style="width:38%"></span></div></div>
             <div class="callout" style="margin-top:18px">Above benchmark on show-rate; closing is the focus. Assign the Closing Methodology module to your coordinators.</div>
           </div>
         </div>
@@ -364,14 +364,14 @@ tr:last-child td{border-bottom:0}
               <select id="mType" onchange="renderAds()"><option value="both">Landing hero + Meta ad</option><option value="hero">Landing hero only</option><option value="ad">Meta ad only</option></select>
             </div>
             <button class="btn btn-gold">Export Assets</button>
-            <p class="co" style="font-size:.7rem;color:var(--ink-70);margin-top:10px">Demo preview — export disabled.</p>
+            <p class="co" style="font-size:0.8rem;color:var(--ink-70);margin-top:10px">Demo preview — export disabled.</p>
           </div>
           <div class="card">
             <div class="eyebrow">Live Preview</div>
             <div id="heroPrev" class="preview-hero" style="margin-bottom:18px">
               <div class="eb">Patient-Specific Protocol™</div>
               <h3 id="hpH">Full-Arch, Designed by One Surgeon</h3>
-              <p id="hpP" style="color:var(--cream-70);font-size:.86rem">West Michigan Oral Surgery · Grand Rapids</p>
+              <p id="hpP" style="color:var(--cream-70);font-size:0.99rem">West Michigan Oral Surgery · Grand Rapids</p>
               <span class="cta" id="hpC">Free 3D Implant Consultation</span>
             </div>
             <div id="adPrev" class="ad-card">
@@ -412,16 +412,16 @@ tr:last-child td{border-bottom:0}
         <div class="card">
           <div class="eyebrow">You vs. Network</div>
           <div style="margin-bottom:22px">
-            <div style="display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:4px"><span><strong>Arches / month</strong></span><span class="co" style="font-size:.74rem;color:var(--ink-70)">you 3 · median 5 · top quartile 9</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.99rem;margin-bottom:4px"><span><strong>Arches / month</strong></span><span class="co" style="font-size:0.85rem;color:var(--ink-70)">you 3 · median 5 · top quartile 9</span></div>
             <div class="bar" style="height:13px"><span style="width:33%"></span></div>
-            <div style="position:relative;height:14px"><span style="position:absolute;left:56%;font-size:.6rem;color:var(--ink-70)">▲ median</span><span style="position:absolute;left:96%;font-size:.6rem;color:var(--ink-70)">▲ top</span></div>
+            <div style="position:relative;height:14px"><span style="position:absolute;left:56%;font-size:0.69rem;color:var(--ink-70)">▲ median</span><span style="position:absolute;left:96%;font-size:0.69rem;color:var(--ink-70)">▲ top</span></div>
           </div>
           <div style="margin-bottom:22px">
-            <div style="display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:4px"><span><strong>Consult → close rate</strong></span><span class="co" style="font-size:.74rem;color:var(--ink-70)">you 25% · median 31% · top 44%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.99rem;margin-bottom:4px"><span><strong>Consult → close rate</strong></span><span class="co" style="font-size:0.85rem;color:var(--ink-70)">you 25% · median 31% · top 44%</span></div>
             <div class="bar gold" style="height:13px"><span style="width:57%"></span></div>
           </div>
           <div>
-            <div style="display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:4px"><span><strong>Cost / booked consult</strong></span><span class="co" style="font-size:.74rem;color:var(--ink-70)">you $420 · median $360 · best $210</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.99rem;margin-bottom:4px"><span><strong>Cost / booked consult</strong></span><span class="co" style="font-size:0.85rem;color:var(--ink-70)">you $420 · median $360 · best $210</span></div>
             <div class="bar" style="height:13px"><span style="width:50%"></span></div>
           </div>
           <div class="callout" style="margin-top:22px">Biggest opportunity vs. peers: <strong>close rate</strong>. Closing the gap to network median would add ~2 arches/month at current consult volume.</div>
@@ -442,11 +442,11 @@ tr:last-child td{border-bottom:0}
           <div class="card">
             <div class="eyebrow">Modeled Annual Revenue</div>
             <div style="display:flex;gap:20px;margin-bottom:16px">
-              <div><div class="co" style="font-size:.72rem;color:var(--ink-70)">Current run-rate</div><div style="font-family:var(--display);font-size:1.9rem" id="roiNow">—</div></div>
-              <div><div class="co" style="font-size:.72rem;color:var(--ink-70)">At target</div><div style="font-family:var(--display);font-size:1.9rem;color:var(--accent)" id="roiTarget">—</div></div>
+              <div><div class="co" style="font-size:0.83rem;color:var(--ink-70)">Current run-rate</div><div style="font-family:var(--display);font-size:1.9rem" id="roiNow">—</div></div>
+              <div><div class="co" style="font-size:0.83rem;color:var(--ink-70)">At target</div><div style="font-family:var(--display);font-size:1.9rem;color:var(--accent)" id="roiTarget">—</div></div>
             </div>
             <div class="callout"><strong>Upside: <span id="roiDelta">—</span>/yr</strong> &nbsp;·&nbsp; <span id="roiArches">—</span> additional arches annually. Reaching ~100 arches/yr is the program goal across <span id="roiSurgTxt">4</span> surgeons.</div>
-            <div style="margin-top:16px"><div class="co" style="font-size:.72rem;color:var(--ink-70);margin-bottom:6px">Progress to 100-arch annual goal at target</div><div class="bar gold"><span id="roiGoalBar" style="width:0%"></span></div></div>
+            <div style="margin-top:16px"><div class="co" style="font-size:0.83rem;color:var(--ink-70);margin-bottom:6px">Progress to 100-arch annual goal at target</div><div class="bar gold"><span id="roiGoalBar" style="width:0%"></span></div></div>
           </div>
         </div>
       </section>
@@ -493,7 +493,7 @@ tr:last-child td{border-bottom:0}
           </div>
           <div class="card">
             <div class="eyebrow">Brand Accent</div>
-            <p class="co" style="font-size:.82rem;color:var(--ink-70);margin-bottom:14px">Sets the accent across your portal and co-branded marketing assets.</p>
+            <p class="co" style="font-size:0.94rem;color:var(--ink-70);margin-bottom:14px">Sets the accent across your portal and co-branded marketing assets.</p>
             <div class="swatches" id="swatches">
               <div class="sw sel" style="background:#245C5C" data-c="#245C5C" onclick="pickColor(this)"></div>
               <div class="sw" style="background:#C9A96E" data-c="#C9A96E" onclick="pickColor(this)"></div>
