@@ -326,12 +326,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== TRAINING ===== -->
       <section class="view" id="training">
-        <p class="lead">Progress your team along the IW designation ladder.</p>
-        <div class="grid g3" style="margin-bottom:22px">
-          <div class="ladder-step"><div class="dot done">✓</div><div><strong>IW Trained</strong><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Core training complete</div></div></div>
-          <div class="ladder-step"><div class="dot prog">◐</div><div><strong>IW Certified</strong><div class="co" style="font-size:0.93rem;color:var(--ink-70)" id="certStatus">In progress · 68%</div></div></div>
-          <div class="ladder-step"><div class="dot lock">◌</div><div><strong>IW Fellow</strong><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Unlocks at full PSP™ mastery</div></div></div>
-        </div>
+        <p class="lead">Track your team's progress through the IW training curriculum.</p>
         <div class="card">
           <div class="eyebrow">Modules</div>
           <h3 style="margin-bottom:10px">Curriculum</h3>
@@ -341,7 +336,7 @@ tr:last-child td{border-bottom:0}
             <div class="module" data-p="30"><div class="mt"><div class="nm">Printing, Staining &amp; Glazing</div><div class="bar"><span style="width:30%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="80"><div class="mt"><div class="nm">The Platinum Minute &amp; Closing Methodology</div><div class="bar"><span style="width:80%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="0"><div class="mt"><div class="nm">Cadaver Course — Phoenix</div><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Scheduled · Sep 12–13</div></div><span class="badge b-amber">Scheduled</span></div>
-            <div class="module" data-p="0"><div class="mt"><div class="nm">Live Treatment — Mexico</div><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Add-on · unlock after Certified</div></div><span class="badge b-grey">Locked</span></div>
+            <div class="module" data-p="0"><div class="mt"><div class="nm">Live Treatment — Mexico</div><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Add-on · unlocks after core training</div></div><span class="badge b-grey">Locked</span></div>
           </div>
         </div>
       </section>
@@ -581,11 +576,6 @@ function advance(btn){
   var m=btn.closest('.module'); var p=Math.min(100,(+m.dataset.p||0)+20); m.dataset.p=p;
   m.querySelector('.bar span').style.width=p+'%';
   if(p>=100){btn.outerHTML='<span class="badge b-green">Complete</span>';}
-  // recompute certified %
-  var mods=document.querySelectorAll('#modules .module'); var sum=0,n=0;
-  mods.forEach(x=>{sum+=(+x.dataset.p||0);n++;});
-  var avg=Math.round(sum/n);
-  document.getElementById('certStatus').textContent='In progress · '+avg+'%';
 }
 
 /* Accordion */
