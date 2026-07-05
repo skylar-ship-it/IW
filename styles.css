@@ -120,6 +120,7 @@ section{padding:96px 0}
 .btn-outline-ink:hover{background:var(--ink);color:var(--cream)}
 .btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px}
 .center .btn-row{justify-content:center}
+.btn-row.center{justify-content:center}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;background:var(--espresso);color:var(--cream);
