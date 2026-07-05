@@ -228,7 +228,7 @@ section{padding:96px 0}
 
 /* ---------- Footer ---------- */
 .site-footer{background:var(--ink);color:var(--cream-70);padding:64px 0 30px;font-size:.9rem}
-.footer-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;padding-bottom:40px;
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1.3fr;gap:40px;padding-bottom:40px;
   border-bottom:1px solid rgba(201,169,110,.18)}
 .footer-grid h4{font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.14em;
   font-size:0.83rem;color:var(--gold);margin-bottom:16px}
