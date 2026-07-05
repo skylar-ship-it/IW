@@ -91,7 +91,7 @@ section{padding:96px 0}
 .nav{display:flex;align-items:center;justify-content:space-between;
   height:118px;max-width:var(--maxw);margin:0 auto;padding:0 28px}
 .brand{display:flex;align-items:center;gap:13px;color:var(--cream)}
-.brand .brand-logo{height:84px;width:auto;display:block}
+.brand .brand-logo{height:84px;width:auto;display:block;object-fit:contain}
 .brand .mono-monogram{
   font-family:var(--display);font-weight:600;font-size:1.05rem;
   width:38px;height:38px;border:1px solid var(--gold);color:var(--gold);
@@ -243,7 +243,7 @@ section{padding:96px 0}
 .footer-grid a{display:block;color:var(--cream-70);margin-bottom:9px;transition:color .2s}
 .footer-grid a:hover{color:var(--gold)}
 .footer-contact .mono{display:block;color:var(--cream-70);margin-bottom:8px;font-size:0.99rem}
-.footer-logo{height:54px;width:auto;display:block;margin-bottom:16px}
+.footer-logo{height:54px;width:auto;display:block;margin-bottom:16px;object-fit:contain}
 .footer-brand .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
 .footer-brand .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
   letter-spacing:.2em;font-size:0.69rem;color:var(--gold);margin-top:4px}
@@ -274,7 +274,7 @@ section{padding:96px 0}
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="index.html">
-      <img class="brand-logo" src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png" alt="Implanted Wisdom logo">
+      <video class="brand-logo" autoplay loop muted playsinline poster="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png"><source src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/videoIW.mp4" type="video/mp4"></video>
       <span class="wordmark">
         <span class="name">Implanted Wisdom</span><br>
         <span class="sub">Surgeon-Led Growth Engine for Specialty Practices</span>
@@ -403,9 +403,8 @@ section{padding:96px 0}
 <!-- CLOSING NOTE -->
 <section class="section-teal">
   <div class="wrap narrow center">
-    <p class="label eyebrow" style="color:var(--gold-soft)">An Authentic, Long-Term Partnership</p>
-    <h2 style="color:var(--cream)">We win when you win.</h2>
-    <p class="lead">A genuine, long-term partnership built on mutual learning — we grow as your program grows.</p>
+    <p class="label eyebrow" style="color:var(--gold-soft)">The IW Promise</p>
+    <h2 style="color:var(--cream);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.45">I will always put the patient first.<br>I will leave the standard of care higher than I found it.<br>I will never stop learning, improving, and refining my craft.</h2>
   </div>
 </section>
 
@@ -413,9 +412,9 @@ section{padding:96px 0}
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img class="footer-logo" src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png" alt="Implanted Wisdom logo">
+        <video class="footer-logo" autoplay loop muted playsinline poster="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png"><source src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/videoIW.mp4" type="video/mp4"></video>
         <span class="name">Implanted Wisdom</span>
-        <div class="sub">Full-Arch · All-On-X Specialists</div>
+        <div class="sub">Surgeon-Led Growth Engine for Specialty Practices</div>
         <p>A boutique consulting and growth partner for oral surgery and full-arch programs.</p>
       </div>
       <div>
