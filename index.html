@@ -112,12 +112,27 @@ section{padding:96px 0}
   color:rgba(201,169,110,.06);pointer-events:none;line-height:.8}
 .hero .wrap{position:relative;z-index:2;max-width:920px}
 .hero h1{margin:0;color:var(--cream)}
-.scroll-cue{position:relative;z-index:2;margin-top:54px;font-family:var(--mono);
-  letter-spacing:.22em;text-transform:uppercase;font-size:0.72rem;color:var(--gold);
-  display:flex;flex-direction:column;align-items:center;gap:10px}
-.scroll-cue .chev{width:14px;height:14px;border-right:1.5px solid var(--gold);
-  border-bottom:1.5px solid var(--gold);transform:rotate(45deg);animation:cue 1.8s ease-in-out infinite}
-@keyframes cue{0%,100%{transform:translateY(0) rotate(45deg);opacity:.5}50%{transform:translateY(6px) rotate(45deg);opacity:1}}
+.scroll-cue{position:relative;z-index:2;margin-top:58px;font-family:var(--mono);
+  letter-spacing:.34em;text-transform:uppercase;font-size:0.72rem;color:var(--gold);
+  display:flex;flex-direction:column;align-items:center;gap:12px}
+.scroll-cue .sc-label{animation:scPulse 2.4s ease-in-out infinite}
+@keyframes scPulse{0%,100%{opacity:.45}50%{opacity:1}}
+.scroll-cue .sc-line{position:relative;width:2px;height:110px;border-radius:2px;overflow:hidden;
+  background:linear-gradient(var(--gold),rgba(201,169,110,0))}
+.scroll-cue .sc-dot{position:absolute;left:50%;top:-6px;width:6px;height:6px;border-radius:50%;
+  transform:translateX(-50%);background:var(--gold);box-shadow:0 0 12px 2px rgba(201,169,110,.9);
+  animation:scDrop 2.1s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes scDrop{0%{top:-6px;opacity:0}18%{opacity:1}82%{opacity:1}100%{top:110px;opacity:0}}
+.scroll-cue .sc-arrows{display:flex;flex-direction:column;align-items:center;margin-top:14px}
+.scroll-cue .sc-arrows i{width:13px;height:13px;margin-top:-5px;transform:rotate(45deg);
+  border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);opacity:0;
+  animation:scChev 1.9s ease-in-out infinite}
+.scroll-cue .sc-arrows i:nth-child(1){animation-delay:0s}
+.scroll-cue .sc-arrows i:nth-child(2){animation-delay:.16s}
+.scroll-cue .sc-arrows i:nth-child(3){animation-delay:.32s}
+@keyframes scChev{0%{opacity:0;transform:translateY(-5px) rotate(45deg)}
+  40%{opacity:1}100%{opacity:0;transform:translateY(6px) rotate(45deg)}}
+@media(prefers-reduced-motion:reduce){.scroll-cue *{animation:none}}
 
 /* DTC — sphere & track cinematic animation */
 .dtc-viz{max-width:960px;margin:0 auto;background:linear-gradient(180deg,rgba(247,242,236,.05),rgba(247,242,236,.015));
@@ -125,7 +140,7 @@ section{padding:96px 0}
   box-shadow:0 40px 90px rgba(0,0,0,.34)}
 .shift-stage{width:100%}
 .shift-stage svg{width:100%;height:auto;display:block;overflow:visible}
-.st-track{fill:none;stroke:url(#stTrack);stroke-width:2.5;stroke-linecap:round}
+.st-track{fill:none;stroke:url(#stTrack);stroke-width:9;stroke-linecap:round}
 .st-eyebrow{opacity:0;font-size:21px}
 @media(max-width:600px){.st-eyebrow{font-size:36px;letter-spacing:2px}}
 .st-stat{opacity:0;transition:opacity .35s ease;pointer-events:none}
@@ -188,9 +203,10 @@ section{padding:96px 0}
 }
 
 /* CTA band */
-.cta-band{background:var(--teal);color:var(--cream);text-align:center}
+.cta-band{background:var(--teal);color:var(--cream);text-align:center;position:relative;overflow:hidden}
 .cta-band h2{color:var(--cream)}
 .cta-band .lead{margin:18px auto 0;color:var(--cream-70)}
+.orb.teal{background:radial-gradient(circle at 35% 35%, rgba(15,48,48,.9), rgba(15,48,48,0) 70%);opacity:.6}
 
 /* Footer */
 .site-footer{background:var(--ink);color:var(--cream-70);padding:64px 0 30px;font-size:.9rem}
@@ -249,7 +265,11 @@ section{padding:96px 0}
   <div class="wrap">
     <h1>A Surgeon-Led <span class="italic-gold">Boutique Consultancy</span></h1>
   </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="chev"></span></div>
+  <div class="scroll-cue">
+    <span class="sc-label">Scroll</span>
+    <span class="sc-line"><span class="sc-dot"></span></span>
+    <span class="sc-arrows"><i></i><i></i><i></i></span>
+  </div>
 </section>
 
 <!-- ============ THE SHIFT — EVERYONE IS GOING DTC ============ -->
@@ -279,7 +299,7 @@ section{padding:96px 0}
           </defs>
 
           <!-- the track -->
-          <path id="stPath" class="st-track" d="M120 150 C 260 175, 360 200, 450 210 C 560 220, 660 236, 780 252"></path>
+          <path id="stPath" class="st-track" d="M120 150 L 780 252"></path>
 
           <!-- ambient flashing arrows: gold up on the left, red down on the right -->
           <g fill="none" stroke="#C9A96E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
@@ -308,7 +328,7 @@ section{padding:96px 0}
 
           <!-- red destination label (below the track, right) — hover for full stat -->
           <g id="txtRed">
-            <text class="st-eyebrow" x="708" y="312" text-anchor="end" fill="rgba(247,242,236,.85)" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.8">STANDARD OF CARE &#8595;</text>
+            <text class="st-eyebrow" x="708" y="312" text-anchor="end" fill="#E7594C" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.8">STANDARD OF CARE &#8595;</text>
             <rect x="360" y="296" width="356" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
             <g class="st-stat">
               <rect x="384" y="150" width="350" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(231,89,76,.4)" stroke-width="1"></rect>
@@ -366,7 +386,7 @@ section{padding:96px 0}
         <div class="rm-card">
           <p class="rm-concern">&ldquo;I&rsquo;ve paid for leads that went nowhere.&rdquo;</p>
           <div class="rm-div"></div>
-          <span class="rm-plabel">Pillar 1 &mdash; DTC Marketing &amp; CRM</span>
+          <span class="rm-plabel">Pillar 1 &mdash; DTC Marketing</span>
           <p class="rm-desc">Landing pages, Meta and Google advertising, and CRM nurture automation with call management and KPI tracking.</p>
         </div>
       </div>
@@ -386,7 +406,7 @@ section{padding:96px 0}
         <div class="rm-card">
           <p class="rm-concern">&ldquo;I&rsquo;m not confident taking the complex cases.&rdquo;</p>
           <div class="rm-div"></div>
-          <span class="rm-plabel">Pillar 3 &mdash; Clinical Training &amp; Upskilling</span>
+          <span class="rm-plabel">Pillar 3 &mdash; Clinical Training</span>
           <p class="rm-desc">All-on-X and FP1 through pterygoid and zygomatic implants, with surgical mentorship and live-surgery support until your team is fully fluent — so the highest-value cases stay in your practice.</p>
         </div>
       </div>
@@ -416,10 +436,12 @@ section{padding:96px 0}
 </section>
 
 <!-- ============ CTA BAND ============ -->
-<section class="cta-band">
-  <div class="wrap narrow">
-    <p class="label eyebrow" style="color:var(--gold-soft)">Your Next Step</p>
-    <h2>Contact Us</h2>
+<section class="cta-band orbs">
+  <div class="orbs-bg" aria-hidden="true">
+    <span class="orb teal o1"></span><span class="orb teal o2"></span><span class="orb teal o3"></span><span class="orb teal o4"></span><span class="orb teal o5"></span>
+  </div>
+  <div class="wrap narrow" style="position:relative;z-index:1">
+    <h2 style="font-size:clamp(2.6rem,6vw,4.4rem)">Your Next Step</h2>
     <div class="btn-row" style="justify-content:center">
       <a href="partner.html#book" class="btn btn-gold">Request an Introduction Call</a>
     </div>
@@ -446,8 +468,7 @@ section{padding:96px 0}
       </div>
     </div>
     <div class="footer-legal">
-      <span>© 2026 Implanted Wisdom · Pulver Oral Surgery</span>
-      <span>Patient-Specific Protocol™ · Confidential B2B Mockup</span>
+      <span>© 2026 Implanted Wisdom</span>
     </div>
   </div>
 </footer>
@@ -459,11 +480,12 @@ section{padding:96px 0}
   var path=document.getElementById('stPath'),
       gold=document.getElementById('stGold'), red=document.getElementById('stRed'),
       txtGold=document.getElementById('txtGold'), txtRed=document.getElementById('txtRed');
-  var L=path.getTotalLength(), CEN=0.5, R=26, D=2600, t0=null, started=false;
+  var L=path.getTotalLength(), CEN=0.5, R=26, D=2600, t0=null, rafId=null;
   var eOut=function(t){return 1-Math.pow(1-t,3);},      // decelerate (gold rising)
       eIn =function(t){return t*t*t;};                   // accelerate (red gravity)
   function place(el,frac){ var p=path.getPointAtLength(frac*L); el.setAttribute('transform','translate('+p.x+' '+(p.y-R)+')'); }
   function setText(g,o){ var e=g.querySelector('.st-eyebrow'); if(e) e.style.opacity=o; }
+  function reset(){ if(rafId){cancelAnimationFrame(rafId);rafId=null;} place(gold,CEN); place(red,CEN); setText(txtGold,0); setText(txtRed,0); }
   function frame(now){
     if(!t0)t0=now;
     var t=Math.min((now-t0)/D,1);
@@ -472,13 +494,13 @@ section{padding:96px 0}
     place(red,  CEN + (1-CEN)*eIn(r));
     var rev=t<0.62?0:Math.min((t-0.62)/0.3,1);
     setText(txtGold, rev); setText(txtRed, rev);
-    if(t<1) requestAnimationFrame(frame);   // stop when done — balls stay put
+    if(t<1){ rafId=requestAnimationFrame(frame); } else { rafId=null; }
   }
-  function start(){ if(started)return; started=true; t0=null; requestAnimationFrame(frame); }
-  place(gold,CEN); place(red,CEN);   // rest at center until in view
+  function start(){ t0=null; if(rafId)cancelAnimationFrame(rafId); rafId=requestAnimationFrame(frame); }
+  reset();   // rest at center until in view
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){
-      if(e.isIntersecting){ start(); io.disconnect(); } }); },{threshold:0.3});
+      if(e.isIntersecting){ start(); } else { reset(); } }); },{threshold:0.3});
     io.observe(stage);
   } else { start(); }
 })();
