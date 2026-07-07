@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Surgeon Skill Assessment — Implanted Wisdom</title>
+<meta name="description" content="Implanted Wisdom Partner Readiness Assessment — a surgeon-led growth engine for specialty practices.">
+<link rel="icon" href="favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{
+  --ink:#1E1612; --espresso:#2D241F; --gold:#C9A96E; --gold-soft:#d9c099;
+  --teal:#245C5C; --teal-deep:#1c4a4a; --cream:#F7F2EC; --white:#FFFFFF;
+  --ink-70:rgba(30,22,18,.92); --cream-70:rgba(247,242,236,.96);
+  --hairline:rgba(201,169,110,.30);
+  --display:'Cormorant Garamond', Georgia, serif;
+  --body:'Jost', system-ui, sans-serif;
+  --mono:'Courier Prime', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15}
+a{color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+.label{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;color:var(--gold)}
+.mono{font-family:var(--mono)}
+.tm{font-size:.6em;vertical-align:.55em;font-weight:500;font-family:var(--body)}
+
+/* Header */
+header.hero{background:var(--espresso);color:var(--cream);padding:56px 0 48px;text-align:center;border-bottom:1px solid var(--hairline)}
+header.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:300}
+header.hero h1 em{font-style:italic;color:var(--gold)}
+header.hero p.sub{max-width:600px;margin:14px auto 0;color:var(--cream-70);font-size:1.02rem}
+.progressbar{position:sticky;top:0;z-index:40;height:4px;background:rgba(30,22,18,.12)}
+.progressbar>div{height:100%;width:0;background:var(--gold);transition:width .3s}
+
+/* Sections */
+section.block{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:26px 0;padding:34px 36px}
+section.block h2{font-size:1.55rem;margin-bottom:4px}
+section.block .hint{color:rgba(30,22,18,.62);font-size:.92rem;margin-bottom:18px}
+.secnum{font-family:var(--mono);color:var(--gold);font-size:.85rem;letter-spacing:.1em}
+form{padding:34px 0 10px}
+
+/* Fields */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}section.block{padding:26px 20px}}
+.field label{display:block;font-weight:500;font-size:.92rem;margin-bottom:5px}
+.field input[type=text],.field input[type=email],.field input[type=tel],.field select,textarea{
+  width:100%;padding:11px 13px;border:1px solid rgba(30,22,18,.22);border-radius:4px;
+  font-family:var(--body);font-size:.98rem;background:var(--white);color:var(--ink)}
+.field input:focus,.field select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+textarea{min-height:96px;resize:vertical}
+
+/* Experience matrix */
+.matrix{width:100%;border-collapse:collapse;margin-top:6px}
+.matrix th,.matrix td{padding:10px 8px;text-align:center;border-bottom:1px solid rgba(30,22,18,.08);font-size:.92rem}
+.matrix th{font-weight:500}
+.matrix td:first-child,.matrix th:first-child{text-align:left;font-weight:500}
+.matrix td:first-child span{display:block;font-weight:300;font-size:.8rem;color:rgba(30,22,18,.55)}
+.matrix input[type=radio]{width:18px;height:18px;accent-color:var(--teal);cursor:pointer}
+@media(max-width:640px){.matrix th,.matrix td{padding:8px 3px;font-size:.8rem}}
+
+/* Choice pills */
+.choices{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.choices label{display:flex;align-items:center;gap:8px;border:1px solid rgba(30,22,18,.2);border-radius:999px;
+  padding:8px 16px;cursor:pointer;font-size:.93rem;background:var(--white);transition:all .15s}
+.choices label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
+.choices input{accent-color:var(--gold);cursor:pointer}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:6px}
+@media(max-width:640px){.checks{grid-template-columns:1fr}}
+.checks label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.95rem;padding:9px 12px;
+  border:1px solid rgba(30,22,18,.14);border-radius:4px;background:var(--white)}
+.checks label:has(input:checked){border-color:var(--gold);background:rgba(201,169,110,.08)}
+.checks input{width:17px;height:17px;margin-top:3px;accent-color:var(--teal);flex-shrink:0}
+
+/* Submit */
+.submitrow{text-align:center;padding:14px 0 60px}
+.btn{display:inline-block;font-family:var(--body);font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  font-size:.85rem;padding:16px 42px;border-radius:2px;border:none;cursor:pointer;transition:all .2s}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-soft)}
+.btn-line{background:transparent;border:1px solid var(--gold);color:inherit;padding:13px 28px;margin:0 6px}
+.btn-line:hover{background:rgba(201,169,110,.15)}
+.err{color:#8c2f2f;font-size:.9rem;margin-top:12px;display:none}
+
+/* ===== Profile ===== */
+#profile{display:none}
+.profile-hero{background:var(--espresso);color:var(--cream);padding:52px 0 46px;text-align:center}
+.profile-hero h2{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:300}
+.profile-hero .who{color:var(--gold-soft);font-family:var(--mono);margin-top:8px;font-size:.95rem}
+.scorewrap{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;align-items:center;margin-top:34px}
+.dial{position:relative;width:170px;height:170px}
+.dial svg{transform:rotate(-90deg)}
+.dial .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dial .num b{font-family:var(--display);font-size:3rem;font-weight:500;line-height:1}
+.dial .num span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
+.bandtag{text-align:left;max-width:330px}
+.bandtag .label{margin-bottom:6px}
+.bandtag h3{font-size:1.7rem;font-weight:500}
+.bandtag p{color:var(--cream-70);font-size:.95rem;margin-top:6px}
+
+.pcard{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:26px 0;padding:32px 36px}
+@media(max-width:640px){.pcard{padding:24px 20px}}
+.pcard h3{font-size:1.35rem;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--hairline)}
+.bars .row{display:grid;grid-template-columns:170px 1fr 60px;gap:14px;align-items:center;margin:11px 0;font-size:.93rem}
+@media(max-width:640px){.bars .row{grid-template-columns:110px 1fr 50px;font-size:.82rem}}
+.bars .track{height:9px;background:rgba(30,22,18,.09);border-radius:99px;overflow:hidden}
+.bars .fill{height:100%;background:var(--teal);border-radius:99px;transition:width .8s ease}
+.bars .fill.low{background:#a56a4e}
+.bars .fill.mid{background:var(--gold)}
+.bars .pct{font-family:var(--mono);text-align:right}
+
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px 30px;font-size:.95rem}
+@media(max-width:640px){.kv{grid-template-columns:1fr}}
+.kv div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed rgba(30,22,18,.12);padding:7px 0}
+.kv dt{color:rgba(30,22,18,.6)}
+.kv dd{font-weight:500;text-align:right}
+
+ul.plain{list-style:none}
+ul.plain li{padding:9px 0 9px 26px;position:relative;border-bottom:1px dashed rgba(30,22,18,.1);font-size:.96rem}
+ul.plain li:last-child{border-bottom:none}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+ul.plain li.gap::before{content:"▲";font-size:.7rem;top:13px;color:#a56a4e}
+ul.plain li.ok::before{content:"✓";color:var(--teal)}
+.roadmap li b{font-weight:500}
+.tiercard{background:var(--teal);color:var(--cream);border:none}
+.tiercard h3{border-color:rgba(247,242,236,.25);color:var(--cream)}
+.tiercard .label{color:var(--gold-soft)}
+.tiercard ul.plain li{border-color:rgba(247,242,236,.15)}
+.actions{text-align:center;padding:10px 0 70px}
+.smallnote{font-size:.8rem;color:rgba(30,22,18,.5);text-align:center;margin-top:16px}
+
+@media print{
+  body{background:#fff}
+  #assessform,.progressbar,.actions,header.hero{display:none!important}
+  #profile{display:block!important}
+  .pcard{break-inside:avoid;border-color:#ccc}
+  .profile-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<div class="progressbar"><div id="pbar"></div></div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <a href="portal.html" style="display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:18px">← Back to Partner Portal</a>
+    <div class="label">Implanted Wisdom · Partner Assessment</div>
+    <h1>Surgeon Skill <em>Assessment</em></h1>
+    <p class="sub">Every prospective Implanted Wisdom partner completes this assessment before onboarding. Your responses generate a Partner Readiness Profile — case experience, technology stack, team structure, and your recommended clinical curriculum and onboarding path. Takes about 5 minutes.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<form id="assessform" novalidate>
+
+  <section class="block">
+    <div class="secnum">01 / 09</div>
+    <h2>Practice Profile</h2>
+    <p class="hint">Who you are and where you practice.</p>
+    <div class="grid2">
+      <div class="field"><label for="f_name">Surgeon name *</label><input type="text" id="f_name" required></div>
+      <div class="field"><label for="f_practice">Practice name *</label><input type="text" id="f_practice" required></div>
+      <div class="field"><label for="f_email">Email *</label><input type="email" id="f_email" required></div>
+      <div class="field"><label for="f_phone">Phone</label><input type="tel" id="f_phone"></div>
+      <div class="field"><label for="f_spec">Specialty *</label>
+        <select id="f_spec" required>
+          <option value="">Select…</option>
+          <option>Oral &amp; Maxillofacial Surgery</option>
+          <option>Periodontics</option>
+          <option>Prosthodontics</option>
+          <option>General Dentistry — Implant Focus</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label for="f_years">Years in practice *</label>
+        <select id="f_years" required>
+          <option value="">Select…</option>
+          <option value="0">In residency / &lt; 1 year</option>
+          <option value="1">1–5 years</option>
+          <option value="2">6–15 years</option>
+          <option value="3">16+ years</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">02 / 09</div>
+    <h2>Case Experience by Procedure</h2>
+    <p class="hint">Approximate lifetime case counts as primary surgeon.</p>
+    <table class="matrix">
+      <thead><tr><th>Procedure</th><th>None</th><th>1–10</th><th>11–50</th><th>51–200</th><th>200+</th></tr></thead>
+      <tbody>
+        <tr><td>All-on-X full arch<span>Fixed full-arch on 4–6 implants</span></td>
+          <td><input type="radio" name="exp_aox" value="0" required></td><td><input type="radio" name="exp_aox" value="1"></td><td><input type="radio" name="exp_aox" value="2"></td><td><input type="radio" name="exp_aox" value="3"></td><td><input type="radio" name="exp_aox" value="4"></td></tr>
+        <tr><td>FP1 restorations<span>Tooth-only fixed prosthesis, no pink</span></td>
+          <td><input type="radio" name="exp_fp1" value="0" required></td><td><input type="radio" name="exp_fp1" value="1"></td><td><input type="radio" name="exp_fp1" value="2"></td><td><input type="radio" name="exp_fp1" value="3"></td><td><input type="radio" name="exp_fp1" value="4"></td></tr>
+        <tr><td>Zygomatic implants<span>Zygoma-anchored, severe maxillary atrophy</span></td>
+          <td><input type="radio" name="exp_zygo" value="0" required></td><td><input type="radio" name="exp_zygo" value="1"></td><td><input type="radio" name="exp_zygo" value="2"></td><td><input type="radio" name="exp_zygo" value="3"></td><td><input type="radio" name="exp_zygo" value="4"></td></tr>
+        <tr><td>Pterygoid implants<span>Posterior maxilla, graftless</span></td>
+          <td><input type="radio" name="exp_ptery" value="0" required></td><td><input type="radio" name="exp_ptery" value="1"></td><td><input type="radio" name="exp_ptery" value="2"></td><td><input type="radio" name="exp_ptery" value="3"></td><td><input type="radio" name="exp_ptery" value="4"></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <div class="secnum">03 / 09</div>
+    <h2>Annual Full-Arch Volume</h2>
+    <p class="hint">Arches per year across your practice, current pace.</p>
+    <div class="choices">
+      <label><input type="radio" name="volume" value="0" required> 0 — not yet offering</label>
+      <label><input type="radio" name="volume" value="3"> 1–12 arches</label>
+      <label><input type="radio" name="volume" value="7"> 13–36 arches</label>
+      <label><input type="radio" name="volume" value="11"> 37–100 arches</label>
+      <label><input type="radio" name="volume" value="15"> 100+ arches</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">04 / 09</div>
+    <h2>Digital Workflow Experience</h2>
+    <p class="hint">Which best describes your current full-arch workflow?</p>
+    <div class="choices" style="flex-direction:column;align-items:flex-start">
+      <label><input type="radio" name="digital" value="0" required> Fully analog — conventional impressions and conversion dentures</label>
+      <label><input type="radio" name="digital" value="5"> Partially digital — intraoral scanning, lab handles design</label>
+      <label><input type="radio" name="digital" value="10"> Fully digital — scan, design, and print/mill in-house or with close lab integration</label>
+      <label><input type="radio" name="digital" value="15"> Same-day digital — photogrammetry-driven immediate load with day-of delivery</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">05 / 09</div>
+    <h2>Current Equipment</h2>
+    <p class="hint">Check everything currently in your practice.</p>
+    <div class="checks" id="equip">
+      <label><input type="checkbox" name="eq" value="cbct" data-pts="2" data-name="CBCT"> CBCT</label>
+      <label><input type="checkbox" name="eq" value="ios" data-pts="3" data-name="Intraoral scanner"> Intraoral scanner (iTero, Trios, Primescan…)</label>
+      <label><input type="checkbox" name="eq" value="pg" data-pts="4" data-name="Photogrammetry"> Photogrammetry (PIC, iCam4D, MicronMapper…)</label>
+      <label><input type="checkbox" name="eq" value="printer" data-pts="2" data-name="3D printer"> 3D printer (in-house)</label>
+      <label><input type="checkbox" name="eq" value="software" data-pts="2" data-name="Design software"> Design software (exocad, 3Shape, BlueSkyPlan…)</label>
+      <label><input type="checkbox" name="eq" value="mill" data-pts="1" data-name="In-house mill"> In-house milling</label>
+      <label><input type="checkbox" name="eq" value="guides" data-pts="1" data-name="Guided surgery system"> Guided surgery planning/system</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">06 / 09</div>
+    <h2>Team Structure</h2>
+    <div class="grid2">
+      <div class="field"><label for="f_surgeons">Surgeons placing implants</label>
+        <select id="f_surgeons"><option value="1">1</option><option value="2">2</option><option value="3">3+</option></select>
+      </div>
+      <div class="field"><label for="f_lab">Lab support</label>
+        <select id="f_lab" required>
+          <option value="">Select…</option>
+          <option value="3">In-house lab / technician</option>
+          <option value="2">Dedicated outside lab partner</option>
+          <option value="1">Case-by-case outside labs</option>
+          <option value="0">No established lab relationship</option>
+        </select>
+      </div>
+    </div>
+    <div class="checks" style="margin-top:16px">
+      <label><input type="checkbox" id="t_tc"> Dedicated treatment coordinator</label>
+      <label><input type="checkbox" id="t_sa"> Surgical assistants trained in full-arch</label>
+      <label><input type="checkbox" id="t_rp"> Established restorative partner(s)</label>
+      <label><input type="checkbox" id="t_an"> In-house anesthesia capability</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">07 / 09</div>
+    <h2>Current Full-Arch Workflow</h2>
+    <p class="hint">Briefly describe your current protocol from consult to final prosthesis (or write "not yet offering").</p>
+    <textarea id="f_workflow" placeholder="e.g., CBCT + guided placement, conversion denture day-of, lab-fabricated final at 4 months…"></textarea>
+  </section>
+
+  <section class="block">
+    <div class="secnum">08 / 09</div>
+    <h2>Clinical Goals &amp; Training Interests</h2>
+    <p class="hint">Check all that apply.</p>
+    <div class="checks">
+      <label><input type="checkbox" name="goal" value="Grow full-arch volume"> Grow full-arch case volume</label>
+      <label><input type="checkbox" name="goal" value="FP1 protocols"> Master FP1 (tooth-only) protocols</label>
+      <label><input type="checkbox" name="goal" value="Zygomatic training"> Add zygomatic implants</label>
+      <label><input type="checkbox" name="goal" value="Pterygoid training"> Add pterygoid implants</label>
+      <label><input type="checkbox" name="goal" value="Same-day digital conversion"> Same-day digital conversion workflow</label>
+      <label><input type="checkbox" name="goal" value="Photogrammetry integration"> Photogrammetry integration</label>
+      <label><input type="checkbox" name="goal" value="Marketing & lead generation"> Patient acquisition &amp; marketing systems</label>
+      <label><input type="checkbox" name="goal" value="Team training"> Team training &amp; treatment coordination</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">09 / 09</div>
+    <h2>Readiness &amp; Timeline</h2>
+    <p class="hint">When do you want to begin implementation?</p>
+    <div class="choices">
+      <label><input type="radio" name="timeline" value="now" required> Ready now</label>
+      <label><input type="radio" name="timeline" value="1-3"> 1–3 months</label>
+      <label><input type="radio" name="timeline" value="3-6"> 3–6 months</label>
+      <label><input type="radio" name="timeline" value="6+"> 6+ months / exploring</label>
+    </div>
+  </section>
+
+  <div class="submitrow">
+    <button type="submit" class="btn btn-gold">Generate My Readiness Profile</button>
+    <p class="err" id="errmsg">Please complete all required fields — missing items are highlighted above.</p>
+  </div>
+</form>
+</div>
+
+<!-- ================= PARTNER READINESS PROFILE ================= -->
+<div id="profile">
+  <div class="profile-hero">
+    <div class="wrap">
+      <div class="label">Implanted Wisdom · Partner Readiness Profile</div>
+      <h2 id="p_title">Partner Readiness Profile</h2>
+      <div class="who mono" id="p_who"></div>
+      <div class="scorewrap">
+        <div class="dial">
+          <svg width="170" height="170" viewBox="0 0 170 170">
+            <circle cx="85" cy="85" r="74" fill="none" stroke="rgba(247,242,236,.15)" stroke-width="10"/>
+            <circle id="dialarc" cx="85" cy="85" r="74" fill="none" stroke="#C9A96E" stroke-width="10"
+              stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="465"/>
+          </svg>
+          <div class="num"><b id="p_score">0</b><span>Readiness / 100</span></div>
+        </div>
+        <div class="bandtag">
+          <div class="label" id="p_bandlabel">Onboarding Path</div>
+          <h3 id="p_band"></h3>
+          <p id="p_banddesc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="pcard">
+      <h3>Readiness by Pillar</h3>
+      <div class="bars" id="p_bars"></div>
+    </div>
+
+    <div class="pcard">
+      <h3>Case Experience Summary</h3>
+      <dl class="kv" id="p_exp"></dl>
+    </div>
+
+    <div class="pcard">
+      <h3>Technology Stack &amp; Equipment Gaps</h3>
+      <ul class="plain" id="p_equip"></ul>
+    </div>
+
+    <div class="pcard">
+      <h3>Team Composition</h3>
+      <ul class="plain" id="p_team"></ul>
+    </div>
+
+    <div class="pcard tiercard">
+      <div class="label">Recommended Clinical Curriculum</div>
+      <h3 id="p_curr"></h3>
+      <ul class="plain" id="p_currlist"></ul>
+    </div>
+
+    <div class="pcard">
+      <h3>Customized Implementation Roadmap</h3>
+      <ul class="plain roadmap" id="p_roadmap"></ul>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-gold" onclick="window.print()">Download / Print Profile</button>
+      <button class="btn btn-line" id="emailbtn">Email Results to IW</button>
+      <button class="btn btn-line" onclick="location.reload()">Retake Assessment</button>
+      <p class="smallnote">Implanted Wisdom · A Surgeon-Led Growth Engine for Specialty Practices · Powered by the Pulver Surgical Protocol<span class="tm">™</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const form=document.getElementById('assessform');
+  const pbar=document.getElementById('pbar');
+
+  // progress bar as fields complete
+  const reqNames=['exp_aox','exp_fp1','exp_zygo','exp_ptery','volume','digital','timeline'];
+  function updateProgress(){
+    let done=0,total=reqNames.length+4;
+    reqNames.forEach(n=>{if(form.querySelector(`[name="${n}"]:checked`))done++;});
+    ['f_name','f_practice','f_email'].forEach(id=>{if(document.getElementById(id).value.trim())done++;});
+    if(document.getElementById('f_lab').value)done++;
+    pbar.style.width=Math.round(done/total*100)+'%';
+  }
+  form.addEventListener('input',updateProgress);
+  form.addEventListener('change',updateProgress);
+
+  const EXP_LABELS=['None','1–10','11–50','51–200','200+'];
+  const VOL_LABELS={0:'0 — not yet offering',3:'1–12 arches/yr',7:'13–36 arches/yr',11:'37–100 arches/yr',15:'100+ arches/yr'};
+  const DIG_LABELS={0:'Fully analog',5:'Partially digital (IOS)',10:'Fully digital',15:'Same-day digital / photogrammetry'};
+
+  function val(name){const el=form.querySelector(`[name="${name}"]:checked`);return el?+el.value:null;}
+
+  window.computeProfile=function(a){
+    // ---- pillar scores ----
+    const expPts=a.aox*4+a.fp1*2+a.zygo*2+a.ptery*2;           // /40
+    const volPts=a.volume;                                       // /15
+    const digPts=a.digital;                                      // /15
+    const eqPts=Math.min(15,a.equipPts);                         // /15
+    let teamPts=0;
+    teamPts+=a.tc?4:0; teamPts+=a.sa?4:0; teamPts+=a.rp?4:0; teamPts+=a.lab;
+    teamPts=Math.min(15,teamPts);                                // /15
+    const score=expPts+volPts+digPts+eqPts+teamPts;
+
+    let band,desc;
+    if(score>=75){band='Elite Partner';desc='Advanced surgical and digital foundation. Onboarding focuses on advanced curriculum, same-day systems, and deploying the full IW growth engine.';}
+    else if(score>=45){band='Growth Partner';desc='Solid full-arch foundation with clear acceleration points. Onboarding pairs targeted clinical training with workflow digitization and volume systems.';}
+    else{band='Foundation Partner';desc='Early in the full-arch journey. Onboarding begins with core clinical curriculum, equipment planning, and team building before scaling volume.';}
+
+    // ---- curriculum ----
+    let curr,currList=[];
+    if(a.aox<=1){
+      curr='FP3 Foundations — Full-Arch Fundamentals';
+      currList=['All-on-X diagnostics, treatment planning, and case selection','FP3 prosthetic design and conversion protocols','Immediate-load principles and complication management','Live-surgery observation at Pulver Oral Surgery'];
+    }else if(a.fp1<=1){
+      curr='FP1 Mastery Track';
+      currList=['FP1 case selection: bone reduction limits and gingival-line planning','Precision placement for tooth-only prosthetics','FP2 transitional protocols for borderline cases','Digital design workflow for FP1 finals'];
+    }else if(a.zygo<=1||a.ptery<=1){
+      curr='Advanced Anatomy Track — Zygomatic & Pterygoid';
+      currList=['Zygomatic implant anatomy, approach, and rescue protocols','Pterygoid placement for graftless posterior maxilla','Remote anchorage treatment planning','Cadaver/live-case pathway with proctored first cases'];
+    }else{
+      curr='Mastery & Mentorship Track';
+      currList=['Same-day photogrammetry-driven delivery optimization','Complex revision and remote-anchorage case review','IW faculty/mentor pathway for partner practices','Growth-engine deployment: marketing, CRM, and team systems'];
+    }
+
+    return {score,band,desc,curr,currList,pillars:[
+      ['Surgical Experience',expPts,40],['Case Volume',volPts,15],['Digital Workflow',digPts,15],['Equipment',eqPts,15],['Team',teamPts,15]
+    ]};
+  };
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    // validate
+    const need=['f_name','f_practice','f_email','f_spec','f_years'];
+    let ok=true;
+    need.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){ok=false;el.style.borderColor='#8c2f2f';}else el.style.borderColor='';});
+    reqNames.forEach(n=>{if(val(n)===null)ok=false;});
+    if(!document.getElementById('f_lab').value)ok=false;
+    document.getElementById('errmsg').style.display=ok?'none':'block';
+    if(!ok){window.scrollTo({top:0,behavior:'smooth'});return;}
+
+    // gather
+    const eqChecked=[...form.querySelectorAll('input[name=eq]:checked')];
+    const a={
+      aox:val('exp_aox'),fp1:val('exp_fp1'),zygo:val('exp_zygo'),ptery:val('exp_ptery'),
+      volume:val('volume'),digital:val('digital'),
+      equipPts:eqChecked.reduce((s,el)=>s+ +el.dataset.pts,0),
+      tc:document.getElementById('t_tc').checked,
+      sa:document.getElementById('t_sa').checked,
+      rp:document.getElementById('t_rp').checked,
+      lab:+document.getElementById('f_lab').value
+    };
+    const r=computeProfile(a);
+    const name=document.getElementById('f_name').value.trim();
+    const practice=document.getElementById('f_practice').value.trim();
+    const timeline=form.querySelector('[name=timeline]:checked').value;
+    const goals=[...form.querySelectorAll('input[name=goal]:checked')].map(el=>el.value);
+
+    // ---- render ----
+    document.getElementById('p_who').textContent=`${name} · ${practice} · ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}`;
+    document.getElementById('p_band').textContent=r.band;
+    document.getElementById('p_banddesc').textContent=r.desc;
+
+    // dial
+    const arc=document.getElementById('dialarc');
+    document.getElementById('p_score').textContent=r.score;
+    setTimeout(()=>{arc.style.transition='stroke-dashoffset 1.2s ease';arc.style.strokeDashoffset=465-(465*r.score/100);},100);
+
+    // pillar bars
+    document.getElementById('p_bars').innerHTML=r.pillars.map(([label,pts,max])=>{
+      const pct=Math.round(pts/max*100);
+      const cls=pct>=70?'':pct>=40?' mid':' low';
+      return `<div class="row"><div>${label}</div><div class="track"><div class="fill${cls}" style="width:${pct}%"></div></div><div class="pct">${pts}/${max}</div></div>`;
+    }).join('');
+
+    // experience kv
+    const expMap=[['All-on-X full arch',a.aox],['FP1 restorations',a.fp1],['Zygomatic implants',a.zygo],['Pterygoid implants',a.ptery]];
+    document.getElementById('p_exp').innerHTML=
+      expMap.map(([k,v])=>`<div><dt>${k}</dt><dd>${EXP_LABELS[v]} cases</dd></div>`).join('')+
+      `<div><dt>Annual volume</dt><dd>${VOL_LABELS[a.volume]}</dd></div>`+
+      `<div><dt>Digital workflow</dt><dd>${DIG_LABELS[a.digital]}</dd></div>`;
+
+    // equipment
+    const allEq=[...document.querySelectorAll('#equip input')];
+    const critical={pg:'Required for the same-day digital workflow — highest-priority acquisition.',ios:'Core of the digital pipeline; needed before photogrammetry.',cbct:'Essential for full-arch planning and guided surgery.',software:'Needed for in-house design control.',printer:'Enables same-day provisional delivery.'};
+    document.getElementById('p_equip').innerHTML=allEq.map(el=>{
+      const nm=el.dataset.name;
+      if(el.checked)return `<li class="ok">${nm} — in place</li>`;
+      const note=critical[el.value]?` <em style="color:rgba(30,22,18,.6)">${critical[el.value]}</em>`:'';
+      return `<li class="gap"><b>${nm} — gap.</b>${note}</li>`;
+    }).join('');
+
+    // team
+    const teamRows=[
+      [`${document.getElementById('f_surgeons').value} surgeon(s) placing implants`,true],
+      ['Dedicated treatment coordinator',a.tc],['Full-arch trained surgical assistants',a.sa],
+      ['Established restorative partner(s)',a.rp],['In-house anesthesia',document.getElementById('t_an').checked],
+      [ {3:'In-house lab support',2:'Dedicated outside lab partner',1:'Case-by-case labs',0:'No established lab'}[a.lab], a.lab>=2]
+    ];
+    document.getElementById('p_team').innerHTML=teamRows.map(([t,has])=>`<li class="${has?'ok':'gap'}">${t}${has?'':' — build during onboarding'}</li>`).join('');
+
+    // curriculum
+    document.getElementById('p_curr').textContent=r.curr;
+    document.getElementById('p_currlist').innerHTML=r.currList.map(x=>`<li>${x}</li>`).join('');
+
+    // roadmap
+    const tlText={'now':'immediate start','1-3':'start within 1–3 months','3-6':'start within 3–6 months','6+':'exploratory — 6+ month horizon'};
+    const road=[];
+    road.push(`<li><b>Phase 0 — Discovery call (Week 1):</b> Review this profile with the IW clinical team; confirm goals${goals.length?` (${goals.slice(0,3).join(', ')}${goals.length>3?'…':''})`:''} and timeline (${tlText[timeline]}).</li>`);
+    if(r.score<45){
+      road.push('<li><b>Phase 1 — Foundation (Months 1–3):</b> Begin recommended curriculum; equipment acquisition plan for flagged gaps; hire/assign treatment coordinator.</li>');
+      road.push('<li><b>Phase 2 — First cases (Months 3–6):</b> Proctored full-arch cases at your practice; team training on the Pulver Surgical Protocol™ workflow.</li>');
+      road.push('<li><b>Phase 3 — Growth engine (Months 6+):</b> Activate IW patient-acquisition and CRM systems once clinical workflow is stable.</li>');
+    }else if(r.score<75){
+      road.push('<li><b>Phase 1 — Clinical acceleration (Months 1–2):</b> Recommended curriculum + workflow digitization; close priority equipment gaps.</li>');
+      road.push('<li><b>Phase 2 — Systems install (Months 2–4):</b> IW growth engine deployment — lead generation, CRM workflows, treatment-coordination playbook.</li>');
+      road.push('<li><b>Phase 3 — Scale (Months 4+):</b> Volume ramp with monthly case review and conversion-rate optimization.</li>');
+    }else{
+      road.push('<li><b>Phase 1 — Advanced integration (Month 1):</b> Advanced curriculum kickoff; same-day workflow optimization audit.</li>');
+      road.push('<li><b>Phase 2 — Growth engine (Months 1–3):</b> Full IW patient-acquisition system deployment with dedicated launch support.</li>');
+      road.push('<li><b>Phase 3 — Partnership expansion (Months 3+):</b> Co-marketing, referral network development, and IW faculty/mentorship opportunities.</li>');
+    }
+    document.getElementById('p_roadmap').innerHTML=road.join('');
+
+    // email button
+    document.getElementById('emailbtn').onclick=function(){
+      const body=encodeURIComponent(
+`IW Partner Readiness Profile
+Surgeon: ${name} (${document.getElementById('f_email').value})
+Practice: ${practice}
+Score: ${r.score}/100 — ${r.band}
+Curriculum: ${r.curr}
+Timeline: ${tlText[timeline]}
+Experience: AoX ${EXP_LABELS[a.aox]}, FP1 ${EXP_LABELS[a.fp1]}, Zygo ${EXP_LABELS[a.zygo]}, Ptery ${EXP_LABELS[a.ptery]}
+Volume: ${VOL_LABELS[a.volume]} | Digital: ${DIG_LABELS[a.digital]}
+Pillars: ${r.pillars.map(p=>`${p[0]} ${p[1]}/${p[2]}`).join(', ')}
+Goals: ${goals.join(', ')||'—'}
+Workflow notes: ${document.getElementById('f_workflow').value.trim()||'—'}`);
+      location.href=`mailto:skylar@pulveroralsurgery.com?subject=${encodeURIComponent('IW Partner Assessment — '+name)}&body=${body}`;
+    };
+
+    form.style.display='none';
+    document.querySelector('header.hero').style.display='none';
+    document.getElementById('profile').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+    pbar.style.width='100%';
+  });
+})();
+</script>
+</body>
+</html>
