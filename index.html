@@ -142,7 +142,7 @@ section{padding:96px 0}
 .shift-stage svg{width:100%;height:auto;display:block;overflow:visible}
 .st-track{fill:none;stroke:url(#stTrack);stroke-width:9;stroke-linecap:round}
 .st-eyebrow{opacity:0;font-size:21px}
-@media(max-width:600px){.st-eyebrow{font-size:36px;letter-spacing:2px}}
+@media(max-width:600px){.st-eyebrow{font-size:27px;letter-spacing:1.5px}}
 .st-stat{opacity:0;transition:opacity .35s ease;pointer-events:none}
 /* hover tooltips only on real pointer devices (desktop) */
 @media (hover:hover) and (pointer:fine){
@@ -282,78 +282,72 @@ section{padding:96px 0}
   <div class="wrap" style="margin-top:34px">
     <div class="dtc-viz">
       <div class="shift-stage" id="shiftStage">
-        <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two spheres on a curved track: providers rising, standard of care falling">
+        <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A single ball rolls from a fallen standard of care up to specialists leading full-arch">
           <defs>
-            <linearGradient id="stTrack" gradientUnits="userSpaceOnUse" x1="120" y1="150" x2="780" y2="252">
-              <stop offset="0" stop-color="#C9A96E" stop-opacity=".55"></stop>
-              <stop offset="0.5" stop-color="#C9A96E" stop-opacity=".26"></stop>
-              <stop offset="1" stop-color="#E7594C" stop-opacity=".42"></stop>
+            <linearGradient id="stTrack" gradientUnits="userSpaceOnUse" x1="120" y1="312" x2="780" y2="92">
+              <stop offset="0" stop-color="#E7594C" stop-opacity=".5"></stop>
+              <stop offset="0.5" stop-color="#C9A96E" stop-opacity=".3"></stop>
+              <stop offset="1" stop-color="#C9A96E" stop-opacity=".6"></stop>
             </linearGradient>
             <radialGradient id="gGold" cx="34%" cy="30%" r="78%">
               <stop offset="0" stop-color="#F8ECCF"></stop><stop offset="0.45" stop-color="#D4B577"></stop><stop offset="1" stop-color="#8A6733"></stop>
             </radialGradient>
-            <radialGradient id="gIvory" cx="34%" cy="30%" r="78%">
-              <stop offset="0" stop-color="#FDFAF3"></stop><stop offset="0.5" stop-color="#EADFCB"></stop><stop offset="1" stop-color="#B7AC95"></stop>
+            <radialGradient id="gRed" cx="34%" cy="30%" r="78%">
+              <stop offset="0" stop-color="#F6C3BB"></stop><stop offset="0.5" stop-color="#E7594C"></stop><stop offset="1" stop-color="#8A241B"></stop>
             </radialGradient>
             <filter id="stShadow" x="-60%" y="-60%" width="220%" height="220%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="4"></feGaussianBlur>
             </filter>
           </defs>
 
-          <!-- the track -->
-          <path id="stPath" class="st-track" d="M120 150 L 780 252"></path>
+          <!-- the rising track -->
+          <path id="stPath" class="st-track" d="M120 312 L 780 92"></path>
 
-          <!-- ambient flashing arrows: gold up on the left, red down on the right -->
-          <g fill="none" stroke="#C9A96E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-            <path class="st-chev" style="animation-delay:0s"    d="M26 214 L42 198 L58 214"></path>
-            <path class="st-chev" style="animation-delay:.18s"  d="M26 194 L42 178 L58 194"></path>
-            <path class="st-chev" style="animation-delay:.36s"  d="M26 174 L42 158 L58 174"></path>
-          </g>
+          <!-- ambient flashing arrows: red down on the left, gold up on the right -->
           <g fill="none" stroke="#E7594C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-            <path class="st-chev" style="animation-delay:0s"    d="M842 156 L858 172 L874 156"></path>
-            <path class="st-chev" style="animation-delay:.18s"  d="M842 176 L858 192 L874 176"></path>
-            <path class="st-chev" style="animation-delay:.36s"  d="M842 196 L858 212 L874 196"></path>
+            <path class="st-chev" style="animation-delay:0s"    d="M26 300 L42 316 L58 300"></path>
+            <path class="st-chev" style="animation-delay:.18s"  d="M26 320 L42 336 L58 320"></path>
+            <path class="st-chev" style="animation-delay:.36s"  d="M26 340 L42 356 L58 340"></path>
+          </g>
+          <g fill="none" stroke="#C9A96E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path class="st-chev" style="animation-delay:0s"    d="M842 100 L858 84 L874 100"></path>
+            <path class="st-chev" style="animation-delay:.18s"  d="M842 80 L858 64 L874 80"></path>
+            <path class="st-chev" style="animation-delay:.36s"  d="M842 60 L858 44 L874 60"></path>
           </g>
 
-          <!-- gold destination label (above the track, left) — hover for full stat -->
-          <g id="txtGold">
-            <text class="st-eyebrow" x="206" y="122" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.8">PROVIDERS GOING DTC &#8593;</text>
-            <rect x="200" y="104" width="372" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
-            <g class="st-stat">
-              <rect x="168" y="150" width="350" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(201,169,110,.4)" stroke-width="1"></rect>
-              <text x="190" y="194" fill="#E4C88E" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">72%</text>
-              <text x="190" y="220" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">of general dentists now offer implants</text>
-              <text x="190" y="240" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">&mdash; the #1 GP growth category.</text>
-              <text x="190" y="260" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Decisions in Dentistry &mdash; GP survey</text>
-            </g>
-          </g>
-
-          <!-- red destination label (below the track, right) — hover for full stat -->
+          <!-- LEFT: standard of care fell (red, low) — hover for full stat -->
           <g id="txtRed">
-            <text class="st-eyebrow" x="708" y="312" text-anchor="end" fill="#E7594C" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.8">STANDARD OF CARE &#8595;</text>
-            <rect x="360" y="296" width="356" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
+            <text class="st-eyebrow" x="118" y="362" fill="#E7594C" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.6">STANDARD OF CARE FELL &#8595;</text>
+            <rect x="114" y="344" width="380" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
             <g class="st-stat">
-              <rect x="384" y="150" width="350" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(231,89,76,.4)" stroke-width="1"></rect>
-              <text x="712" y="194" text-anchor="end" fill="#E7594C" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">2&#215;</text>
-              <text x="712" y="220" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">higher implant-failure rate for</text>
-              <text x="712" y="240" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">inexperienced vs. experienced surgeons.</text>
-              <text x="712" y="260" text-anchor="end" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Dental Implant Clinical Research Group</text>
+              <rect x="150" y="150" width="352" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(231,89,76,.4)" stroke-width="1"></rect>
+              <text x="172" y="194" fill="#E7594C" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">2&#215;</text>
+              <text x="172" y="220" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">higher implant-failure rate for</text>
+              <text x="172" y="240" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">inexperienced vs. experienced surgeons.</text>
+              <text x="172" y="260" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Dental Implant Clinical Research Group</text>
             </g>
           </g>
 
-          <!-- gold sphere -->
-          <g id="stGold">
-            <ellipse cx="0" cy="26" rx="24" ry="6" fill="rgba(0,0,0,.42)" filter="url(#stShadow)"></ellipse>
-            <circle r="26" fill="url(#gGold)"></circle>
-            <circle cx="-8" cy="-9" r="8" fill="rgba(255,255,255,.5)" filter="url(#stShadow)"></circle>
+          <!-- RIGHT: specialists taking full-arch back (gold, high) — hover for full stat -->
+          <g id="txtGold">
+            <text class="st-eyebrow" x="600" y="94" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">QUALIFIED SPECIALISTS TAKING</text>
+            <text class="st-eyebrow" x="600" y="120" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">FULL-ARCH BACK &mdash; LEADING IT &#8593;</text>
+            <rect x="150" y="76" width="452" height="52" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
+            <g class="st-stat">
+              <rect x="398" y="150" width="352" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(201,169,110,.4)" stroke-width="1"></rect>
+              <text x="728" y="194" text-anchor="end" fill="#E4C88E" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">1.3&ndash;1.7%</text>
+              <text x="728" y="220" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">early implant-failure rate for specialists</text>
+              <text x="728" y="240" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">&mdash; about half that of general operators.</text>
+              <text x="728" y="260" text-anchor="end" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Clinical Oral Investigations &mdash; big-data study</text>
+            </g>
           </g>
 
-          <!-- ivory sphere with red accent -->
-          <g id="stRed">
+          <!-- single ball: red -> gold as it climbs -->
+          <g id="stBall">
             <ellipse cx="0" cy="26" rx="24" ry="6" fill="rgba(0,0,0,.42)" filter="url(#stShadow)"></ellipse>
-            <circle r="26" fill="url(#gIvory)"></circle>
-            <path d="M 16.7 -19.9 A 26 26 0 0 1 19.9 16.7" fill="none" stroke="#E7594C" stroke-width="3.2" stroke-linecap="round" opacity=".85"></path>
-            <circle cx="-8" cy="-9" r="8" fill="rgba(255,255,255,.6)" filter="url(#stShadow)"></circle>
+            <circle r="26" fill="url(#gRed)"></circle>
+            <circle id="stBallGold" r="26" fill="url(#gGold)" opacity="0"></circle>
+            <circle cx="-8" cy="-9" r="8" fill="rgba(255,255,255,.55)" filter="url(#stShadow)"></circle>
           </g>
         </svg>
       </div>
@@ -483,26 +477,25 @@ section{padding:96px 0}
 (function(){
   var stage=document.getElementById('shiftStage'); if(!stage) return;
   var path=document.getElementById('stPath'),
-      gold=document.getElementById('stGold'), red=document.getElementById('stRed'),
+      ball=document.getElementById('stBall'), ballGold=document.getElementById('stBallGold'),
       txtGold=document.getElementById('txtGold'), txtRed=document.getElementById('txtRed');
-  var L=path.getTotalLength(), CEN=0.5, R=26, D=2600, t0=null, rafId=null;
-  var eOut=function(t){return 1-Math.pow(1-t,3);},      // decelerate (gold rising)
-      eIn =function(t){return t*t*t;};                   // accelerate (red gravity)
-  function place(el,frac){ var p=path.getPointAtLength(frac*L); el.setAttribute('transform','translate('+p.x+' '+(p.y-R)+')'); }
-  function setText(g,o){ var e=g.querySelector('.st-eyebrow'); if(e) e.style.opacity=o; }
-  function reset(){ if(rafId){cancelAnimationFrame(rafId);rafId=null;} place(gold,CEN); place(red,CEN); setText(txtGold,0); setText(txtRed,0); }
+  var L=path.getTotalLength(), R=26, D=3000, t0=null, rafId=null;
+  var eIO=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;};
+  function place(frac){ var p=path.getPointAtLength(frac*L); ball.setAttribute('transform','translate('+p.x+' '+(p.y-R)+')'); }
+  function setText(g,o){ [].forEach.call(g.querySelectorAll('.st-eyebrow'),function(e){e.style.opacity=o;}); }
+  function reset(){ if(rafId){cancelAnimationFrame(rafId);rafId=null;} place(0); ballGold.style.opacity=0; setText(txtGold,0); setText(txtRed,0); }
   function frame(now){
     if(!t0)t0=now;
     var t=Math.min((now-t0)/D,1);
-    var r=Math.min(t/0.72,1);
-    place(gold, CEN - CEN*eOut(r));
-    place(red,  CEN + (1-CEN)*eIn(r));
-    var rev=t<0.62?0:Math.min((t-0.62)/0.3,1);
-    setText(txtGold, rev); setText(txtRed, rev);
+    var f=eIO(t);
+    place(f);
+    ballGold.style.opacity=f;                                   // red -> gold as it climbs
+    setText(txtRed,  Math.min(Math.max((t-0.04)/0.16,0),1));    // fallen state shows first
+    setText(txtGold, Math.min(Math.max((t-0.55)/0.3,0),1));     // leading reveals as it arrives
     if(t<1){ rafId=requestAnimationFrame(frame); } else { rafId=null; }
   }
   function start(){ t0=null; if(rafId)cancelAnimationFrame(rafId); rafId=requestAnimationFrame(frame); }
-  reset();   // rest at center until in view
+  reset();
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){ es.forEach(function(e){
       if(e.isIntersecting){ start(); } else { reset(); } }); },{threshold:0.3});
