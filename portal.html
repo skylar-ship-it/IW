@@ -173,17 +173,19 @@ tr:last-child td{border-bottom:0}
       <div class="navgroup">Overview</div>
       <div class="nav-item active" data-view="dashboard" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▦</span> Dashboard</div>
       <div class="nav-item" data-view="onboarding" data-roles="owner,pm" onclick="go(this)"><span class="ic">◷</span> Onboarding</div>
-      <div class="navgroup">Clinical</div>
-      <div class="nav-item" data-view="casereview" data-roles="owner,surgeon" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
+      <div class="navgroup">Pillar 1 · Clinical Training</div>
+      <a class="nav-item" href="surgeon-assessment.html" data-roles="owner,surgeon,pm"><span class="ic">✎</span> Skill Assessment</a>
       <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
-      <div class="navgroup">Growth</div>
+      <div class="nav-item" data-view="casereview" data-roles="owner,surgeon" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
+      <div class="navgroup">Pillar 2 · Workflow Intelligence</div>
       <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
-      <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
-      <div class="nav-item" data-view="referral" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">⚯</span> Inner Circle</div>
-      <div class="navgroup">Intelligence</div>
-      <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
-      <div class="nav-item" data-view="roi" data-roles="owner,pm" onclick="go(this)"><span class="ic">∑</span> ROI Modeler</div>
       <div class="nav-item" data-view="readiness" data-roles="owner,pm" onclick="go(this)"><span class="ic">✓</span> Readiness Check</div>
+      <div class="nav-item" data-view="roi" data-roles="owner,pm" onclick="go(this)"><span class="ic">∑</span> ROI Modeler</div>
+      <div class="navgroup">Pillar 3 · DTC Marketing</div>
+      <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
+      <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
+      <div class="navgroup">Pillar 4 · Inner Circle</div>
+      <div class="nav-item" data-view="referral" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">⚯</span> Referral Network</div>
       <div class="navgroup">Account</div>
       <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings &amp; Branding</div>
     </div>
@@ -218,7 +220,33 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DASHBOARD ===== -->
       <section class="view active" id="dashboard">
-        <p class="lead">Your full-arch program at a glance <span class="demo-pill">demo data</span></p>
+        <p class="lead">Your full-arch program at a glance — organized by the four pillars of the IW system. <span class="demo-pill">demo data</span></p>
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="card pillar-card" onclick="goView('training')" style="cursor:pointer;border-top:3px solid var(--gold)">
+            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 1</div>
+            <h3 style="margin:4px 0 6px">Clinical Training</h3>
+            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;I'm not confident taking the complex cases.&rdquo;</p>
+            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Skill Assessment · Training Hub · Case Review</div>
+          </div>
+          <div class="card pillar-card" onclick="goView('coordinator')" style="cursor:pointer;border-top:3px solid var(--gold)">
+            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 2</div>
+            <h3 style="margin:4px 0 6px">Workflow Intelligence</h3>
+            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;Even if patients come, my workflow can't handle the volume.&rdquo;</p>
+            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Coordinator Toolkit · Readiness · ROI</div>
+          </div>
+          <div class="card pillar-card" onclick="goView('marketing')" style="cursor:pointer;border-top:3px solid var(--gold)">
+            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 3</div>
+            <h3 style="margin:4px 0 6px">DTC Marketing</h3>
+            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;Nobody selling me marketing has ever placed an implant.&rdquo;</p>
+            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Marketing Studio · Benchmarking</div>
+          </div>
+          <div class="card pillar-card" onclick="goView('referral')" style="cursor:pointer;border-top:3px solid var(--gold)">
+            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 4</div>
+            <h3 style="margin:4px 0 6px">Inner Circle</h3>
+            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;If I market direct-to-consumer, I'll torch my GP referrals.&rdquo;</p>
+            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Referral Network</div>
+          </div>
+        </div>
         <div class="grid g4" style="margin-bottom:18px">
           <div class="card kpi"><div class="big" id="kArches">18</div><div class="lab">Arches Placed · Ramp to 100</div><div class="delta up">▲ 3 this month</div><div class="bar gold"><span style="width:18%"></span></div></div>
           <div class="card kpi"><div class="big">3</div><div class="lab">Arches This Month</div><div class="delta up">▲ vs 2 last month · target 8</div></div>
@@ -490,6 +518,12 @@ tr:last-child td{border-bottom:0}
             <div class="callout"><div style="font-family:var(--display);font-size:1.4rem;color:var(--ink);margin-bottom:6px" id="rdTier"></div><div id="rdMsg"></div></div>
           </div>
         </div>
+        <div class="card" style="max-width:740px;margin-top:18px">
+          <div class="eyebrow">Full Assessment</div>
+          <h3 style="margin-bottom:6px">Surgeon Skill Assessment</h3>
+          <p class="co" style="font-size:0.95rem;color:var(--ink-70);margin-bottom:14px">The complete pre-onboarding assessment — case experience by procedure (All-on-X, FP1, zygomatic, pterygoid), volume, equipment, and team. Generates your Partner Readiness Profile with a recommended curriculum and onboarding path. ~5 minutes.</p>
+          <a class="btn btn-gold" href="surgeon-assessment.html">Take the Full Assessment</a>
+        </div>
       </section>
 
       <!-- ===== SETTINGS ===== -->
@@ -544,10 +578,20 @@ function go(el){
   closeNav();
   window.scrollTo(0,0);
 }
+function goView(v){var n=document.querySelector('.nav-item[data-view="'+v+'"]'); if(n) go(n);}
 function setRole(r){
   document.querySelectorAll('.nav-item').forEach(n=>{
     var roles=(n.dataset.roles||'').split(',');
     n.classList.toggle('hide', r!=='owner' && roles.indexOf(r)===-1);
+  });
+  // hide pillar group headers whose items are all hidden for this role
+  document.querySelectorAll('.navgroup').forEach(g=>{
+    var el=g.nextElementSibling, any=false;
+    while(el && !el.classList.contains('navgroup')){
+      if(el.classList.contains('nav-item') && !el.classList.contains('hide')) any=true;
+      el=el.nextElementSibling;
+    }
+    g.style.display=any?'':'none';
   });
   // if current view hidden, jump to dashboard
   var active=document.querySelector('.nav-item.active');
