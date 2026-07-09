@@ -69,15 +69,16 @@ a{color:inherit;text-decoration:none}
       </div>
 
       <!-- SIGN IN -->
-      <form class="pane active" id="signin" onsubmit="enter(event)">
+      <form class="pane active" id="signin" onsubmit="signInSubmit(event)">
         <div class="field">
           <label>Email</label>
-          <input type="email" placeholder="you@yourpractice.com" required>
+          <input type="email" id="si_email" placeholder="you@yourpractice.com" required>
         </div>
         <div class="field">
           <label>Password</label>
-          <input type="password" placeholder="••••••••" required>
+          <input type="password" id="si_pw" placeholder="••••••••" required>
         </div>
+        <div id="authMsg" style="display:none;font-size:.85rem;margin-bottom:12px;padding:9px 12px;border-radius:4px"></div>
         <button class="btn" type="submit">Sign In to Portal</button>
         <div class="meta">
           <label style="display:flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;color:var(--cream-70);font-size:0.85rem">
@@ -87,32 +88,35 @@ a{color:inherit;text-decoration:none}
         </div>
       </form>
 
-      <!-- CREATE -->
-      <form class="pane" id="create" onsubmit="enter(event)">
+      <!-- REQUEST ACCESS -->
+      <form class="pane" id="create" onsubmit="requestSubmit(event)">
         <div class="field">
           <label>Practice / Group</label>
-          <input type="text" placeholder="Oral Surgery Practice" required>
+          <input type="text" id="rq_practice" placeholder="Oral Surgery Practice" required>
         </div>
         <div class="row">
-          <div class="field"><label>Your Name</label><input type="text" placeholder="Dr. Jane Smith" required></div>
+          <div class="field"><label>Your Name</label><input type="text" id="rq_name" placeholder="Dr. Jane Smith" required></div>
           <div class="field"><label>Role</label>
-            <select><option>Surgeon / Owner</option><option>Surgeon</option><option>Treatment Coordinator</option><option>Practice Manager</option></select>
+            <select id="rq_role"><option>Surgeon / Owner</option><option>Surgeon</option><option>Treatment Coordinator</option><option>Practice Manager</option></select>
           </div>
         </div>
-        <div class="field"><label>Work Email</label><input type="email" placeholder="you@yourpractice.com" required></div>
+        <div class="field"><label>Work Email</label><input type="email" id="rq_email" placeholder="you@yourpractice.com" required></div>
         <div class="field"><label># of Surgeons</label>
-          <select><option>1</option><option>2–3</option><option selected>4–6</option><option>7+</option></select>
+          <select id="rq_surg"><option>1</option><option>2–3</option><option selected>4–6</option><option>7+</option></select>
         </div>
-        <button class="btn" type="submit">Create Partner Account</button>
+        <div id="rqMsg" style="display:none;font-size:.85rem;margin-bottom:12px;padding:9px 12px;border-radius:4px"></div>
+        <button class="btn" type="submit">Request Access</button>
         <div class="demo" style="margin-top:14px">Access is granted after your introduction call.</div>
       </form>
 
-      <div class="demo">Demo environment — any credentials open the portal.</div>
+      <div class="demo">Secure partner access — provisioned by the IW team.</div>
     </div>
 
     <a class="back" href="index.html">← Back to implantedwisdom.com</a>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="iw-auth.js"></script>
 <script>
 function pane(t){
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -120,7 +124,43 @@ function pane(t){
   t.classList.add('active');
   document.getElementById(t.dataset.pane).classList.add('active');
 }
-function enter(e){e.preventDefault();window.location.href='portal.html';}
+function msg(id,text,ok){
+  var m=document.getElementById(id); if(!m) return;
+  m.textContent=text; m.style.display='block';
+  m.style.background = ok ? 'rgba(36,92,92,.18)' : 'rgba(140,47,47,.22)';
+  m.style.color = ok ? '#bfe3df' : '#f2c9c2';
+}
+function proceed(){
+  var done=false; try{done=localStorage.getItem('iw_onboard_step1')==='done';}catch(x){}
+  window.location.href = done ? 'portal.html' : 'onboarding.html';
+}
+function signInSubmit(e){
+  e.preventDefault();
+  if(!window.iwAuth || !iwAuth.enabled()){ proceed(); return; }   /* preview fallback */
+  var email=document.getElementById('si_email').value, pw=document.getElementById('si_pw').value;
+  iwAuth.signIn(email,pw).then(function(res){
+    if(res && res.error){ msg('authMsg', res.error.message||'Sign-in failed.', false); }
+    else { proceed(); }
+  }).catch(function(){ msg('authMsg','Something went wrong. Try again.',false); });
+}
+function requestSubmit(e){
+  e.preventDefault();
+  var payload={
+    practice:document.getElementById('rq_practice').value,
+    name:document.getElementById('rq_name').value,
+    email:document.getElementById('rq_email').value,
+    role:document.getElementById('rq_role').value,
+    surgeons:document.getElementById('rq_surg').value
+  };
+  if(!window.iwAuth || !iwAuth.enabled()){
+    msg('rqMsg','Request received. The IW team will follow up after your introduction call.',true);
+    e.target.reset(); return;
+  }
+  iwAuth.requestAccess(payload).then(function(res){
+    if(res && res.error){ msg('rqMsg','Could not send request. Email skylar@pulveroralsurgery.com.',false); }
+    else { msg('rqMsg','Request received. The IW team will follow up after your introduction call.',true); e.target.reset(); }
+  }).catch(function(){ msg('rqMsg','Could not send request. Email skylar@pulveroralsurgery.com.',false); });
+}
 </script>
 </body>
 </html>

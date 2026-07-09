@@ -225,7 +225,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings &amp; Branding</div>
     </div>
     <div class="sidefoot">
-      <a href="login.html">⏻ Log out</a>
+      <a href="login.html" onclick="if(window.iwAuth){iwAuth.signOut();return false}">⏻ Log out</a>
     </div>
   </aside>
   <div class="backdrop" id="backdrop" onclick="closeNav()"></div>
@@ -333,7 +333,7 @@ tr:last-child td{border-bottom:0}
               </div>
               <div class="field"><label>Notes for review</label><textarea placeholder="Bone quality, anatomy notes, questions for the review team…"></textarea></div>
               <button class="btn btn-accent" type="submit">Submit for Review</button>
-              <p class="co" style="font-size:0.88rem;color:var(--ink-70);margin-top:10px">🔒 Encrypted. PHI handled under BAA. Demo upload — files not stored.</p>
+              <p class="co" style="font-size:0.88rem;color:var(--ink-70);margin-top:10px">🔒 Encrypted · PHI handled under BAA. Secure file storage activates with your connected workspace.</p>
             </form>
           </div>
           <div class="card">
@@ -413,7 +413,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== WORKFLOW · SETUP GUIDE ===== -->
       <section class="view" id="setupguide">
-        <p class="lead">Your same-day digital pipeline — from scan to seated arch, in-house. <span class="demo-pill">setup guide</span></p>
+        <p class="lead">Your same-day digital pipeline — from scan to seated arch, in-house.</p>
         <div class="card" style="max-width:820px">
           <div class="eyebrow">The Workflow · Patient-Specific Protocol™</div>
           <h3 style="margin-bottom:6px">Scan → seat, the same day</h3>
@@ -433,7 +433,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== WORKFLOW · EQUIPMENT SPEC ===== -->
       <section class="view" id="equipment">
-        <p class="lead">What you need in-house to run the digital workflow — with tiers. <span class="demo-pill">spec sheet</span></p>
+        <p class="lead">What you need in-house to run the digital workflow — with tiers.</p>
         <div class="card" style="max-width:860px">
           <div class="eyebrow">Equipment Spec Sheet</div>
           <table style="margin-top:6px">
@@ -452,7 +452,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== WORKFLOW · LAB & VENDOR DEALS ===== -->
       <section class="view" id="labdeals">
-        <p class="lead">IW partner pricing on the systems and labs behind the workflow. <span class="demo-pill">partner pricing</span></p>
+        <p class="lead">IW partner pricing on the systems and labs behind the workflow.</p>
         <div class="grid g3">
           <div class="card"><div class="eyebrow">Implants</div><h3 style="margin-bottom:6px">Nobel Biocare</h3><p style="font-size:.9rem;color:var(--ink-70)">Implant systems and components for the full-arch protocol.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
           <div class="card"><div class="eyebrow">Design</div><h3 style="margin-bottom:6px">Radiant</h3><p style="font-size:.9rem;color:var(--ink-70)">Prosthetic design partner for case-specific full-arch work.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
@@ -464,7 +464,8 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
       <section class="view" id="leadscore">
-        <p class="lead">Every lead, ranked by a live 0–100 score — so your team always knows who to call first. <span class="demo-pill">demo data</span></p>
+        <p class="lead">Every lead, ranked by a live 0–100 score — so your team always knows who to call first.</p>
+        <div class="callout" style="margin-bottom:16px;border-left:3px solid var(--gold)">Not connected yet — the list below is an <strong>example</strong>. Connect your GoHighLevel location to load your live, scored leads. <a href="#" onclick="goView('settings');return false" style="color:var(--teal);font-weight:500">Connect GoHighLevel →</a></div>
         <div class="grid g4" style="margin-bottom:16px">
           <div class="card kpi"><div class="big" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 70+</div></div>
           <div class="card kpi"><div class="big">2</div><div class="lab">Warm · 40–69</div></div>
@@ -517,7 +518,7 @@ tr:last-child td{border-bottom:0}
               <select id="mType" onchange="renderAds()"><option value="both">Landing hero + Meta ad</option><option value="hero">Landing hero only</option><option value="ad">Meta ad only</option></select>
             </div>
             <button class="btn btn-gold">Export Assets</button>
-            <p class="co" style="font-size:0.88rem;color:var(--ink-70);margin-top:10px">Demo preview — export disabled.</p>
+            <p class="co" style="font-size:0.88rem;color:var(--ink-70);margin-top:10px">Export activates once your workspace is connected.</p>
           </div>
           <div class="card">
             <div class="eyebrow">Live Preview</div>
@@ -850,5 +851,8 @@ function tailorWorkflow(){
 /* init */
 calcRoi(); renderAds(); loadTailored(); tailorWorkflow();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="iw-auth.js"></script>
+<script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession('login.html');}</script>
 </body>
 </html>

@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <title>Surgeon Skill Assessment — Implanted Wisdom</title>
+<meta property="og:title" content="Surgeon Skill Assessment — Implanted Wisdom">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://implantedwisdomcollective.com/og-image.png">
+<meta property="og:url" content="https://implantedwisdomcollective.com/surgeon-assessment.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://implantedwisdomcollective.com/og-image.png">
+
 <meta name="description" content="Implanted Wisdom Partner Readiness Assessment — a surgeon-led growth engine for specialty practices.">
 <link rel="icon" href="favicon.png">
 <style>
@@ -147,8 +154,8 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
 
 <header class="hero" id="top">
   <div class="wrap">
-    <a href="portal.html" style="display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:18px">← Back to Partner Portal</a>
-    <div class="label">Implanted Wisdom · Partner Assessment</div>
+    <a href="onboarding.html" style="display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:18px">← Back to Onboarding</a>
+    <div class="label">Onboarding · Step 1 of 3 · Clinical Training + Workflow Intelligence</div>
     <h1>Surgeon Skill <em>Assessment</em></h1>
     <p class="sub">Every prospective Implanted Wisdom partner completes this assessment before onboarding. Your responses generate a Partner Readiness Profile — case experience, technology stack, team structure, and your recommended clinical curriculum and onboarding path. Takes about 5 minutes.</p>
   </div>
@@ -372,10 +379,11 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     </div>
 
     <div class="actions">
-      <button class="btn btn-gold" onclick="window.print()">Download / Print Profile</button>
+      <button class="btn btn-gold" onclick="location.href='onboarding.html'">Continue Onboarding →</button>
+      <button class="btn btn-line" onclick="window.print()">Download / Print Profile</button>
       <button class="btn btn-line" id="emailbtn">Email Results to IW</button>
       <button class="btn btn-line" onclick="location.reload()">Retake Assessment</button>
-      <p class="smallnote">Implanted Wisdom · A Surgeon-Led Growth Engine for Specialty Practices · Powered by the Pulver Surgical Protocol<span class="tm">™</span></p>
+      <p class="smallnote">Implanted Wisdom · A Surgeon-Led Boutique Consultancy · Powered by the Patient-Specific Protocol<span class="tm">™</span></p>
     </div>
   </div>
 </div>
@@ -468,6 +476,23 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     const timeline=form.querySelector('[name=timeline]:checked').value;
     const goals=[...form.querySelectorAll('input[name=goal]:checked')].map(el=>el.value);
 
+    /* ---- save profile to the browser so the portal can tailor itself ---- */
+    try{
+      const gaps=r.pillars.slice().sort((x,y)=>(x[1]/x[2])-(y[1]/y[2])).slice(0,2).map(p=>p[0]);
+      const EQ=[['ios','Intraoral scanner'],['pg','Photogrammetry'],['cbct','CBCT'],['printer','3D printer'],['software','Design software'],['mill','In-house mill'],['guides','Guided surgery']];
+      const have={}; form.querySelectorAll('input[name=eq]').forEach(el=>{have[el.value]=el.checked;});
+      const equipment=EQ.map(([k,n])=>({key:k,name:n,have:!!have[k]}));
+      const profile={
+        name,practice,email:document.getElementById('f_email').value.trim(),
+        score:r.score,band:r.band,curriculum:r.curr,
+        pillars:r.pillars,topGaps:gaps,goals,timeline,
+        equipment,digital:a.digital,volume:a.volume,
+        date:new Date().toISOString()
+      };
+      localStorage.setItem('iw_profile',JSON.stringify(profile));
+      localStorage.setItem('iw_onboard_step1','done');
+    }catch(e){}
+
     // ---- render ----
     document.getElementById('p_who').textContent=`${name} · ${practice} · ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}`;
     document.getElementById('p_band').textContent=r.band;
@@ -521,7 +546,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     road.push(`<li><b>Phase 0 — Discovery call (Week 1):</b> Review this profile with the IW clinical team; confirm goals${goals.length?` (${goals.slice(0,3).join(', ')}${goals.length>3?'…':''})`:''} and timeline (${tlText[timeline]}).</li>`);
     if(r.score<45){
       road.push('<li><b>Phase 1 — Foundation (Months 1–3):</b> Begin recommended curriculum; equipment acquisition plan for flagged gaps; hire/assign treatment coordinator.</li>');
-      road.push('<li><b>Phase 2 — First cases (Months 3–6):</b> Proctored full-arch cases at your practice; team training on the Pulver Surgical Protocol™ workflow.</li>');
+      road.push('<li><b>Phase 2 — First cases (Months 3–6):</b> Proctored full-arch cases at your practice; team training on the Patient-Specific Protocol™ workflow.</li>');
       road.push('<li><b>Phase 3 — Growth engine (Months 6+):</b> Activate IW patient-acquisition and CRM systems once clinical workflow is stable.</li>');
     }else if(r.score<75){
       road.push('<li><b>Phase 1 — Clinical acceleration (Months 1–2):</b> Recommended curriculum + workflow digitization; close priority equipment gaps.</li>');
@@ -559,5 +584,8 @@ Workflow notes: ${document.getElementById('f_workflow').value.trim()||'—'}`);
   });
 })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="iw-auth.js"></script>
+<script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
 </body>
 </html>
