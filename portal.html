@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#1E1612">
 <meta name="color-scheme" content="light">
 <title>Partner Portal — Implanted Wisdom</title>
+<meta property="og:title" content="Partner Portal — Implanted Wisdom">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://implantedwisdomcollective.com/og-image.png">
+<meta property="og:url" content="https://implantedwisdomcollective.com/portal.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://implantedwisdomcollective.com/og-image.png">
+
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -153,6 +160,29 @@ tr:last-child td{border-bottom:0}
   .kpi .big{font-size:2.1rem}
   .preview-hero h3{font-size:1.45rem}
 }
+.wfstep{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.wfstep:first-child{border-top:0}
+.wfstep>div{flex:1}
+.wfstep .wfn{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600}
+.wfstep .wfd{font-size:.88rem;color:var(--ink-70);margin-top:2px}
+.lsb{display:inline-block;padding:3px 11px;border-radius:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+.pillar-hub{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px}
+@media(max-width:760px){.pillar-hub{grid-template-columns:1fr}}
+.phub{background:var(--white);border:1px solid var(--hairline);border-top:3px solid var(--gold);border-radius:12px;
+  padding:30px 30px;cursor:pointer;transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column}
+.phub:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(30,22,18,.10)}
+.phub img{width:58px;height:58px;margin-bottom:16px}
+.phub .pe{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.phub h3{font-size:1.55rem;margin:4px 0 8px}
+.phub p{font-size:.94rem;color:var(--ink-70);flex:1;line-height:1.6}
+.phub .tools{margin-top:16px;font-size:.75rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.phub .open{margin-top:10px;font-size:.8rem;color:var(--gold);font-weight:500;letter-spacing:.05em}
+.eqstat{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:12px;margin-left:4px}
+.eqstat.have{background:rgba(36,92,92,.12);color:var(--teal)}
+.eqstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
+.wfstep.gap .wfn{background:rgba(176,74,52,.14);color:#a33f28}
+.badge.wfstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
 </style>
 </head>
 <body>
@@ -178,14 +208,19 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
       <div class="nav-item" data-view="casereview" data-roles="owner,surgeon" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
       <div class="navgroup">Pillar 2 · Workflow Intelligence</div>
-      <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
-      <div class="nav-item" data-view="readiness" data-roles="owner,pm" onclick="go(this)"><span class="ic">✓</span> Readiness Check</div>
-      <div class="nav-item" data-view="roi" data-roles="owner,pm" onclick="go(this)"><span class="ic">∑</span> ROI Modeler</div>
+      <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow Setup</div>
+      <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment Spec Sheet</div>
+      <div class="nav-item" data-view="labdeals" data-roles="owner,pm" onclick="go(this)"><span class="ic">◇</span> Lab &amp; Vendor Deals</div>
       <div class="navgroup">Pillar 3 · DTC Marketing</div>
       <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
+      <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
+      <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
       <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
       <div class="navgroup">Pillar 4 · Inner Circle</div>
       <div class="nav-item" data-view="referral" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">⚯</span> Referral Network</div>
+      <div class="navgroup">Tools</div>
+      <div class="nav-item" data-view="readiness" data-roles="owner,pm" onclick="go(this)"><span class="ic">✓</span> Readiness Check</div>
+      <div class="nav-item" data-view="roi" data-roles="owner,pm" onclick="go(this)"><span class="ic">∑</span> ROI Modeler</div>
       <div class="navgroup">Account</div>
       <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings &amp; Branding</div>
     </div>
@@ -220,59 +255,40 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DASHBOARD ===== -->
       <section class="view active" id="dashboard">
-        <p class="lead">Your full-arch program at a glance — organized by the four pillars of the IW system. <span class="demo-pill">demo data</span></p>
-        <div class="grid g4" style="margin-bottom:18px">
-          <div class="card pillar-card" onclick="goView('training')" style="cursor:pointer;border-top:3px solid var(--gold)">
-            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 1</div>
-            <h3 style="margin:4px 0 6px">Clinical Training</h3>
-            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;I'm not confident taking the complex cases.&rdquo;</p>
-            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Skill Assessment · Training Hub · Case Review</div>
+        <div id="tailoredBanner" style="display:none;margin-bottom:18px;background:rgba(36,92,92,.07);border:1px solid var(--hairline);border-left:3px solid var(--gold);border-radius:6px;padding:15px 20px;font-size:.95rem;color:var(--ink-70)"></div>
+        <p class="lead" style="margin-bottom:22px">Welcome to your Implanted Wisdom portal — built around the four pillars of your full-arch program. Choose a pillar to begin.</p>
+        <div class="pillar-hub">
+          <div class="phub" onclick="goView('training')">
+            <img src="icon-clinical.png" alt="">
+            <div class="pe">Pillar 1</div>
+            <h3>Clinical Training</h3>
+            <p>State-of-the-art, surgeon-led case training so you can confidently take on the complex cases from day one.</p>
+            <div class="tools">Skill Assessment · Training Hub · Case Review</div>
+            <div class="open">Open →</div>
           </div>
-          <div class="card pillar-card" onclick="goView('coordinator')" style="cursor:pointer;border-top:3px solid var(--gold)">
-            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 2</div>
-            <h3 style="margin:4px 0 6px">Workflow Intelligence</h3>
-            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;Even if patients come, my workflow can't handle the volume.&rdquo;</p>
-            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Coordinator Toolkit · Readiness · ROI</div>
+          <div class="phub" onclick="goView('setupguide')">
+            <img src="icon-workflow.png" alt="">
+            <div class="pe">Pillar 2</div>
+            <h3>Workflow Intelligence</h3>
+            <p>Photogrammetry, 3D planning, printing and in-house finishing — so cases run smoothly at volume.</p>
+            <div class="tools">Setup Guide · Equipment Spec · Lab Deals</div>
+            <div class="open">Open →</div>
           </div>
-          <div class="card pillar-card" onclick="goView('marketing')" style="cursor:pointer;border-top:3px solid var(--gold)">
-            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 3</div>
-            <h3 style="margin:4px 0 6px">DTC Marketing</h3>
-            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;Nobody selling me marketing has ever placed an implant.&rdquo;</p>
-            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Marketing Studio · Benchmarking</div>
+          <div class="phub" onclick="goView('marketing')">
+            <img src="icon-dtc.png" alt="">
+            <div class="pe">Pillar 3</div>
+            <h3>DTC Marketing</h3>
+            <p>Full-transparency demand and conversion — CRM, paid ads, lead scoring, and the coordinator playbook.</p>
+            <div class="tools">Marketing Studio · Lead Scoring · Coordinator</div>
+            <div class="open">Open →</div>
           </div>
-          <div class="card pillar-card" onclick="goView('referral')" style="cursor:pointer;border-top:3px solid var(--gold)">
-            <div class="mono" style="font-size:.72rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase">Pillar 4</div>
-            <h3 style="margin:4px 0 6px">Inner Circle</h3>
-            <p style="font-size:.88rem;color:var(--ink-70)">Solves: &ldquo;If I market direct-to-consumer, I'll torch my GP referrals.&rdquo;</p>
-            <div style="margin-top:12px;font-size:.78rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)">Referral Network</div>
-          </div>
-        </div>
-        <div class="grid g4" style="margin-bottom:18px">
-          <div class="card kpi"><div class="big" id="kArches">18</div><div class="lab">Arches Placed · Ramp to 100</div><div class="delta up">▲ 3 this month</div><div class="bar gold"><span style="width:18%"></span></div></div>
-          <div class="card kpi"><div class="big">3</div><div class="lab">Arches This Month</div><div class="delta up">▲ vs 2 last month · target 8</div></div>
-          <div class="card kpi"><div class="big">25%</div><div class="lab">Consult → Close Rate</div><div class="delta down">▼ network median 31%</div></div>
-          <div class="card kpi"><div class="big">$420</div><div class="lab">Cost / Booked Consult</div><div class="delta down">▼ network median $360</div></div>
-        </div>
-        <div class="split">
-          <div class="card">
-            <div class="eyebrow">Funnel · 25 / 50 / 25 Benchmark</div>
-            <h3 style="margin-bottom:14px">This Month's Pipeline</h3>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Leads</span><strong>48</strong></div><div class="bar"><span style="width:100%"></span></div></div>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Booked Consults</span><strong>12</strong></div><div class="bar"><span style="width:25%"></span></div></div>
-            <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Showed / Consulted</span><strong>8</strong></div><div class="bar"><span style="width:17%"></span></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-size:0.94rem"><span>Closed Cases</span><strong>3</strong></div><div class="bar gold"><span style="width:6%"></span></div></div>
-            <div class="callout" style="margin-top:18px">Booked-consult rate is healthy; the leak is consult→close. <strong>Recommended:</strong> coordinator closing refresh (Training Hub).</div>
-          </div>
-          <div class="card">
-            <div class="eyebrow">By Surgeon</div>
-            <h3 style="margin-bottom:14px">Arches Placed — Program to Date</h3>
-            <table>
-              <tr><td>Surgeon 1</td><td style="width:55%"><div class="bar"><span style="width:100%"></span></div></td><td style="text-align:right"><strong>6</strong></td></tr>
-              <tr><td>Surgeon 2</td><td><div class="bar"><span style="width:83%"></span></div></td><td style="text-align:right"><strong>5</strong></td></tr>
-              <tr><td>Surgeon 3</td><td><div class="bar"><span style="width:67%"></span></div></td><td style="text-align:right"><strong>4</strong></td></tr>
-              <tr><td>Surgeon 4</td><td><div class="bar"><span style="width:50%"></span></div></td><td style="text-align:right"><strong>3</strong></td></tr>
-            </table>
-            <div class="callout" style="margin-top:18px">On pace for ~36 arches in year one at current run-rate. <strong>Gap to 100:</strong> lift per-surgeon volume — see ROI Modeler.</div>
+          <div class="phub" onclick="goView('referral')">
+            <img src="icon-inner.png" alt="">
+            <div class="pe">Pillar 4</div>
+            <h3>Inner Circle</h3>
+            <p>A branded GP referral network that protects your relationships while direct-to-consumer growth compounds.</p>
+            <div class="tools">Referral Network</div>
+            <div class="open">Open →</div>
           </div>
         </div>
       </section>
@@ -364,7 +380,7 @@ tr:last-child td{border-bottom:0}
             <div class="module" data-p="100"><div class="mt"><div class="nm">PSP™ Case Planning Fundamentals</div><div class="bar"><span style="width:100%"></span></div></div><span class="badge b-green">Complete</span></div>
             <div class="module" data-p="60"><div class="mt"><div class="nm">Photogrammetry &amp; 3D Workflow</div><div class="bar"><span style="width:60%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="30"><div class="mt"><div class="nm">Printing, Staining &amp; Glazing</div><div class="bar"><span style="width:30%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
-            <div class="module" data-p="80"><div class="mt"><div class="nm">The Platinum Minute &amp; Closing Methodology</div><div class="bar"><span style="width:80%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
+            <div class="module" data-p="80"><div class="mt"><div class="nm">Consult Conversion &amp; Closing Methodology</div><div class="bar"><span style="width:80%"></span></div></div><button class="btn btn-out" onclick="advance(this)">Continue</button></div>
             <div class="module" data-p="0"><div class="mt"><div class="nm">Cadaver Course — Phoenix</div><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Scheduled · Sep 12–13</div></div><span class="badge b-amber">Scheduled</span></div>
             <div class="module" data-p="0"><div class="mt"><div class="nm">Live Treatment — Mexico</div><div class="co" style="font-size:0.93rem;color:var(--ink-70)">Add-on · unlocks after core training</div></div><span class="badge b-grey">Locked</span></div>
           </div>
@@ -373,12 +389,12 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== COORDINATOR TOOLKIT ===== -->
       <section class="view" id="coordinator">
-        <p class="lead">The conversion playbook — scripts, the Platinum Minute, and objection handling, ready to use.</p>
+        <p class="lead">The conversion playbook — scripts, the first-60-seconds framework, and objection handling, ready to use.</p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">Playbooks</div>
             <div class="accordion" id="acc">
-              <div><div class="ac-h" onclick="acc(this)">The Platinum Minute <span>＋</span></div><div class="ac-b">The first 60 seconds set the consult. Greet by name, acknowledge they've thought about this for years, and give permission to act — not urgency. Significance, certainty, connection.</div></div>
+              <div><div class="ac-h" onclick="acc(this)">The First 60 Seconds <span>＋</span></div><div class="ac-b">The first 60 seconds set the consult. Greet by name, acknowledge they've thought about this for years, and give permission to act — not urgency. Significance, certainty, connection.</div></div>
               <div><div class="ac-h" onclick="acc(this)">Inbound Call Script <span>＋</span></div><div class="ac-b">Open warm, qualify gently (timeline, prior experience), book the consult before discussing price. Never quote full-arch pricing on the first call — book the room.</div></div>
               <div><div class="ac-h" onclick="acc(this)">Price &amp; Financing Objections <span>＋</span></div><div class="ac-b">Price objections usually mask fear, not budget. Reframe to monthly via Proceed / Cherry / CareCredit / in-house, and return to the outcome. Walk the application with them.</div></div>
               <div><div class="ac-h" onclick="acc(this)">Closing Methodology <span>＋</span></div><div class="ac-b">Full-arch closes days later, not in-chair. Send the leave-behind, the dated next step, and the surgeon follow-up. Tag price-concern cases into the financing nurture.</div></div>
@@ -391,6 +407,99 @@ tr:last-child td{border-bottom:0}
             <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Booked → Consulted (target 50%)</span><strong class="down">67%</strong></div><div class="bar"><span style="width:67%"></span></div></div>
             <div><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Consulted → Closed (target 25%)</span><strong class="down">38%</strong></div><div class="bar gold"><span style="width:38%"></span></div></div>
             <div class="callout" style="margin-top:18px">Above benchmark on show-rate; closing is the focus. Assign the Closing Methodology module to your coordinators.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WORKFLOW · SETUP GUIDE ===== -->
+      <section class="view" id="setupguide">
+        <p class="lead">Your same-day digital pipeline — from scan to seated arch, in-house. <span class="demo-pill">setup guide</span></p>
+        <div class="card" style="max-width:820px">
+          <div class="eyebrow">The Workflow · Patient-Specific Protocol™</div>
+          <h3 style="margin-bottom:6px">Scan → seat, the same day</h3>
+          <p style="color:var(--ink-70);margin-bottom:22px">Six stages of the digital workflow. Each stage has a white-label SOP your team follows so cases move predictably — without depending on an outside lab's schedule.</p>
+          <div id="wfSummary"></div>
+          <div id="wfsteps">
+            <div class="wfstep" data-eq="ios"><span class="wfn">1</span><div><strong>Intraoral scan (IOS)</strong><div class="wfd">Capture the arch digitally — no physical impressions.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+            <div class="wfstep" data-eq="pg"><span class="wfn">2</span><div><strong>Photogrammetry capture</strong><div class="wfd">Verified implant positions for a passive, precise fit.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+            <div class="wfstep" data-eq="software"><span class="wfn">3</span><div><strong>3D planning &amp; design</strong><div class="wfd">Case-specific design in-house or with a lab partner.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+            <div class="wfstep" data-eq="printer"><span class="wfn">4</span><div><strong>In-house 3D print</strong><div class="wfd">Print the provisional arch same-day on your own printer.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+            <div class="wfstep" data-eq="stainglaze"><span class="wfn">5</span><div><strong>Stain, glaze &amp; finish</strong><div class="wfd">Characterize and finish chairside for a natural result.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+            <div class="wfstep"><span class="wfn">6</span><div><strong>Deliver</strong><div class="wfd">Seat the arch the same day — one visit, in your chair.</div></div><span class="badge b-grey wfstat">SOP</span></div>
+          </div>
+          <div class="callout" style="margin-top:20px">White-label SOP documents (your logo) become downloadable when your workspace is connected. <strong>Coming with onboarding.</strong></div>
+        </div>
+      </section>
+
+      <!-- ===== WORKFLOW · EQUIPMENT SPEC ===== -->
+      <section class="view" id="equipment">
+        <p class="lead">What you need in-house to run the digital workflow — with tiers. <span class="demo-pill">spec sheet</span></p>
+        <div class="card" style="max-width:860px">
+          <div class="eyebrow">Equipment Spec Sheet</div>
+          <table style="margin-top:6px">
+            <tr><th style="text-align:left">Equipment</th><th style="text-align:left">Purpose</th><th style="text-align:right">Tier</th></tr>
+            <tr data-eq="ios"><td><strong>Intraoral scanner (IOS)</strong> <span class="eqstat"></span></td><td>Digital impressions — the entry point to the pipeline</td><td style="text-align:right"><span class="badge b-green">Core</span></td></tr>
+            <tr data-eq="pg"><td><strong>Photogrammetry system</strong> <span class="eqstat"></span></td><td>Passive-fit verification for full-arch cases</td><td style="text-align:right"><span class="badge b-green">Core</span></td></tr>
+            <tr data-eq="cbct"><td><strong>CBCT</strong> <span class="eqstat"></span></td><td>Full-arch planning &amp; guided surgery</td><td style="text-align:right"><span class="badge b-green">Core</span></td></tr>
+            <tr data-eq="printer"><td><strong>Desktop 3D printer</strong> <span class="eqstat"></span></td><td>Same-day provisional arches</td><td style="text-align:right"><span class="badge b-green">Core</span></td></tr>
+            <tr data-eq="software"><td><strong>Design software</strong> <span class="eqstat"></span></td><td>In-house case design control</td><td style="text-align:right"><span class="badge b-green">Core</span></td></tr>
+            <tr><td><strong>Curing + stain/glaze station</strong></td><td>In-house finishing &amp; characterization</td><td style="text-align:right"><span class="badge b-amber">Add-on</span></td></tr>
+            <tr data-eq="mill"><td><strong>Milling</strong> <span class="eqstat"></span></td><td>Final zirconia prosthetics</td><td style="text-align:right"><span class="badge b-grey">Via lab</span></td></tr>
+          </table>
+          <div class="callout" id="eqSummary" style="margin-top:18px">Complete the Surgeon Skill Assessment and your flagged equipment gaps appear here with a suggested acquisition order. <strong>Downloadable spec sheet coming with onboarding.</strong></div>
+        </div>
+      </section>
+
+      <!-- ===== WORKFLOW · LAB & VENDOR DEALS ===== -->
+      <section class="view" id="labdeals">
+        <p class="lead">IW partner pricing on the systems and labs behind the workflow. <span class="demo-pill">partner pricing</span></p>
+        <div class="grid g3">
+          <div class="card"><div class="eyebrow">Implants</div><h3 style="margin-bottom:6px">Nobel Biocare</h3><p style="font-size:.9rem;color:var(--ink-70)">Implant systems and components for the full-arch protocol.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
+          <div class="card"><div class="eyebrow">Design</div><h3 style="margin-bottom:6px">Radiant</h3><p style="font-size:.9rem;color:var(--ink-70)">Prosthetic design partner for case-specific full-arch work.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
+          <div class="card"><div class="eyebrow">Milling</div><h3 style="margin-bottom:6px">Radiant Mill</h3><p style="font-size:.9rem;color:var(--ink-70)">Zirconia milling coordination for final prosthetics.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
+          <div class="card" style="border-top:3px solid var(--gold)"><div class="eyebrow">In-house</div><h3 style="margin-bottom:6px">Staining &amp; Glazing</h3><p style="font-size:.9rem;color:var(--ink-70)">Bring finishing in-house — the equipment, materials, and SOPs to characterize and glaze chairside.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">Setup guide + spec included</div></div>
+        </div>
+        <div class="callout" style="margin-top:18px">Final partner pricing is set with the IW team during onboarding.</div>
+      </section>
+
+      <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
+      <section class="view" id="leadscore">
+        <p class="lead">Every lead, ranked by a live 0–100 score — so your team always knows who to call first. <span class="demo-pill">demo data</span></p>
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="card kpi"><div class="big" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 70+</div></div>
+          <div class="card kpi"><div class="big">2</div><div class="lab">Warm · 40–69</div></div>
+          <div class="card kpi"><div class="big">1</div><div class="lab">Nurture · 15–39</div></div>
+          <div class="card kpi"><div class="big">1</div><div class="lab">Cold · &lt;15</div></div>
+        </div>
+        <div class="split">
+          <div class="card">
+            <div class="eyebrow">Leads by Score</div>
+            <h3 style="margin-bottom:12px">Call list — highest intent first</h3>
+            <table>
+              <tr><th style="text-align:left">Lead</th><th style="text-align:right">Score</th><th style="text-align:left">Band</th><th style="text-align:left">Top signals</th></tr>
+              <tr><td><strong>Maria G.</strong></td><td style="text-align:right"><strong>82</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Financing approved · ASAP · showed</td></tr>
+              <tr><td><strong>James T.</strong></td><td style="text-align:right"><strong>74</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked consult · credit 700+</td></tr>
+              <tr><td><strong>Robert P.</strong></td><td style="text-align:right"><strong>58</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">ASAP · replied twice</td></tr>
+              <tr><td><strong>Linda M.</strong></td><td style="text-align:right"><strong>44</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked · credit 620–699</td></tr>
+              <tr><td><strong>David S.</strong></td><td style="text-align:right"><strong>30</strong></td><td><span class="lsb" style="background:rgba(36,92,92,.14);color:var(--teal)">Nurture</span></td><td style="font-size:.86rem;color:var(--ink-70)">Get-pricing form · 1 reply</td></tr>
+              <tr><td><strong>Karen W.</strong></td><td style="text-align:right"><strong>12</strong></td><td><span class="lsb" style="background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)">Cold</span></td><td style="font-size:.86rem;color:var(--ink-70)">14 days no engagement</td></tr>
+            </table>
+            <div class="callout" style="margin-top:16px">Connects to <strong>GoHighLevel</strong> via a per-location API key so this list updates automatically. <strong>Live sync coming in the GHL phase.</strong></div>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Scoring Weights</div>
+            <h3 style="margin-bottom:12px">What moves a score</h3>
+            <table>
+              <tr><td>Financing approved</td><td style="text-align:right"><strong>+40</strong></td></tr>
+              <tr><td>Showed to consult</td><td style="text-align:right"><strong>+25</strong></td></tr>
+              <tr><td>Booked consultation</td><td style="text-align:right"><strong>+20</strong></td></tr>
+              <tr><td>Inbound call from lead</td><td style="text-align:right"><strong>+15</strong></td></tr>
+              <tr><td>Credit score 700+</td><td style="text-align:right"><strong>+15</strong></td></tr>
+              <tr><td>Timeline: ASAP</td><td style="text-align:right"><strong>+12</strong></td></tr>
+              <tr><td>No-show, no reschedule</td><td style="text-align:right"><strong>−15</strong></td></tr>
+              <tr><td>SMS opt-out (STOP)</td><td style="text-align:right"><strong>−30</strong></td></tr>
+            </table>
+            <div class="callout" style="margin-top:16px">You control these. <strong>Tune your own weights</strong> once GHL is connected — the score is yours, fully transparent.</div>
           </div>
         </div>
       </section>
@@ -563,7 +672,8 @@ tr:last-child td{border-bottom:0}
 
 <script>
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',
-  coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',referral:'Inner Circle Network',
+  setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
+  coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
@@ -679,8 +789,66 @@ function pickColor(el){
   document.documentElement.style.setProperty('--accent', el.dataset.c);
 }
 
+/* ---- tailor from saved assessment (localStorage) ---- */
+function loadTailored(){
+  var b=document.getElementById('tailoredBanner'); if(!b) return;
+  var done=false, profile=null, mk=null, inr=null, s2=false, s3=false;
+  try{
+    done=localStorage.getItem('iw_onboard_step1')==='done';
+    s2=localStorage.getItem('iw_onboard_step2')==='done';
+    s3=localStorage.getItem('iw_onboard_step3')==='done';
+    profile=JSON.parse(localStorage.getItem('iw_profile')||'null');
+    mk=JSON.parse(localStorage.getItem('iw_marketing')||'null');
+    inr=JSON.parse(localStorage.getItem('iw_inner')||'null');
+  }catch(e){}
+  if(profile){
+    var gaps=(profile.topGaps&&profile.topGaps.length)?('<strong>'+profile.topGaps.join('</strong> and <strong>')+'</strong>'):'your results';
+    var extra='';
+    if(mk) extra+=' &nbsp;·&nbsp; Marketing: <strong>'+mk.band+'</strong>';
+    if(inr) extra+=' &nbsp;·&nbsp; Inner Circle: <strong>'+inr.band+'</strong>';
+    var allDone=done&&s2&&s3;
+    b.innerHTML='Tailored from your assessment — <strong>'+profile.band+'</strong> ('+profile.score+'/100). '+
+      'Priority focus: '+gaps+'.'+extra+
+      (allDone?'':' &nbsp;·&nbsp; <a href="onboarding.html" style="color:var(--teal);font-weight:500">Finish onboarding →</a>');
+    b.style.display='block';
+    if(profile.practice){ document.getElementById('practiceName').textContent=profile.practice; document.getElementById('avatar').textContent=(profile.practice.trim()[0]||'P').toUpperCase(); }
+  } else {
+    b.innerHTML='Complete your onboarding to tailor this portal to your practice. &nbsp;·&nbsp; <a href="onboarding.html" style="color:var(--teal);font-weight:500">Start onboarding →</a>';
+    b.style.display='block';
+  }
+}
+
+/* ---- tailor Workflow sections from equipment answers ---- */
+function tailorWorkflow(){
+  var profile=null; try{ profile=JSON.parse(localStorage.getItem('iw_profile')||'null'); }catch(e){}
+  if(!profile||!profile.equipment) return;
+  var have={}; profile.equipment.forEach(function(x){ have[x.key]=x.have; });
+  var names={ios:'Intraoral scanner',pg:'Photogrammetry',cbct:'CBCT',printer:'3D printer',software:'Design software',mill:'Milling'};
+  var gaps=[];
+  // equipment table rows
+  document.querySelectorAll('#equipment tr[data-eq]').forEach(function(tr){
+    var k=tr.getAttribute('data-eq'), s=tr.querySelector('.eqstat'); if(!s) return;
+    if(have[k]){ s.textContent='In place'; s.className='eqstat have'; }
+    else { s.textContent='Gap'; s.className='eqstat gap'; if(names[k])gaps.push(names[k]); }
+  });
+  var eqSum=document.getElementById('eqSummary');
+  if(eqSum){ eqSum.innerHTML = gaps.length
+    ? 'Based on your assessment, your priority acquisitions are: <strong>'+gaps.join(', ')+'</strong>. We sequence these during onboarding so the pipeline comes online in the right order.'
+    : 'Your assessment shows the core digital stack is already in place. Onboarding focuses on optimizing the same-day workflow.'; }
+  // setup steps
+  document.querySelectorAll('#wfsteps .wfstep[data-eq]').forEach(function(st){
+    var k=st.getAttribute('data-eq'); if(k==='stainglaze') return;
+    var stat=st.querySelector('.wfstat');
+    if(have[k]){ if(stat){stat.textContent='Ready';} }
+    else { st.classList.add('gap'); if(stat){stat.textContent='Gap'; stat.className='badge wfstat gap';} }
+  });
+  var wfSum=document.getElementById('wfSummary');
+  if(wfSum && gaps.length){ wfSum.className='callout'; wfSum.style.marginBottom='18px';
+    wfSum.innerHTML='Stages marked <strong>Gap</strong> need equipment before you can run them in-house — highlighted from your assessment.'; }
+}
+
 /* init */
-calcRoi(); renderAds();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow();
 </script>
 </body>
 </html>

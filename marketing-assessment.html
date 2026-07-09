@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Marketing Assessment — Implanted Wisdom</title>
+<link rel="icon" href="favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+:root{--ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;--cream:#F7F2EC;--white:#fff;
+  --ink-70:rgba(30,22,18,.92);--cream-70:rgba(247,242,236,.96);--hairline:rgba(201,169,110,.30);
+  --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15}
+a{color:inherit}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+.label{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;color:var(--gold)}
+.tm{font-size:.6em;vertical-align:.55em;font-weight:500;font-family:var(--body)}
+header.hero{background:var(--espresso);color:var(--cream);padding:48px 0 40px;text-align:center;border-bottom:1px solid var(--hairline)}
+header.hero a.back{display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:16px}
+header.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:300}
+header.hero h1 em{font-style:italic;color:var(--gold)}
+header.hero p.sub{max-width:600px;margin:12px auto 0;color:var(--cream-70);font-size:1rem}
+section.block{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:24px 0;padding:30px 32px}
+.secnum{font-family:var(--mono);color:var(--gold);font-size:.82rem;letter-spacing:.1em}
+section.block h2{font-size:1.4rem;margin:2px 0 4px}
+.hint{color:rgba(30,22,18,.6);font-size:.9rem;margin-bottom:16px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:500;font-size:.92rem;margin-bottom:5px}
+.field select,.field input,textarea{width:100%;padding:11px 13px;border:1px solid rgba(30,22,18,.22);border-radius:4px;font-family:var(--body);font-size:.97rem;background:var(--white);color:var(--ink)}
+.field select:focus,textarea:focus,.field input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+@media(max-width:640px){.checks{grid-template-columns:1fr}section.block{padding:24px 20px}}
+.checks label{display:flex;align-items:center;gap:9px;font-size:.95rem;font-weight:300}
+.checks input{width:auto}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 50px}
+.btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;padding:13px 24px;border-radius:3px;cursor:pointer;border:1px solid transparent}
+.btn-gold{background:var(--gold);color:var(--ink)}.btn-gold:hover{background:var(--gold-soft)}
+.btn-line{border-color:var(--gold);color:var(--gold);background:transparent}.btn-line:hover{background:var(--gold);color:var(--ink)}
+#result{display:none}
+.rcard{background:var(--white);border:1px solid var(--hairline);border-radius:6px;padding:34px 36px;margin:24px 0}
+.band{font-family:var(--display);font-size:2rem;color:var(--gold)}
+.plain{list-style:none;padding:0}.plain li{padding:8px 0;border-top:1px solid #efe7d8}.plain li:first-child{border-top:0}
+.gapli{color:#a33f28;font-weight:400}.okli{color:var(--teal)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <a class="back" href="onboarding.html">← Back to Onboarding</a>
+    <div class="label">Onboarding · Step 2 of 3 · DTC Marketing</div>
+    <h1>Current Marketing <em>Assessment</em></h1>
+    <p class="sub">A quick picture of how you attract and convert patients today. Your answers shape a transparent DTC plan — CRM, paid ads, tracking, and lead scoring. About 3 minutes.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<form id="mform" novalidate>
+
+  <section class="block">
+    <div class="secnum">01 / 05</div>
+    <h2>Where patients come from today</h2>
+    <p class="hint">Check every source you currently rely on.</p>
+    <div class="checks" id="sources">
+      <label><input type="checkbox" value="Referrals"> GP / dentist referrals</label>
+      <label><input type="checkbox" value="Word of mouth"> Patient word of mouth</label>
+      <label><input type="checkbox" value="Google / SEO"> Google / SEO</label>
+      <label><input type="checkbox" value="Meta ads"> Meta ads (FB / IG)</label>
+      <label><input type="checkbox" value="Google ads"> Google ads</label>
+      <label><input type="checkbox" value="Website"> Practice website</label>
+      <label><input type="checkbox" value="None yet"> No active marketing yet</label>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">02 / 05</div>
+    <h2>Spend &amp; paid acquisition</h2>
+    <div class="field"><label for="spend">Approx. monthly marketing spend</label>
+      <select id="spend"><option value="0">$0 — none</option><option value="1">Under $2,000</option><option value="2">$2,000–$5,000</option><option value="3">$5,000–$10,000</option><option value="4">$10,000+</option></select>
+    </div>
+    <div class="field"><label for="paid">Are you running paid full-arch ads now?</label>
+      <select id="paid"><option value="0">No</option><option value="1">Yes — but unsure it's working</option><option value="2">Yes — and tracking results</option></select>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">03 / 05</div>
+    <h2>Systems &amp; follow-up</h2>
+    <div class="field"><label for="crm">CRM / lead management</label>
+      <select id="crm"><option value="0">None / spreadsheet</option><option value="1">Basic CRM</option><option value="2">GoHighLevel</option><option value="1">Other CRM</option></select>
+    </div>
+    <div class="field"><label for="auto">Lead follow-up</label>
+      <select id="auto"><option value="0">Manual / inconsistent</option><option value="1">Some templates</option><option value="2">Automated nurture (SMS/email)</option></select>
+    </div>
+    <div class="field"><label for="landing">Do you have a dedicated full-arch landing page?</label>
+      <select id="landing"><option value="0">No</option><option value="1">Yes, general implants page</option><option value="2">Yes, full-arch specific</option></select>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">04 / 05</div>
+    <h2>Tracking &amp; ownership</h2>
+    <div class="field"><label for="track">Do you track cost-per-lead and consult→close conversion?</label>
+      <select id="track"><option value="0">No</option><option value="1">Partially</option><option value="2">Yes, closely</option></select>
+    </div>
+    <div class="field"><label for="owner">Who runs marketing today?</label>
+      <select id="owner"><option value="0">Nobody dedicated</option><option value="1">In-house staff (part-time)</option><option value="1">Outside agency</option><option value="2">Dedicated in-house marketer</option></select>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">05 / 05</div>
+    <h2>Biggest frustration</h2>
+    <p class="hint">Optional — what's not working about your marketing right now?</p>
+    <textarea id="frustration" rows="3" placeholder="e.g., leads don't answer, no idea what's working, referrals slowing…"></textarea>
+  </section>
+
+  <div class="actions">
+    <button class="btn btn-gold" type="submit">See My Marketing Snapshot →</button>
+    <a class="btn btn-line" href="onboarding.html">Save &amp; return later</a>
+  </div>
+</form>
+
+<div id="result">
+  <div class="rcard">
+    <div class="label" style="color:var(--teal)">Your Marketing Snapshot</div>
+    <div class="band" id="rBand"></div>
+    <p id="rDesc" style="color:var(--ink-70);margin-top:6px"></p>
+    <h3 style="margin:20px 0 8px">Where IW will focus first</h3>
+    <ul class="plain" id="rGaps"></ul>
+    <h3 style="margin:20px 0 8px">Already working for you</h3>
+    <ul class="plain" id="rOk"></ul>
+    <div class="actions">
+      <button class="btn btn-gold" onclick="location.href='onboarding.html'">Continue Onboarding →</button>
+      <button class="btn btn-line" onclick="location.reload()">Retake</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  var form=document.getElementById('mform');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    function v(id){return +document.getElementById(id).value;}
+    var sources=[...document.querySelectorAll('#sources input:checked')].map(x=>x.value);
+    var dims=[
+      ['Paid acquisition', v('paid')],
+      ['CRM &amp; lead management', v('crm')],
+      ['Follow-up automation', v('auto')],
+      ['Full-arch landing page', v('landing')],
+      ['Tracking &amp; attribution', v('track')],
+      ['Marketing ownership', v('owner')]
+    ];
+    var got=dims.reduce((s,d)=>s+d[1],0), max=dims.length*2;
+    var score=Math.round(got/max*100);
+    var band,desc;
+    if(score>=70){band='Established';desc='A real marketing engine is running. IW adds transparency and optimization — lead scoring, tighter tracking, and conversion lift.';}
+    else if(score>=40){band='Building';desc='Good pieces in place with clear gaps. IW installs the missing infrastructure and makes every dollar measurable.';}
+    else{band='Emerging';desc='Early days. IW builds the DTC foundation from scratch — landing page, CRM, paid acquisition, and tracking — so growth becomes predictable.';}
+
+    var gaps=dims.filter(d=>d[1]<=1).sort((a,b)=>a[1]-b[1]).map(d=>d[0]);
+    var oks=dims.filter(d=>d[1]===2).map(d=>d[0]);
+    document.getElementById('rBand').textContent=band;
+    document.getElementById('rDesc').textContent=desc;
+    document.getElementById('rGaps').innerHTML=(gaps.length?gaps:['Fine-tuning only']).map(g=>'<li class="gapli">'+g+'</li>').join('');
+    document.getElementById('rOk').innerHTML=(oks.length?oks:['Foundation to be built']).map(g=>'<li class="okli">'+g+'</li>').join('');
+
+    try{
+      localStorage.setItem('iw_marketing',JSON.stringify({score:score,band:band,gaps:gaps,sources:sources,date:new Date().toISOString()}));
+      localStorage.setItem('iw_onboard_step2','done');
+    }catch(x){}
+
+    form.style.display='none';
+    document.querySelector('header.hero').style.display='none';
+    document.getElementById('result').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
