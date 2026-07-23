@@ -76,6 +76,16 @@ window.iwAuth = (function(){
       return sb.auth.getUser().then(function(res){ return res.data.user; });
     },
 
+    /* the signed-in user's access token — sent to /api/leads so the
+       server can confirm this is a real logged-in partner before
+       returning any patient data */
+    accessToken: function(){
+      if(!ready) return Promise.resolve(null);
+      return sb.auth.getSession().then(function(res){
+        return res.data.session ? res.data.session.access_token : null;
+      }).catch(function(){ return null; });
+    },
+
     /* ---- Two-factor (TOTP / authenticator app) ---- */
     /* Assurance level: tells us if a signed-in user still owes a 2FA code */
     aal: function(){

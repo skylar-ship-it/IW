@@ -530,43 +530,44 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
       <section class="view" id="leadscore">
-        <p class="lead">Every lead, ranked by a live 0–100 score — so your team always knows who to call first.</p>
-        <div class="callout" style="margin-bottom:16px;border-left:3px solid var(--gold)">Not connected yet — the list below is an <strong>example</strong>. Connect your GoHighLevel location to load your live, scored leads. <a href="#" onclick="goView('settings');return false" style="color:var(--teal);font-weight:500">Connect GoHighLevel →</a></div>
+        <p class="lead">Every lead, ranked by your live GoHighLevel <strong>Engagement Score</strong> — so your team always knows who to call first.</p>
+        <div class="callout" id="lsNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Showing an <strong>example</strong> list. Your live leads load automatically when you're signed in and GoHighLevel is connected.</div>
         <div class="grid g4" style="margin-bottom:16px">
-          <div class="card kpi"><div class="big" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 70+</div></div>
-          <div class="card kpi"><div class="big">2</div><div class="lab">Warm · 40–69</div></div>
-          <div class="card kpi"><div class="big">1</div><div class="lab">Nurture · 15–39</div></div>
-          <div class="card kpi"><div class="big">1</div><div class="lab">Cold · &lt;15</div></div>
+          <div class="card kpi"><div class="big" id="lsHot" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 20+</div></div>
+          <div class="card kpi"><div class="big" id="lsWarm">2</div><div class="lab">Warm · 5–19</div></div>
+          <div class="card kpi"><div class="big" id="lsNurture">1</div><div class="lab">Nurture · 0–4</div></div>
+          <div class="card kpi"><div class="big" id="lsCold">1</div><div class="lab">Cold · below 0</div></div>
         </div>
         <div class="split">
           <div class="card">
-            <div class="eyebrow">Leads by Score</div>
-            <h3 style="margin-bottom:12px">Call list — highest intent first</h3>
+            <div class="eyebrow">Leads by Engagement Score</div>
+            <h3 style="margin-bottom:12px">Call list — highest engagement first</h3>
             <table>
-              <tr><th style="text-align:left">Lead</th><th style="text-align:right">Score</th><th style="text-align:left">Band</th><th style="text-align:left">Top signals</th></tr>
+              <thead><tr><th style="text-align:left">Lead</th><th style="text-align:right">Score</th><th style="text-align:left">Band</th><th style="text-align:left">Top signals</th></tr></thead>
+              <tbody id="lsBody">
               <tr><td><strong>Maria G.</strong></td><td style="text-align:right"><strong>82</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Financing approved · ASAP · showed</td></tr>
               <tr><td><strong>James T.</strong></td><td style="text-align:right"><strong>74</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked consult · credit 700+</td></tr>
               <tr><td><strong>Robert P.</strong></td><td style="text-align:right"><strong>58</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">ASAP · replied twice</td></tr>
               <tr><td><strong>Linda M.</strong></td><td style="text-align:right"><strong>44</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked · credit 620–699</td></tr>
               <tr><td><strong>David S.</strong></td><td style="text-align:right"><strong>30</strong></td><td><span class="lsb" style="background:rgba(36,92,92,.14);color:var(--teal)">Nurture</span></td><td style="font-size:.86rem;color:var(--ink-70)">Get-pricing form · 1 reply</td></tr>
               <tr><td><strong>Karen W.</strong></td><td style="text-align:right"><strong>12</strong></td><td><span class="lsb" style="background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)">Cold</span></td><td style="font-size:.86rem;color:var(--ink-70)">14 days no engagement</td></tr>
+              </tbody>
             </table>
-            <div class="callout" style="margin-top:16px">Connects to <strong>GoHighLevel</strong> via a per-location API key so this list updates automatically. <strong>Live sync coming in the GHL phase.</strong></div>
+            <div class="callout" style="margin-top:16px" id="lsFoot">Pulls live from <strong>GoHighLevel</strong> and re-ranks every time you open this page.</div>
           </div>
           <div class="card">
-            <div class="eyebrow">Scoring Weights</div>
-            <h3 style="margin-bottom:12px">What moves a score</h3>
+            <div class="eyebrow">How the score works</div>
+            <h3 style="margin-bottom:12px">What moves Engagement Score</h3>
+            <p style="color:var(--ink-70);font-size:.92rem;margin-bottom:14px">This is GoHighLevel's native <strong>Engagement Score</strong> — the same number on each contact card and in your <em>Hottest Leads</em> smart list. You set the point rules in GHL; the portal reads and ranks by them. Typical rules:</p>
             <table>
-              <tr><td>Financing approved</td><td style="text-align:right"><strong>+40</strong></td></tr>
-              <tr><td>Showed to consult</td><td style="text-align:right"><strong>+25</strong></td></tr>
-              <tr><td>Booked consultation</td><td style="text-align:right"><strong>+20</strong></td></tr>
-              <tr><td>Inbound call from lead</td><td style="text-align:right"><strong>+15</strong></td></tr>
-              <tr><td>Credit score 700+</td><td style="text-align:right"><strong>+15</strong></td></tr>
-              <tr><td>Timeline: ASAP</td><td style="text-align:right"><strong>+12</strong></td></tr>
-              <tr><td>No-show, no reschedule</td><td style="text-align:right"><strong>−15</strong></td></tr>
-              <tr><td>SMS opt-out (STOP)</td><td style="text-align:right"><strong>−30</strong></td></tr>
+              <tr><td>Replied to a text / email</td><td style="text-align:right"><strong>+</strong></td></tr>
+              <tr><td>Answered / returned a call</td><td style="text-align:right"><strong>+</strong></td></tr>
+              <tr><td>Booked a consultation</td><td style="text-align:right"><strong>+</strong></td></tr>
+              <tr><td>Strong-fit form answers (ASAP, credit)</td><td style="text-align:right"><strong>+</strong></td></tr>
+              <tr><td>Low-fit answers</td><td style="text-align:right"><strong>−</strong></td></tr>
+              <tr><td>No engagement / opted out</td><td style="text-align:right"><strong>−</strong></td></tr>
             </table>
-            <div class="callout" style="margin-top:16px">You control these. <strong>Tune your own weights</strong> once GHL is connected — the score is yours, fully transparent.</div>
+            <div class="callout" style="margin-top:16px">Fully transparent and fully yours — <strong>edit the point rules in GHL</strong> (Contact → Actions → Engagement Score) and this list follows.</div>
           </div>
         </div>
       </section>
@@ -1059,6 +1060,41 @@ function applyPractice(){
     }
     if(accent){ document.documentElement.style.setProperty('--accent', accent); }
     window.IW_LOCATION = byEmail.ghl_location || m.ghl_location || app.ghl_location || null;   /* used by the live lead feed */
+    loadLeads();
+  }).catch(function(){});
+}
+
+/* ---- Live lead feed (GoHighLevel Engagement Score) ---- */
+function lsBandStyle(band){
+  if(band==='Hot')     return 'background:var(--gold);color:var(--ink)';
+  if(band==='Warm')    return 'background:rgba(201,169,110,.2);color:#8a6733';
+  if(band==='Nurture') return 'background:rgba(36,92,92,.14);color:var(--teal)';
+  return 'background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)';
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function loadLeads(){
+  if(!(window.iwAuth && iwAuth.enabled())) return;            /* preview mode → keep example */
+  var loc = window.IW_LOCATION;
+  iwAuth.accessToken().then(function(tok){
+    var url = '/api/leads' + (loc ? ('?location=' + encodeURIComponent(loc)) : '');
+    return fetch(url, { headers: tok ? { Authorization: 'Bearer ' + tok } : {} });
+  }).then(function(r){ return r ? r.json() : null; }).then(function(d){
+    if(!d || !d.ok || !Array.isArray(d.leads) || !d.leads.length) return;  /* keep example on any failure */
+    var note=document.getElementById('lsNote'); if(note) note.style.display='none';
+    var c=d.counts||{};
+    var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=(v||0); };
+    set('lsHot',c.Hot); set('lsWarm',c.Warm); set('lsNurture',c.Nurture); set('lsCold',c.Cold);
+    var body=document.getElementById('lsBody');
+    if(body){
+      body.innerHTML = d.leads.map(function(l){
+        return '<tr><td><strong>'+esc(l.name)+'</strong></td>'+
+               '<td style="text-align:right"><strong>'+l.score+'</strong></td>'+
+               '<td><span class="lsb" style="'+lsBandStyle(l.band)+'">'+esc(l.band)+'</span></td>'+
+               '<td style="font-size:.86rem;color:var(--ink-70)">'+esc(l.signals||'—')+'</td></tr>';
+      }).join('');
+    }
+    var foot=document.getElementById('lsFoot');
+    if(foot) foot.innerHTML='Live from <strong>GoHighLevel</strong> · '+d.count+' leads · re-ranked each time you open this page.';
   }).catch(function(){});
 }
 
