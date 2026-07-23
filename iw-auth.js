@@ -26,8 +26,8 @@
    open preview (any credentials) so demos keep working.
    ============================================================ */
 
-window.IW_SUPABASE_URL = "";       /* e.g. https://xxxx.supabase.co */
-window.IW_SUPABASE_ANON_KEY = "";  /* e.g. eyJhbGciOi... (anon public) */
+window.IW_SUPABASE_URL = "https://ntyrmagxwvtnknswofku.supabase.co";
+window.IW_SUPABASE_ANON_KEY = "sb_publishable_pigfbwaBd8NyTmhr68tAkA_qyjRgnj-";  /* publishable key — safe to ship. NEVER put the sb_secret_ key here. */
 
 window.iwAuth = (function(){
   var sb = null, ready = false;
@@ -45,9 +45,14 @@ window.iwAuth = (function(){
     /* redirect to login if no active session (only when configured) */
     requireSession: function(redirect){
       if(!ready) return Promise.resolve(null);
+      var dest = redirect || 'login.html';
       return sb.auth.getSession().then(function(res){
-        if(!res.data.session){ location.href = redirect || 'login.html'; return null; }
-        return res.data.session;
+        if(!res.data.session){ location.href = dest; return null; }
+        /* if 2FA is enrolled but not yet satisfied this session, block */
+        return sb.auth.mfa.getAuthenticatorAssuranceLevel().then(function(a){
+          if(a && a.data && a.data.nextLevel==='aal2' && a.data.currentLevel!=='aal2'){ location.href = dest; return null; }
+          return res.data.session;
+        }).catch(function(){ return res.data.session; });
       });
     },
 
@@ -69,6 +74,30 @@ window.iwAuth = (function(){
     currentUser: function(){
       if(!ready) return Promise.resolve(null);
       return sb.auth.getUser().then(function(res){ return res.data.user; });
+    },
+
+    /* ---- Two-factor (TOTP / authenticator app) ---- */
+    /* Assurance level: tells us if a signed-in user still owes a 2FA code */
+    aal: function(){
+      if(!ready) return Promise.resolve(null);
+      return sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    },
+    listFactors: function(){
+      if(!ready) return Promise.resolve({data:{totp:[]}});
+      return sb.auth.mfa.listFactors();
+    },
+    challenge: function(factorId){
+      return sb.auth.mfa.challenge({ factorId: factorId });
+    },
+    verify: function(factorId, challengeId, code){
+      return sb.auth.mfa.verify({ factorId: factorId, challengeId: challengeId, code: code });
+    },
+    /* enrollment: returns a QR (SVG data-URI) + secret to show the user */
+    enroll: function(){
+      return sb.auth.mfa.enroll({ factorType: 'totp' });
+    },
+    unenroll: function(factorId){
+      return sb.auth.mfa.unenroll({ factorId: factorId });
     }
   };
 })();

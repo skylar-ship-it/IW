@@ -171,6 +171,23 @@ tr:last-child td{border-bottom:0}
 .lib p{font-size:.9rem;color:var(--ink-70);line-height:1.55}
 .libdl{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 .libdl .btn{font-size:.76rem;padding:9px 16px}
+.fstage{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.fstage:first-child{border-top:0}
+.fstage .fn{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--cream);border:1px solid var(--hairline);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.8rem;color:var(--gold)}
+.fstage .fbody{flex:1}
+.fstage .fbody b{font-size:1rem}
+.fstage .fbody span{display:block;font-size:.85rem;color:var(--ink-70)}
+.fstage.gap .fn{background:rgba(176,74,52,.14);border-color:transparent;color:#a33f28}
+.fstage .fchip{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
+.fstage .fchip.ok{background:rgba(36,92,92,.12);color:var(--teal)}
+.fstage .fchip.gap{background:rgba(176,74,52,.14);color:#a33f28}
+.frec{display:grid;grid-template-columns:auto 1fr;gap:12px 16px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}
+.frec:first-child{border-top:0}
+.frec .fpri{font-family:var(--mono);font-size:.72rem;color:var(--gold);white-space:nowrap;padding-top:3px}
+.frec h4{font-family:var(--display);font-weight:600;font-size:1.12rem;margin-bottom:3px}
+.frec p{font-size:.9rem;color:var(--ink-70);line-height:1.55}
+.frec .fasset{font-size:.76rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-top:6px}
 .pillar-hub{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px}
 @media(max-width:760px){.pillar-hub{grid-template-columns:1fr}}
 .phub{background:var(--white);border:1px solid var(--hairline);border-top:3px solid var(--gold);border-radius:12px;
@@ -218,6 +235,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="labdeals" data-roles="owner,pm" onclick="go(this)"><span class="ic">◇</span> Lab &amp; Vendor Deals</div>
       <div class="navgroup">Pillar 3 · DTC Marketing</div>
       <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
+      <div class="nav-item" data-view="funnel" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">⧗</span> Funnel Plan</div>
       <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
       <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
       <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
@@ -553,6 +571,12 @@ tr:last-child td{border-bottom:0}
         </div>
       </section>
 
+      <!-- ===== DTC · FUNNEL PLAN ===== -->
+      <section class="view" id="funnel">
+        <p class="lead">Your funnel-optimization plan — generated from your Marketing Assessment, stage by stage.</p>
+        <div id="funnelBody"></div>
+      </section>
+
       <!-- ===== MARKETING STUDIO ===== -->
       <section class="view" id="marketing">
         <p class="lead">Generate co-branded, full-arch demand assets in seconds — surgeon-led and on-brand.</p>
@@ -740,7 +764,7 @@ tr:last-child td{border-bottom:0}
 <script>
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
-  coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
+  coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
@@ -959,14 +983,83 @@ function mfaDisable(){
   });
 }
 
+/* ---- DTC Funnel Plan from the Marketing Assessment ---- */
+function renderFunnel(){
+  var host=document.getElementById('funnelBody'); if(!host) return;
+  var mk=null; try{ mk=JSON.parse(localStorage.getItem('iw_marketing')||'null'); }catch(e){}
+  if(!mk){
+    host.innerHTML='<div class="card"><div class="eyebrow">Not yet generated</div><h3 style="margin-bottom:8px">Complete your Marketing Assessment</h3>'+
+      '<p style="color:var(--ink-70)">Answer a few questions about how you attract and convert patients today, and your funnel plan is built automatically.</p>'+
+      '<div style="margin-top:16px"><a class="btn btn-out" href="onboarding.html">Take the Marketing Assessment →</a></div></div>';
+    return;
+  }
+  /* map each assessment gap to a funnel stage + recommendation */
+  var REC={
+    'Paid acquisition':      {stage:1, action:'Launch full-arch paid acquisition', detail:'Stand up Meta and Google campaigns targeting full-arch intent, with creative built by people who place implants.', asset:'Marketing Studio'},
+    'Full-arch landing page':{stage:2, action:'Build a dedicated full-arch landing page', detail:'A single-purpose page with a clear offer and CTA — not a general implants page — so ad clicks convert.', asset:'Marketing Studio'},
+    'CRM &amp; lead management':{stage:3, action:'Install CRM &amp; pipelines', detail:'Capture every lead in GoHighLevel with stages, tasks, and ownership so nothing slips.', asset:'Lead Scoring Tracker'},
+    'Follow-up automation':  {stage:3, action:'Automate nurture &amp; follow-up', detail:'Speed-to-lead SMS/email sequences that keep fear-driven shoppers warm until they book.', asset:'Coordinator Toolkit'},
+    'Tracking &amp; attribution':{stage:5, action:'Turn on tracking &amp; lead scoring', detail:'Cost-per-lead, consult→close, and a 0–100 lead score so you always know what works and who to call.', asset:'Lead Scoring Tracker'},
+    'Marketing ownership':   {stage:0, action:'Assign clear marketing ownership', detail:'One accountable owner (yours or IW-managed) so the system is run, not just installed.', asset:'IW Managed'}
+  };
+  var STAGES=[['Attract','Paid demand that reaches full-arch patients'],['Capture','A landing page + forms that convert clicks'],['Nurture','CRM + fast, automated follow-up'],['Convert','Coordinator closing the consult'],['Measure','Tracking, attribution & lead scoring']];
+  var gaps = mk.gaps || [];
+  /* which stages are weak? map gap->stage index (1..5 -> 0..4; ownership=foundation) */
+  var stageGap={};
+  gaps.forEach(function(g){ var r=REC[g]; if(r && r.stage>=1) stageGap[r.stage-1]=true; });
+
+  var stagesHtml=STAGES.map(function(s,i){
+    var isGap=!!stageGap[i];
+    return '<div class="fstage'+(isGap?' gap':'')+'"><div class="fn">'+(i+1)+'</div>'+
+      '<div class="fbody"><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'+
+      '<div class="fchip '+(isGap?'gap':'ok')+'">'+(isGap?'Focus':'Solid')+'</div></div>';
+  }).join('');
+
+  var recsHtml = gaps.length ? gaps.map(function(g,idx){
+    var r=REC[g]; if(!r) return '';
+    return '<div class="frec"><div class="fpri">Priority '+(idx+1)+'</div><div>'+
+      '<h4>'+r.action+'</h4><p>'+r.detail+'</p><div class="fasset">In your portal: '+r.asset+'</div></div></div>';
+  }).join('') : '<p style="color:var(--ink-70)">Your funnel is in good shape — the plan focuses on optimization and scale. See the Lead Scoring Tracker and Benchmarking.</p>';
+
+  host.innerHTML=
+    '<div class="card" style="margin-bottom:18px"><div class="eyebrow">Your Marketing Snapshot</div>'+
+      '<h3 style="margin-bottom:6px">'+mk.band+' &nbsp;<span style="font-family:var(--mono);font-size:.9rem;color:var(--gold)">'+mk.score+'/100</span></h3>'+
+      '<p style="color:var(--ink-70)">This plan sequences the fixes that will move your funnel the most, in priority order.</p></div>'+
+    '<div class="split">'+
+      '<div class="card"><div class="eyebrow">Funnel Health</div><h3 style="margin-bottom:12px">Where the leaks are</h3>'+stagesHtml+'</div>'+
+      '<div class="card"><div class="eyebrow">Priority Actions</div><h3 style="margin-bottom:6px">Your build order</h3>'+recsHtml+'</div>'+
+    '</div>';
+}
+
+/* ---- per-practice context from the logged-in account ---- */
+/* Each Supabase user carries metadata: { practice, accent, ghl_location }.
+   Tag Pulver Oral Surgery and West Michigan Oral Surgery accounts differently
+   and the same portal shows each practice its own name, brand accent, and (later) its own leads. */
+function applyPractice(){
+  if(!(window.iwAuth && iwAuth.enabled())) return;
+  iwAuth.currentUser().then(function(u){
+    if(!u) return;
+    var m=u.user_metadata||{}, app=u.app_metadata||{};
+    var practice=m.practice||app.practice, accent=m.accent||app.accent;
+    if(practice){
+      var pn=document.getElementById('practiceName'); if(pn) pn.textContent=practice;
+      var av=document.getElementById('avatar'); if(av) av.textContent=(String(practice).trim()[0]||'P').toUpperCase();
+      var sn=document.getElementById('setName'); if(sn) sn.value=practice;
+    }
+    if(accent){ document.documentElement.style.setProperty('--accent', accent); }
+    window.IW_LOCATION = m.ghl_location||app.ghl_location||null;   /* used by the live lead feed */
+  }).catch(function(){});
+}
+
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
 <script>
 if(window.iwAuth && iwAuth.enabled()){ iwAuth.requireSession('login.html'); }
 if(typeof mfaInit==='function'){ mfaInit(); }
+if(typeof applyPractice==='function'){ applyPractice(); }
 </script>
 </body>
 </html>
