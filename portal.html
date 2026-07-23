@@ -1035,8 +1035,8 @@ function renderFunnel(){
    Add a line here per practice. The key is the login email (lowercase).
    ghl_location = that practice's GoHighLevel location id (fill in when ready). */
 var IW_PRACTICES = {
-  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs' },
-  'westmichigan@pulveroralsurgery.com': { practice:'West Michigan Oral Surgery', accent:'#7c5e3b', ghl_location:'' }
+  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs' },
+  'westmichigan@pulveroralsurgery.com': { practice:'West Michigan Oral Surgery', tag:'Partner Practice', accent:'#7c5e3b', ghl_location:'' }
 };
 
 function applyPractice(){
@@ -1046,11 +1046,16 @@ function applyPractice(){
     var m=u.user_metadata||{}, app=u.app_metadata||{};
     var byEmail = (u.email ? IW_PRACTICES[String(u.email).toLowerCase()] : null) || {};
     var practice = byEmail.practice || m.practice || app.practice;
+    var tag      = byEmail.tag      || m.tag      || app.tag;
     var accent   = byEmail.accent   || m.accent   || app.accent;
     if(practice){
       var pn=document.getElementById('practiceName'); if(pn) pn.textContent=practice;
       var av=document.getElementById('avatar'); if(av) av.textContent=(String(practice).trim()[0]||'P').toUpperCase();
       var sn=document.getElementById('setName'); if(sn) sn.value=practice;
+    }
+    if(tag){
+      var pt=document.getElementById('practiceTag'); if(pt) pt.textContent=tag;
+      var st=document.getElementById('setTag'); if(st) st.value=tag;
     }
     if(accent){ document.documentElement.style.setProperty('--accent', accent); }
     window.IW_LOCATION = byEmail.ghl_location || m.ghl_location || app.ghl_location || null;   /* used by the live lead feed */
