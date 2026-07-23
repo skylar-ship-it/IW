@@ -167,6 +167,10 @@ tr:last-child td{border-bottom:0}
   display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600}
 .wfstep .wfd{font-size:.88rem;color:var(--ink-70);margin-top:2px}
 .lsb{display:inline-block;padding:3px 11px;border-radius:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+.lib h3{margin:4px 0 8px;font-size:1.3rem}
+.lib p{font-size:.9rem;color:var(--ink-70);line-height:1.55}
+.libdl{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.libdl .btn{font-size:.76rem;padding:9px 16px}
 .pillar-hub{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px}
 @media(max-width:760px){.pillar-hub{grid-template-columns:1fr}}
 .phub{background:var(--white);border:1px solid var(--hairline);border-top:3px solid var(--gold);border-radius:12px;
@@ -207,6 +211,7 @@ tr:last-child td{border-bottom:0}
       <a class="nav-item" href="surgeon-assessment.html" data-roles="owner,surgeon,pm"><span class="ic">✎</span> Skill Assessment</a>
       <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
       <div class="nav-item" data-view="casereview" data-roles="owner,surgeon" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
+      <div class="nav-item" data-view="library" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◫</span> Clinical Library</div>
       <div class="navgroup">Pillar 2 · Workflow Intelligence</div>
       <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow Setup</div>
       <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment Spec Sheet</div>
@@ -409,6 +414,49 @@ tr:last-child td{border-bottom:0}
             <div class="callout" style="margin-top:18px">Above benchmark on show-rate; closing is the focus. Assign the Closing Methodology module to your coordinators.</div>
           </div>
         </div>
+      </section>
+
+      <!-- ===== CLINICAL LIBRARY ===== -->
+      <section class="view" id="library">
+        <p class="lead">White-label patient forms, ready to use in your practice — download the PDF, or the Word file to add your logo.</p>
+        <div class="grid g2">
+          <div class="card lib">
+            <div class="eyebrow">Patient Education</div>
+            <h3>Full-Arch Patient Education</h3>
+            <p>Plain-language overview of the full-arch fixed prosthesis journey — what it is, the process, and what to expect.</p>
+            <div class="libdl">
+              <a class="btn btn-out" href="forms/IW_Full-Arch_Patient_Education.pdf" target="_blank" rel="noopener">View PDF</a>
+              <a class="btn btn-out" href="forms/IW_Full-Arch_Patient_Education.docx" download>Word (editable)</a>
+            </div>
+          </div>
+          <div class="card lib">
+            <div class="eyebrow">Consent &amp; Expectations</div>
+            <h3>Expectations — Full-Arch Fixed Prosthesis</h3>
+            <p>Sets clear, realistic expectations for the fixed prosthesis — form, function, and long-term care.</p>
+            <div class="libdl">
+              <a class="btn btn-out" href="forms/IW_Expectations_Full-Arch_Fixed_Prosthesis.pdf" target="_blank" rel="noopener">View PDF</a>
+              <a class="btn btn-out" href="forms/IW_Expectations_Full-Arch_Fixed_Prosthesis.docx" download>Word (editable)</a>
+            </div>
+          </div>
+          <div class="card lib">
+            <div class="eyebrow">Consent &amp; Warranty</div>
+            <h3>Zirconia Prosthesis Warranty &amp; Consent</h3>
+            <p>Warranty terms and informed consent for the zirconia full-arch prosthesis.</p>
+            <div class="libdl">
+              <a class="btn btn-out" href="forms/IW_Zirconia_Prosthesis_Warranty_Consent.pdf" target="_blank" rel="noopener">View PDF</a>
+              <a class="btn btn-out" href="forms/IW_Zirconia_Prosthesis_Warranty_Consent.docx" download>Word (editable)</a>
+            </div>
+          </div>
+          <div class="card lib">
+            <div class="eyebrow">Post-Op Care</div>
+            <h3>Post-Surgery Soft Food Guide</h3>
+            <p>Soft-food guidance for the healing period — a simple handout patients can take home.</p>
+            <div class="libdl">
+              <a class="btn btn-out" href="forms/IW_Post-Surgery_Soft_Food_Guide.pdf" target="_blank" rel="noopener">View PDF</a>
+            </div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:18px">Every form is white-label. Download the Word version to add your practice logo and details, or hand out the ready-made PDF as-is.</div>
       </section>
 
       <!-- ===== WORKFLOW · SETUP GUIDE ===== -->
@@ -665,6 +713,24 @@ tr:last-child td{border-bottom:0}
             <div class="callout" style="margin-top:20px">Branding stays within IW guidelines — your accent, the IW system underneath.</div>
           </div>
         </div>
+        <div class="card" id="securityCard" style="margin-top:22px;max-width:640px">
+          <div class="eyebrow">Security</div>
+          <h3 style="margin-bottom:6px">Two-factor authentication</h3>
+          <p class="co" style="font-size:.94rem;color:var(--ink-70)" id="mfaStatus">Add a second layer of protection with an authenticator app.</p>
+          <div id="mfaSetup" style="display:none;margin-top:16px">
+            <p style="font-size:.9rem;margin-bottom:10px">Scan this in Google Authenticator, Authy, or 1Password, then enter the 6-digit code to confirm.</p>
+            <div id="mfaQR" style="width:170px;height:170px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px;margin-bottom:8px"></div>
+            <div class="mono" id="mfaSecret" style="font-size:.78rem;color:var(--ink-70);margin-bottom:12px;word-break:break-all"></div>
+            <div class="field" style="max-width:220px"><input id="mfaEnrollCode" placeholder="123 456" maxlength="6" inputmode="numeric" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:4px;font-family:var(--body)"></div>
+            <div id="mfaSetMsg" style="display:none;font-size:.85rem;margin:8px 0;padding:8px 11px;border-radius:4px"></div>
+            <button class="btn btn-out" onclick="mfaVerifyEnroll()">Verify &amp; enable</button>
+          </div>
+          <div style="margin-top:16px">
+            <button class="btn btn-out" id="mfaEnableBtn" onclick="mfaStartEnroll()">Set up 2-factor</button>
+            <button class="btn btn-out" id="mfaDisableBtn" onclick="mfaDisable()" style="display:none">Turn off 2-factor</button>
+          </div>
+          <p class="co" id="mfaUnavailable" style="display:none;font-size:.86rem;color:var(--ink-70);margin-top:12px">Two-factor activates once your secure workspace is connected.</p>
+        </div>
       </section>
 
     </div>
@@ -672,7 +738,7 @@ tr:last-child td{border-bottom:0}
 </div>
 
 <script>
-var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',
+var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
   coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
@@ -848,11 +914,59 @@ function tailorWorkflow(){
     wfSum.innerHTML='Stages marked <strong>Gap</strong> need equipment before you can run them in-house — highlighted from your assessment.'; }
 }
 
+/* ---- Two-factor (TOTP) enrollment in Settings ---- */
+var _enrollFactor=null;
+function mfaMsgSet(t,ok){ var m=document.getElementById('mfaSetMsg'); if(!m)return; m.textContent=t; m.style.display='block'; m.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.14)'; m.style.color=ok?'#245C5C':'#a33f28'; }
+function mfaInit(){
+  if(!(window.iwAuth && iwAuth.enabled())){
+    var u=document.getElementById('mfaUnavailable'); if(u)u.style.display='block';
+    var b=document.getElementById('mfaEnableBtn'); if(b)b.style.display='none';
+    return;
+  }
+  iwAuth.listFactors().then(function(f){
+    var has = f.data && f.data.totp && f.data.totp.length;
+    document.getElementById('mfaStatus').textContent = has ? 'Two-factor is ON for your account.' : 'Add a second layer of protection with an authenticator app.';
+    document.getElementById('mfaEnableBtn').style.display = has ? 'none':'inline-block';
+    document.getElementById('mfaDisableBtn').style.display = has ? 'inline-block':'none';
+  }).catch(function(){});
+}
+function mfaStartEnroll(){
+  iwAuth.enroll().then(function(res){
+    if(res.error){ document.getElementById('mfaSetup').style.display='block'; mfaMsgSet(res.error.message,false); return; }
+    _enrollFactor=res.data.id;
+    var qr=res.data.totp.qr_code;
+    document.getElementById('mfaQR').innerHTML='<img src="'+qr+'" alt="QR code" style="width:100%;height:100%">';
+    document.getElementById('mfaSecret').textContent='Manual key: '+res.data.totp.secret;
+    document.getElementById('mfaSetup').style.display='block';
+    document.getElementById('mfaEnableBtn').style.display='none';
+  });
+}
+function mfaVerifyEnroll(){
+  if(!_enrollFactor) return;
+  var code=document.getElementById('mfaEnrollCode').value.replace(/\s/g,'');
+  iwAuth.challenge(_enrollFactor).then(function(c){
+    if(c.error){ mfaMsgSet(c.error.message,false); return; }
+    iwAuth.verify(_enrollFactor,c.data.id,code).then(function(r){
+      if(r.error){ mfaMsgSet(r.error.message||'Invalid code — try again.',false); }
+      else { mfaMsgSet('Two-factor enabled.',true); document.getElementById('mfaSetup').style.display='none'; mfaInit(); }
+    });
+  });
+}
+function mfaDisable(){
+  iwAuth.listFactors().then(function(f){
+    var t=f.data && f.data.totp && f.data.totp[0]; if(!t) return;
+    iwAuth.unenroll(t.id).then(function(){ mfaInit(); });
+  });
+}
+
 /* init */
 calcRoi(); renderAds(); loadTailored(); tailorWorkflow();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
-<script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession('login.html');}</script>
+<script>
+if(window.iwAuth && iwAuth.enabled()){ iwAuth.requireSession('login.html'); }
+if(typeof mfaInit==='function'){ mfaInit(); }
+</script>
 </body>
 </html>
