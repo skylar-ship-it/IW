@@ -204,6 +204,37 @@ tr:last-child td{border-bottom:0}
 .eqstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
 .wfstep.gap .wfn{background:rgba(176,74,52,.14);color:#a33f28}
 .badge.wfstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
+/* ---- Lead Scoring v2 / Daily report / Consult reports ---- */
+.qrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.qrow:last-child{border-bottom:0}
+.qrow .qname{font-weight:500;min-width:130px}
+.qrow .qmeta{font-size:.85rem;color:var(--ink-70);flex:1;min-width:170px}
+.qbtn{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-70);font-family:var(--body)}
+.qbtn:hover{border-color:var(--accent);color:var(--accent)}
+.qbtn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.qbtn.gold:hover{background:var(--gold-soft)}
+.qbtn:disabled{opacity:.5;cursor:default}
+.flag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:12px;margin:1px 4px 1px 0;white-space:nowrap}
+.flag.new{background:rgba(201,169,110,.22);color:#8a6733}
+.flag.call{background:rgba(176,74,52,.15);color:#a33f28}
+.flag.quiet{background:rgba(36,92,92,.13);color:var(--teal)}
+.flag.enrolled{background:#e3efe7;color:#3f7d57}
+.leadrow{cursor:pointer}
+.leadrow:hover td{background:rgba(201,169,110,.05)}
+.leadrow.sel td{background:rgba(36,92,92,.06)}
+.notehist{max-height:280px;overflow-y:auto;margin-top:12px}
+.notehist .nh{padding:9px 0;border-bottom:1px solid var(--line);font-size:.88rem}
+.notehist .nh:last-child{border-bottom:0}
+.notehist .nh .nm{color:var(--ink-70);font-size:.75rem;margin-top:2px}
+.repline{padding:9px 0;font-size:.96rem;border-bottom:1px solid var(--line);display:flex;gap:9px;align-items:flex-start}
+.repline:last-child{border-bottom:0}
+.repline .rdot{flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:8px}
+.repline.done{color:var(--ink-70);opacity:.6}
+.repline.done .rdot{background:#3f7d57}
+.crep{border:1px solid var(--line);border-radius:9px;padding:16px;margin-bottom:12px;background:#fff}
+.crep .ch{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.crep .cb{font-size:.9rem;color:var(--ink-70);margin-top:8px;line-height:1.55}
+.crep .cb b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -238,6 +269,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="funnel" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">⧗</span> Funnel Plan</div>
       <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
       <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
+      <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
       <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
       <div class="navgroup">Pillar 4 · Inner Circle</div>
       <div class="nav-item" data-view="referral" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">⚯</span> Referral Network</div>
@@ -530,7 +562,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
       <section class="view" id="leadscore">
-        <p class="lead">Every lead, ranked by your live GoHighLevel <strong>Engagement Score</strong> — so your team always knows who to call first.</p>
+        <p class="lead">Every lead ranked by your live GoHighLevel <strong>Engagement Score</strong> — with credit, last activity, and today's exact call plan.</p>
         <div class="callout" id="lsNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Showing an <strong>example</strong> list. Your live leads load automatically when you're signed in and GoHighLevel is connected.</div>
         <div class="grid g4" style="margin-bottom:16px">
           <div class="card kpi"><div class="big" id="lsHot" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 20+</div></div>
@@ -538,36 +570,89 @@ tr:last-child td{border-bottom:0}
           <div class="card kpi"><div class="big" id="lsNurture">1</div><div class="lab">Nurture · 0–4</div></div>
           <div class="card kpi"><div class="big" id="lsCold">1</div><div class="lab">Cold · below 0</div></div>
         </div>
+
+        <!-- Daily report -->
+        <div class="card" style="margin-bottom:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+            <div>
+              <div class="eyebrow" style="margin-bottom:4px">Daily Report</div>
+              <h3 style="margin-bottom:2px">Today's Call Plan</h3>
+              <div style="font-size:.85rem;color:var(--ink-70)" id="drStamp"></div>
+            </div>
+            <button class="qbtn" id="drCopy" onclick="copyDaily()">Copy report</button>
+          </div>
+          <div id="drLines" style="margin-top:8px"></div>
+        </div>
+
+        <!-- Priority queue + nurture watch -->
+        <div class="split" style="margin-bottom:18px">
+          <div class="card">
+            <div class="eyebrow">Priority Queue</div>
+            <h3 style="margin-bottom:4px">🔥 New + high credit — call 2× today</h3>
+            <p style="font-size:.88rem;color:var(--ink-70);margin-bottom:6px">Leads added in the last 48 hours with strong credit. Two call attempts on day one — log each attempt here and the daily report updates itself.</p>
+            <div id="pqBody"></div>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Nurture Watch</div>
+            <h3 style="margin-bottom:4px">High score, gone quiet</h3>
+            <p style="font-size:.88rem;color:var(--ink-70);margin-bottom:6px">Strong leads with no activity for 5+ days — often ready, but nervous. One click enrolls them in the gentle nurture sequence in GoHighLevel.</p>
+            <div id="nwBody"></div>
+          </div>
+        </div>
+
+        <!-- Full list + notes panel -->
         <div class="split">
           <div class="card">
-            <div class="eyebrow">Leads by Engagement Score</div>
-            <h3 style="margin-bottom:12px">Call list — highest engagement first</h3>
+            <div class="eyebrow">All Leads</div>
+            <h3 style="margin-bottom:12px">Ranked by engagement — click a lead for notes</h3>
             <table>
-              <thead><tr><th style="text-align:left">Lead</th><th style="text-align:right">Score</th><th style="text-align:left">Band</th><th style="text-align:left">Top signals</th></tr></thead>
-              <tbody id="lsBody">
-              <tr><td><strong>Maria G.</strong></td><td style="text-align:right"><strong>82</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Financing approved · ASAP · showed</td></tr>
-              <tr><td><strong>James T.</strong></td><td style="text-align:right"><strong>74</strong></td><td><span class="lsb" style="background:var(--gold);color:var(--ink)">Hot</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked consult · credit 700+</td></tr>
-              <tr><td><strong>Robert P.</strong></td><td style="text-align:right"><strong>58</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">ASAP · replied twice</td></tr>
-              <tr><td><strong>Linda M.</strong></td><td style="text-align:right"><strong>44</strong></td><td><span class="lsb" style="background:rgba(201,169,110,.2);color:#8a6733">Warm</span></td><td style="font-size:.86rem;color:var(--ink-70)">Booked · credit 620–699</td></tr>
-              <tr><td><strong>David S.</strong></td><td style="text-align:right"><strong>30</strong></td><td><span class="lsb" style="background:rgba(36,92,92,.14);color:var(--teal)">Nurture</span></td><td style="font-size:.86rem;color:var(--ink-70)">Get-pricing form · 1 reply</td></tr>
-              <tr><td><strong>Karen W.</strong></td><td style="text-align:right"><strong>12</strong></td><td><span class="lsb" style="background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)">Cold</span></td><td style="font-size:.86rem;color:var(--ink-70)">14 days no engagement</td></tr>
-              </tbody>
+              <thead><tr><th>Lead</th><th style="text-align:right">Score</th><th>Band</th><th>Credit</th><th>Last Activity (CDT)</th><th>Flags</th></tr></thead>
+              <tbody id="lsBody"></tbody>
             </table>
             <div class="callout" style="margin-top:16px" id="lsFoot">Pulls live from <strong>GoHighLevel</strong> and re-ranks every time you open this page.</div>
           </div>
+          <div class="card" id="leadPanel">
+            <div class="eyebrow">Lead Notes &amp; Call Log</div>
+            <div id="lpBody"><p style="color:var(--ink-70);font-size:.94rem">Select a lead from the list to see details, log call attempts, and add notes. Notes are saved to the portal database and appear in the daily report.</p></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <div class="accordion"><div>
+            <div class="ac-h" onclick="acc(this)">How the Engagement Score works <span>＋</span></div>
+            <div class="ac-b">This is GoHighLevel's native <strong>Engagement Score</strong> — the same number on each contact card and in your <em>Hottest Leads</em> smart list. Replies, answered calls, and bookings move it up; silence and opt-outs move it down. Edit the point rules in GHL (Contact → Actions → Engagement Score) and this page follows. Bands: Hot 20+ · Warm 5–19 · Nurture 0–4 · Cold below 0. Credit comes from the intake form (self-reported); last activity is the most recent touch GoHighLevel has seen on the contact, shown in Central time.</div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- ===== DTC · CONSULT REPORTS ===== -->
+      <section class="view" id="consults">
+        <p class="lead">After every consult, the coordinator files a two-minute self-report. Kelly reviews each one and coaches from it — switch the role toggle to <strong>Practice Manager</strong> to review.</p>
+        <div class="callout" style="margin-bottom:16px;border-left:3px solid var(--gold)">Keep reports PHI-light: <strong>first name + last initial only</strong>, no clinical detail. Consult videos stay in your HIPAA-covered systems — not in the portal.</div>
+        <div class="split">
           <div class="card">
-            <div class="eyebrow">How the score works</div>
-            <h3 style="margin-bottom:12px">What moves Engagement Score</h3>
-            <p style="color:var(--ink-70);font-size:.92rem;margin-bottom:14px">This is GoHighLevel's native <strong>Engagement Score</strong> — the same number on each contact card and in your <em>Hottest Leads</em> smart list. You set the point rules in GHL; the portal reads and ranks by them. Typical rules:</p>
-            <table>
-              <tr><td>Replied to a text / email</td><td style="text-align:right"><strong>+</strong></td></tr>
-              <tr><td>Answered / returned a call</td><td style="text-align:right"><strong>+</strong></td></tr>
-              <tr><td>Booked a consultation</td><td style="text-align:right"><strong>+</strong></td></tr>
-              <tr><td>Strong-fit form answers (ASAP, credit)</td><td style="text-align:right"><strong>+</strong></td></tr>
-              <tr><td>Low-fit answers</td><td style="text-align:right"><strong>−</strong></td></tr>
-              <tr><td>No engagement / opted out</td><td style="text-align:right"><strong>−</strong></td></tr>
-            </table>
-            <div class="callout" style="margin-top:16px">Fully transparent and fully yours — <strong>edit the point rules in GHL</strong> (Contact → Actions → Engagement Score) and this list follows.</div>
+            <div class="eyebrow">New Report</div>
+            <h3 style="margin-bottom:14px">Post-Consult Self-Report</h3>
+            <form id="crForm" onsubmit="submitConsult(event)">
+              <div class="field"><label>Patient (first name + last initial)</label><input id="crRef" required placeholder="e.g. James T."></div>
+              <div class="split" style="gap:14px;margin-bottom:0">
+                <div class="field"><label>Consult date</label><input id="crDate" type="date"></div>
+                <div class="field"><label>Outcome</label><select id="crOutcome"><option>Scheduled surgery</option><option>Scheduled follow-up</option><option>Thinking it over</option><option>Financing pending</option><option>Not a fit</option><option>No show</option></select></div>
+              </div>
+              <div class="field"><label>What went well</label><textarea id="crWell" rows="2" placeholder="Rapport, moments that landed…"></textarea></div>
+              <div class="field"><label>Objections / concerns heard</label><textarea id="crObj" rows="2" placeholder="Fear, price, timing, spouse…"></textarea></div>
+              <div class="field"><label>Next step committed</label><input id="crNext" placeholder="e.g. Financing app Tuesday, follow-up call Friday"></div>
+              <div class="field"><label>Self-score — how well did you run this consult? (1–5)</label>
+                <select id="crScore"><option>5</option><option>4</option><option selected>3</option><option>2</option><option>1</option></select></div>
+              <button class="btn btn-accent" type="submit">Submit Report</button>
+              <div id="crMsg" style="display:none;margin-top:10px;font-size:.88rem;padding:9px 12px;border-radius:5px"></div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="eyebrow">Review Queue</div>
+            <h3 style="margin-bottom:4px">Coaching queue</h3>
+            <p style="font-size:.88rem;color:var(--ink-70);margin-bottom:12px">Newest first. Feedback appears here for the coordinator automatically once reviewed.</p>
+            <div id="cqBody"><p style="color:var(--ink-70);font-size:.92rem">No reports yet.</p></div>
           </div>
         </div>
       </section>
@@ -765,7 +850,7 @@ tr:last-child td{border-bottom:0}
 <script>
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
-  coordinator:'Coordinator Toolkit',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
+  coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
@@ -1064,7 +1149,10 @@ function applyPractice(){
   }).catch(function(){});
 }
 
-/* ---- Live lead feed (GoHighLevel Engagement Score) ---- */
+/* ============================================================
+   Lead Scoring v2 — live GHL feed + notes + call log + nurture
+   + daily report + consult reports (Kelly's review queue)
+   ============================================================ */
 function lsBandStyle(band){
   if(band==='Hot')     return 'background:var(--gold);color:var(--ink)';
   if(band==='Warm')    return 'background:rgba(201,169,110,.2);color:#8a6733';
@@ -1072,34 +1160,320 @@ function lsBandStyle(band){
   return 'background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)';
 }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+var IW = { leads:[], priority:[], quiet:[], notesToday:[], notesCache:{}, consults:[], selectedId:null, live:false, consultsLive:false };
+
+function curRole(){ var s=document.getElementById('roleSelect'); return s ? s.value : 'owner'; }
+
+/* fetch wrapper — attaches the Supabase login token when available */
+function apiFetch(path, opts){
+  opts = opts || {};
+  var run = function(tok){
+    opts.headers = opts.headers || {};
+    if (tok) opts.headers['Authorization'] = 'Bearer ' + tok;
+    if (opts.body && !opts.headers['Content-Type']) opts.headers['Content-Type'] = 'application/json';
+    return fetch(path, opts).then(function(r){ return r.json(); });
+  };
+  if (window.iwAuth && iwAuth.enabled()) return iwAuth.accessToken().then(run);
+  return Promise.reject(new Error('preview'));
+}
+
+/* ---- example data so the page demos beautifully before login ---- */
+function demoLeads(){
+  var now = Date.now(), H = 3600*1000, D = 24*H;
+  return [
+    {id:'demo1',name:'Maria G.',fullName:'Maria G.',phone:null,score:82,band:'Hot',credit:'700+',creditHigh:true,creditMid:false,addedAt:now-9*D,isNew:false,lastActivity:now-2*H,lastActivityCDT:'Today, 9:14 AM CDT',daysInactive:0,callToday:false,needsNurture:false,nurtureEnrolled:false},
+    {id:'demo2',name:'James T.',fullName:'James T.',phone:null,score:74,band:'Hot',credit:'700+',creditHigh:true,creditMid:false,addedAt:now-20*H,isNew:true,lastActivity:now-20*H,lastActivityCDT:'Yesterday, 4:02 PM CDT',daysInactive:0,callToday:true,needsNurture:false,nurtureEnrolled:false},
+    {id:'demo3',name:'Robert P.',fullName:'Robert P.',phone:null,score:58,band:'Warm',credit:'620-699',creditHigh:false,creditMid:true,addedAt:now-30*H,isNew:true,lastActivity:now-6*H,lastActivityCDT:'Today, 7:40 AM CDT',daysInactive:0,callToday:true,needsNurture:false,nurtureEnrolled:false},
+    {id:'demo4',name:'Linda M.',fullName:'Linda M.',phone:null,score:44,band:'Warm',credit:'700+',creditHigh:true,creditMid:false,addedAt:now-30*D,isNew:false,lastActivity:now-6*D,lastActivityCDT:'Jul 19, 2:10 PM CDT',daysInactive:6,callToday:false,needsNurture:true,nurtureEnrolled:false},
+    {id:'demo5',name:'David S.',fullName:'David S.',phone:null,score:30,band:'Hot',credit:'—',creditHigh:false,creditMid:false,addedAt:now-40*D,isNew:false,lastActivity:now-9*D,lastActivityCDT:'Jul 16, 11:05 AM CDT',daysInactive:9,callToday:false,needsNurture:true,nurtureEnrolled:false},
+    {id:'demo6',name:'Karen W.',fullName:'Karen W.',phone:null,score:12,band:'Cold',credit:'Under 620',creditHigh:false,creditMid:false,addedAt:now-50*D,isNew:false,lastActivity:now-14*D,lastActivityCDT:'Jul 11, 8:30 AM CDT',daysInactive:14,callToday:false,needsNurture:false,nurtureEnrolled:true}
+  ];
+}
+function demoConsults(){
+  return [{id:'demo-c1',patient_ref:'Maria G.',consult_date:'2026-07-24',outcome:'Thinking it over',
+    went_well:'Great rapport — she opened up about ten years of avoiding the dentist.',
+    objections:'Fear of the surgery itself; wants to talk it over with her daughter.',
+    next_step:'Follow-up call Monday with financing options.',self_score:4,tc_name:'coordinator@practice.com',
+    status:'Awaiting Review',kelly_feedback:null,created_at:new Date().toISOString()}];
+}
+function initLeadDemo(){
+  if (IW.live) return;
+  IW.leads = demoLeads();
+  IW.priority = IW.leads.filter(function(l){ return l.callToday; });
+  IW.quiet = IW.leads.filter(function(l){ return l.needsNurture; });
+  IW.notesToday = [{contact_id:'demo3',contact_name:'Robert P.',kind:'call',body:'No answer',author:'you',created_at:new Date().toISOString()}];
+  IW.consults = demoConsults();
+  renderLeadUI(); renderConsults();
+}
+
+/* ---- live loads ---- */
 function loadLeads(){
   if(!(window.iwAuth && iwAuth.enabled())) return;            /* preview mode → keep example */
   var loc = window.IW_LOCATION;
-  iwAuth.accessToken().then(function(tok){
-    var url = '/api/leads' + (loc ? ('?location=' + encodeURIComponent(loc)) : '');
-    return fetch(url, { headers: tok ? { Authorization: 'Bearer ' + tok } : {} });
-  }).then(function(r){ return r ? r.json() : null; }).then(function(d){
+  var url = '/api/leads' + (loc ? ('?location=' + encodeURIComponent(loc)) : '');
+  apiFetch('/api/notes?today=1').then(function(n){
+    if (n && n.ok) IW.notesToday = n.notes || [];
+    renderLeadUI();
+  }).catch(function(){});
+  apiFetch(url).then(function(d){
     if(!d || !d.ok || !Array.isArray(d.leads) || !d.leads.length) return;  /* keep example on any failure */
+    IW.live = true;
+    IW.leads = d.leads; IW.priority = d.priority || []; IW.quiet = d.quiet || [];
+    IW.selectedId = null; IW.notesCache = {};
     var note=document.getElementById('lsNote'); if(note) note.style.display='none';
     var c=d.counts||{};
     var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=(v||0); };
     set('lsHot',c.Hot); set('lsWarm',c.Warm); set('lsNurture',c.Nurture); set('lsCold',c.Cold);
-    var body=document.getElementById('lsBody');
-    if(body){
-      body.innerHTML = d.leads.map(function(l){
-        return '<tr><td><strong>'+esc(l.name)+'</strong></td>'+
-               '<td style="text-align:right"><strong>'+l.score+'</strong></td>'+
-               '<td><span class="lsb" style="'+lsBandStyle(l.band)+'">'+esc(l.band)+'</span></td>'+
-               '<td style="font-size:.86rem;color:var(--ink-70)">'+esc(l.signals||'—')+'</td></tr>';
-      }).join('');
-    }
     var foot=document.getElementById('lsFoot');
     if(foot) foot.innerHTML='Live from <strong>GoHighLevel</strong> · '+d.count+' leads · re-ranked each time you open this page.';
+    renderLeadUI();
+  }).catch(function(){});
+  loadConsults();
+}
+function loadConsults(){
+  apiFetch('/api/consults').then(function(d){
+    if(d && d.ok && Array.isArray(d.reports)){ IW.consultsLive = true; IW.consults = d.reports; renderConsults(); }
   }).catch(function(){});
 }
 
+/* ---- helpers ---- */
+function findLead(id){
+  var pools=[IW.leads, IW.priority, IW.quiet];
+  for(var p=0;p<pools.length;p++) for(var i=0;i<pools[p].length;i++) if(pools[p][i].id===id) return pools[p][i];
+  return null;
+}
+function updateLead(id, fn){
+  [IW.leads, IW.priority, IW.quiet].forEach(function(pool){
+    pool.forEach(function(l){ if(l.id===id) fn(l); });
+  });
+}
+function callsToday(id){
+  return IW.notesToday.filter(function(n){ return n.contact_id===id && n.kind==='call'; }).length;
+}
+function agoText(ms){
+  if(!ms) return '';
+  var h = Math.round((Date.now()-ms)/3600000);
+  if (h < 1) return 'just now';
+  if (h < 24) return h + 'h ago';
+  return Math.round(h/24) + 'd ago';
+}
+
+/* ---- render: everything on the lead scoring page ---- */
+function renderLeadUI(){ renderPQ(); renderNW(); renderTable(); renderDaily(); renderPanel(); }
+
+function renderPQ(){
+  var host=document.getElementById('pqBody'); if(!host) return;
+  if(!IW.priority.length){ host.innerHTML='<p style="color:var(--ink-70);font-size:.92rem;padding:10px 0">No new high-credit leads right now — the moment one lands, they appear here.</p>'; return; }
+  host.innerHTML = IW.priority.map(function(l){
+    var n = callsToday(l.id);
+    var status = n>=2 ? '<span class="flag enrolled">2/2 calls ✓</span>' : '<span class="flag call">'+n+'/2 calls today</span>';
+    return '<div class="qrow"><div class="qname">'+esc(l.name)+'</div>'+
+      '<div class="qmeta">Added '+agoText(l.addedAt)+' · credit <strong>'+esc(l.credit)+'</strong> · score '+l.score+' '+status+'</div>'+
+      '<button class="qbtn gold" onclick="logCall(\''+esc(l.id)+'\',\'Answered\')">✓ Answered</button>'+
+      '<button class="qbtn" onclick="logCall(\''+esc(l.id)+'\',\'No answer\')">✗ No answer</button>'+
+      '<button class="qbtn" onclick="openLead(\''+esc(l.id)+'\')">Notes</button></div>';
+  }).join('');
+}
+
+function renderNW(){
+  var host=document.getElementById('nwBody'); if(!host) return;
+  if(!IW.quiet.length){ host.innerHTML='<p style="color:var(--ink-70);font-size:.92rem;padding:10px 0">Nobody is slipping — no high-value leads have gone quiet.</p>'; return; }
+  host.innerHTML = IW.quiet.map(function(l){
+    return '<div class="qrow"><div class="qname">'+esc(l.name)+'</div>'+
+      '<div class="qmeta">'+(l.daysInactive!=null?('<strong>'+l.daysInactive+' days</strong> quiet'):'quiet')+' · score '+l.score+' · credit '+esc(l.credit)+'</div>'+
+      '<button class="qbtn gold" onclick="enrollNurture(\''+esc(l.id)+'\')">♡ Enroll in Nurture</button>'+
+      '<button class="qbtn" onclick="openLead(\''+esc(l.id)+'\')">Notes</button></div>';
+  }).join('');
+}
+
+function renderTable(){
+  var body=document.getElementById('lsBody'); if(!body) return;
+  body.innerHTML = IW.leads.map(function(l){
+    var flags='';
+    if(l.callToday) flags+='<span class="flag call">Call 2×</span>';
+    else if(l.isNew) flags+='<span class="flag new">New</span>';
+    if(l.needsNurture) flags+='<span class="flag quiet">Gone quiet</span>';
+    if(l.nurtureEnrolled) flags+='<span class="flag enrolled">Nurturing</span>';
+    return '<tr class="leadrow'+(IW.selectedId===l.id?' sel':'')+'" onclick="openLead(\''+esc(l.id)+'\')">'+
+      '<td><strong>'+esc(l.name)+'</strong></td>'+
+      '<td style="text-align:right"><strong>'+l.score+'</strong></td>'+
+      '<td><span class="lsb" style="'+lsBandStyle(l.band)+'">'+esc(l.band)+'</span></td>'+
+      '<td>'+esc(l.credit||'—')+'</td>'+
+      '<td style="font-size:.85rem;color:var(--ink-70)">'+esc(l.lastActivityCDT||'—')+'</td>'+
+      '<td>'+(flags||'<span style="color:var(--ink-70);font-size:.85rem">—</span>')+'</td></tr>';
+  }).join('');
+}
+
+/* ---- daily report ---- */
+function dailyLines(){
+  var lines=[];
+  IW.priority.forEach(function(l){
+    var n=callsToday(l.id);
+    if(n>=2)      lines.push({t:l.name+' — both day-one calls made ✓', done:true});
+    else if(n===1)lines.push({t:l.name+' needs a 2nd call today (1 of 2 done) — new lead, credit '+l.credit, done:false});
+    else          lines.push({t:l.name+' needs call #1 — NEW lead, credit '+l.credit+'. Call now, again this afternoon.', done:false});
+  });
+  IW.leads.forEach(function(l){
+    if(l.band==='Hot' && !l.callToday && !l.nurtureEnrolled && !l.needsNurture && callsToday(l.id)===0)
+      lines.push({t:l.name+' is HOT (score '+l.score+') — no call logged yet today', done:false});
+  });
+  IW.quiet.forEach(function(l){
+    lines.push({t:l.name+' — '+(l.daysInactive!=null?(l.daysInactive+' days'):'days')+' quiet with '+(l.creditHigh?('credit '+l.credit):('score '+l.score))+' → enroll in gentle nurture', done:false});
+  });
+  if(!lines.length) lines.push({t:'Nothing urgent. Work the Warm list top-down and confirm upcoming consults.', done:false});
+  return lines;
+}
+function renderDaily(){
+  var host=document.getElementById('drLines'); if(!host) return;
+  var stamp=document.getElementById('drStamp');
+  if(stamp){ try{ stamp.textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Chicago',weekday:'long',month:'long',day:'numeric'})+' · regenerates live as calls are logged'; }catch(e){} }
+  host.innerHTML = dailyLines().map(function(x){
+    return '<div class="repline'+(x.done?' done':'')+'"><span class="rdot"></span><span>'+esc(x.t)+'</span></div>';
+  }).join('');
+}
+function copyDaily(){
+  var d=''; try{ d=new Date().toLocaleDateString('en-US',{timeZone:'America/Chicago',weekday:'long',month:'long',day:'numeric'});}catch(e){}
+  var txt='IW Daily Call Report — '+d+'\n'+dailyLines().map(function(x){return (x.done?'[done] ':'• ')+x.t;}).join('\n');
+  var btn=document.getElementById('drCopy');
+  var flash=function(msg){ if(btn){ btn.textContent=msg; setTimeout(function(){ btn.textContent='Copy report'; },1600);} };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){flash('Copied ✓');},function(){flash('Copy failed');}); }
+  else flash('Copy failed');
+}
+
+/* ---- actions ---- */
+function logCall(id, outcome){
+  var l=findLead(id); if(!l) return;
+  var row={contact_id:id,contact_name:l.fullName||l.name,kind:'call',body:outcome,author:'you',created_at:new Date().toISOString()};
+  IW.notesToday.unshift(row);
+  if(IW.notesCache[id]) IW.notesCache[id].unshift(row);
+  if(IW.live) apiFetch('/api/notes',{method:'POST',body:JSON.stringify({contact_id:id,contact_name:row.contact_name,kind:'call',body:outcome})}).catch(function(){});
+  renderLeadUI();
+}
+function enrollNurture(id){
+  var l=findLead(id); if(!l) return;
+  updateLead(id,function(x){ x.nurtureEnrolled=true; x.needsNurture=false; });
+  IW.quiet = IW.quiet.filter(function(q){ return q.id!==id; });
+  var row={contact_id:id,contact_name:l.fullName||l.name,kind:'nurture',body:'Enrolled in gentle nurture sequence',author:'you',created_at:new Date().toISOString()};
+  IW.notesToday.unshift(row);
+  if(IW.notesCache[id]) IW.notesCache[id].unshift(row);
+  if(IW.live) apiFetch('/api/nurture',{method:'POST',body:JSON.stringify({contact_id:id,contact_name:l.fullName||l.name,location:window.IW_LOCATION||undefined})}).catch(function(){});
+  renderLeadUI();
+}
+function openLead(id){
+  IW.selectedId=id; renderPanel(); renderTable();
+  if(IW.live && !IW.notesCache[id]){
+    apiFetch('/api/notes?contact='+encodeURIComponent(id)).then(function(d){
+      if(d && d.ok){ IW.notesCache[id]=d.notes||[]; renderPanel(); }
+    }).catch(function(){});
+  }
+}
+function renderPanel(){
+  var host=document.getElementById('lpBody'); if(!host) return;
+  var l=findLead(IW.selectedId);
+  if(!l){ host.innerHTML='<p style="color:var(--ink-70);font-size:.94rem">Select a lead from the list to see details, log call attempts, and add notes. Notes are saved to the portal database and appear in the daily report.</p>'; return; }
+  var hist=IW.notesCache[l.id]||IW.notesToday.filter(function(n){return n.contact_id===l.id;});
+  var histHtml=hist.length?hist.map(function(n){
+    var icon=n.kind==='call'?'☏':(n.kind==='nurture'?'♡':'✎');
+    var when=''; try{ when=new Date(n.created_at).toLocaleString('en-US',{timeZone:'America/Chicago',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CDT'; }catch(e){}
+    return '<div class="nh">'+icon+' '+esc(n.body)+'<div class="nm">'+esc(n.author||'')+' · '+esc(when)+'</div></div>';
+  }).join(''):'<p style="color:var(--ink-70);font-size:.88rem;padding:8px 0">No notes yet.</p>';
+  host.innerHTML=
+    '<h3 style="margin-bottom:2px">'+esc(l.fullName||l.name)+'</h3>'+
+    '<div style="font-size:.88rem;color:var(--ink-70);margin-bottom:10px">Score <strong>'+l.score+'</strong> ('+esc(l.band)+') · Credit <strong>'+esc(l.credit)+'</strong> · Last activity '+esc(l.lastActivityCDT||'—')+
+    (l.phone?(' · <a href="tel:'+esc(l.phone)+'" style="color:var(--accent);font-weight:500">'+esc(l.phone)+'</a>'):'')+'</div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'+
+      '<button class="qbtn gold" onclick="logCall(\''+esc(l.id)+'\',\'Answered\')">✓ Answered</button>'+
+      '<button class="qbtn" onclick="logCall(\''+esc(l.id)+'\',\'No answer\')">✗ No answer</button>'+
+      '<button class="qbtn" onclick="logCall(\''+esc(l.id)+'\',\'Voicemail\')">☏ Voicemail</button>'+
+      (l.needsNurture?'<button class="qbtn" onclick="enrollNurture(\''+esc(l.id)+'\')">♡ Enroll in Nurture</button>':'')+
+    '</div>'+
+    '<div class="field" style="margin-bottom:8px"><textarea id="lpNote" rows="2" placeholder="Add a note — what they said, what to say next time…"></textarea></div>'+
+    '<button class="qbtn gold" onclick="addNote()">Save note</button>'+
+    '<div class="notehist">'+histHtml+'</div>';
+}
+function addNote(){
+  var ta=document.getElementById('lpNote'); if(!ta||!ta.value.trim()) return;
+  var l=findLead(IW.selectedId); if(!l) return;
+  var row={contact_id:l.id,contact_name:l.fullName||l.name,kind:'note',body:ta.value.trim(),author:'you',created_at:new Date().toISOString()};
+  (IW.notesCache[l.id]=IW.notesCache[l.id]||[]).unshift(row);
+  IW.notesToday.unshift(row);
+  if(IW.live) apiFetch('/api/notes',{method:'POST',body:JSON.stringify({contact_id:l.id,contact_name:row.contact_name,kind:'note',body:row.body})}).catch(function(){});
+  ta.value=''; renderPanel();
+}
+
+/* ---- consult reports ---- */
+function renderConsults(){
+  var host=document.getElementById('cqBody'); if(!host) return;
+  var canReview=(curRole()==='owner'||curRole()==='pm');
+  if(!IW.consults.length){ host.innerHTML='<p style="color:var(--ink-70);font-size:.92rem">No reports yet — they appear here the moment a coordinator submits one.</p>'; return; }
+  host.innerHTML=IW.consults.map(function(c){
+    var awaiting=c.status!=='Reviewed';
+    var head='<div class="ch"><div><strong>'+esc(c.patient_ref)+'</strong> <span style="color:var(--ink-70);font-size:.85rem">'+esc(c.consult_date||'')+(c.outcome?(' · '+esc(c.outcome)):'')+'</span></div>'+
+      '<span class="badge '+(awaiting?'b-amber':'b-green')+'">'+(awaiting?'Awaiting Review':'Reviewed')+'</span></div>';
+    var body='<div class="cb">'+
+      (c.went_well?('<div><b>Went well:</b> '+esc(c.went_well)+'</div>'):'')+
+      (c.objections?('<div><b>Objections:</b> '+esc(c.objections)+'</div>'):'')+
+      (c.next_step?('<div><b>Next step:</b> '+esc(c.next_step)+'</div>'):'')+
+      '<div><b>Self-score:</b> '+(c.self_score||'—')+'/5 · '+esc(c.tc_name||'')+'</div>'+
+      (c.kelly_feedback?('<div style="margin-top:8px;padding:10px 12px;border-left:3px solid var(--gold);background:rgba(201,169,110,.07)"><b>Coach feedback'+(c.coach_score?(' · '+c.coach_score+'/5'):'')+':</b> '+esc(c.kelly_feedback)+'</div>'):'')+
+      '</div>';
+    var review='';
+    if(canReview&&awaiting){
+      review='<div style="margin-top:10px"><textarea id="fb-'+esc(c.id)+'" rows="2" placeholder="Coaching feedback for this consult…" style="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-family:var(--body);font-size:.88rem"></textarea>'+
+      '<div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap">'+
+      '<select id="cs-'+esc(c.id)+'" style="padding:7px 9px;border:1px solid var(--line);border-radius:5px;font-family:var(--body)"><option value="">Coach score…</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>'+
+      '<button class="qbtn gold" onclick="reviewConsult(\''+esc(c.id)+'\')">Send feedback &amp; mark reviewed</button></div></div>';
+    }
+    return '<div class="crep">'+head+body+review+'</div>';
+  }).join('');
+}
+function submitConsult(e){
+  e.preventDefault();
+  var msg=document.getElementById('crMsg');
+  var show=function(t,ok){ if(msg){ msg.textContent=t; msg.style.display='block'; msg.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.14)'; msg.style.color=ok?'#245C5C':'#a33f28'; } };
+  var payload={
+    patient_ref:document.getElementById('crRef').value.trim(),
+    consult_date:document.getElementById('crDate').value||null,
+    outcome:document.getElementById('crOutcome').value,
+    went_well:document.getElementById('crWell').value.trim(),
+    objections:document.getElementById('crObj').value.trim(),
+    next_step:document.getElementById('crNext').value.trim(),
+    self_score:+document.getElementById('crScore').value
+  };
+  if(!payload.patient_ref){ show('Patient reference is required.',false); return; }
+  var local=function(){
+    IW.consults.unshift(Object.assign({id:'local-'+Math.random().toString(36).slice(2),tc_name:'you',status:'Awaiting Review',created_at:new Date().toISOString()},payload));
+    renderConsults(); document.getElementById('crForm').reset(); show('Report submitted ✓',true);
+  };
+  if(window.iwAuth&&iwAuth.enabled()){
+    apiFetch('/api/consults',{method:'POST',body:JSON.stringify(payload)}).then(function(d){
+      if(d&&d.ok){ document.getElementById('crForm').reset(); show('Report submitted ✓ — Kelly will see it in the review queue.',true); loadConsults(); }
+      else show((d&&d.error)||'Could not save — try again.',false);
+    }).catch(function(){ show('Could not save — check your connection.',false); });
+  } else local();
+}
+function reviewConsult(id){
+  var fb=document.getElementById('fb-'+id), cs=document.getElementById('cs-'+id);
+  var feedback=fb?fb.value.trim():'', score=cs&&cs.value?+cs.value:null;
+  if(!feedback){ if(fb){fb.placeholder='Write a line of coaching feedback first…'; fb.focus();} return; }
+  var apply=function(){
+    IW.consults.forEach(function(c){ if(String(c.id)===String(id)){ c.status='Reviewed'; c.kelly_feedback=feedback; c.coach_score=score; } });
+    renderConsults();
+  };
+  if(IW.consultsLive){
+    apiFetch('/api/consults',{method:'PATCH',body:JSON.stringify({id:id,kelly_feedback:feedback,coach_score:score})}).then(function(d){
+      if(d&&d.ok) loadConsults(); else apply();
+    }).catch(apply);
+  } else apply();
+}
+
+/* re-render role-dependent widgets when the role toggle changes */
+var _setRoleBase=setRole;
+setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
+
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); initLeadDemo();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>

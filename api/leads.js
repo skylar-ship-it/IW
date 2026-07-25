@@ -1,35 +1,38 @@
 /* ============================================================
-   IW Partner Portal — live "hottest leads" from GoHighLevel
+   IW Partner Portal — live leads from GoHighLevel (v2)
    Vercel serverless function.  URL: /api/leads?location=<id>
    ------------------------------------------------------------
-   Ranks leads by GHL's native ENGAGEMENT SCORE (the number you
-   see on the contact card under Actions → Engagement Score, and
-   in your "My Hottest Leads" smart list).
+   v2 adds, per lead:
+     • credit          — "700+", "620-699", "Under 620" or "—"
+     • lastActivity    — most recent activity timestamp (ms)
+     • lastActivityCDT — formatted in America/Chicago
+     • daysInactive    — whole days since last activity
+     • isNew           — added within the last 48 hours
+     • callToday       — NEW + high credit → call 2x today
+     • needsNurture    — high score/credit but gone quiet ≥5 days
+     • nurtureEnrolled — already tagged 'gentle-nurture'
+     • id, phone       — so the portal can log calls & notes
 
-   The engagement score lives on each contact as:
-       contact.scoring = { "<scoreProfileId>": <number> }
-   It is NOT returned by the bulk list endpoint — only by the
-   search endpoint — so this function uses POST /contacts/search.
-
-   SECRETS live in Vercel → Project Settings → Environment Variables
-   (never in this file, never in the repo):
-
-     GHL_PULVER_TOKEN     = the Private Integration token (pit-...) for Pulver / IW
+   SECRETS (Vercel → Project Settings → Environment Variables):
+     GHL_PULVER_TOKEN     = Private Integration token (pit-...)
      GHL_PULVER_LOCATION  = ua1JQW5n2yE3u80HvuUs
-     GHL_WMOS_TOKEN       = (later) West Michigan's token
-     GHL_WMOS_LOCATION    = (later) West Michigan's location id
-     SUPABASE_URL         = https://ntyrmagxwvtnknswofku.supabase.co   (optional; verifies login)
-     SUPABASE_ANON        = your publishable/anon key                   (optional)
+     GHL_WMOS_TOKEN / GHL_WMOS_LOCATION = (later)
+     SUPABASE_URL         = https://<project>.supabase.co
+     SUPABASE_ANON        = publishable/anon key (login check)
    ============================================================ */
 
-/* The Engagement Score profile id for the Implanted Wisdom location.
-   If GHL ever changes it, the code falls back to the highest score
-   value present, so the tracker keeps working. */
 const SCORE_PROFILE_ID = '6a2318dce606719d3a50d701';
-
-/* Band cut-offs on the engagement-score scale (signed points).
-   Tune these as scores grow — today leads land roughly -10..+10. */
 const BANDS = { hot: 20, warm: 5, nurture: 0 };
+
+/* GHL custom-field ids (Pulver location) */
+const CF_CREDIT_RANGE = '4LIGZNquXiHK51kxwMxD';   /* IW Credit Score Range: 700+ / 620-699 / Under 620 */
+const CF_CREDIT_TEXT  = 'IyAFLts8rhzbozCwWdNu';   /* legacy free-text Credit Scores */
+
+/* Flag thresholds */
+const NEW_HOURS   = 48;   /* "new lead" window */
+const QUIET_DAYS  = 5;    /* days of silence before the nurture flag */
+const HIGH_SCORE  = 5;    /* engagement score considered "high" (Warm+) */
+const NURTURE_TAG = 'gentle-nurture';
 
 function bandFor(score){
   if (score >= BANDS.hot)     return 'Hot';
@@ -38,7 +41,6 @@ function bandFor(score){
   return 'Cold';
 }
 
-/* Pull the engagement score out of contact.scoring */
 function engagementScore(c){
   var s = c && c.scoring;
   if (!s || typeof s !== 'object') return 0;
@@ -47,14 +49,67 @@ function engagementScore(c){
   return vals.length ? Math.max.apply(null, vals) : 0;
 }
 
-/* Short, human "why call them" line from the qualification tags */
+function customFieldValue(c, id){
+  var arr = c.customFields || c.customField || [];
+  for (var i=0;i<arr.length;i++){
+    if (arr[i] && arr[i].id === id){
+      var v = arr[i].value != null ? arr[i].value : arr[i].fieldValue;
+      if (v != null && String(v).trim() !== '') return String(v).trim();
+    }
+  }
+  return null;
+}
+
+function creditFor(contact){
+  var v = customFieldValue(contact, CF_CREDIT_RANGE);
+  if (v) return v;                                  /* "700+" | "620-699" | "Under 620" */
+  var tags = contact.tags || [];
+  if (tags.indexOf('fit-credit-700') > -1) return '700+';
+  if (tags.indexOf('fit-credit-650') > -1) return '620-699';
+  if (tags.indexOf('fit-credit-low') > -1) return 'Under 620';
+  var t = customFieldValue(contact, CF_CREDIT_TEXT);
+  if (t){
+    var n = parseInt(String(t).replace(/[^0-9]/g,''), 10);
+    if (!isNaN(n)){
+      if (n >= 700) return '700+';
+      if (n >= 620) return '620-699';
+      return 'Under 620';
+    }
+    return t;                                       /* free text like "Good" — show as-is */
+  }
+  return null;
+}
+
+function ts(v){
+  if (v == null) return null;
+  if (typeof v === 'number') return v;
+  var n = Date.parse(v);
+  return isNaN(n) ? null : n;
+}
+
+/* Most recent sign of life we can see on the contact record */
+function lastActivityMs(c){
+  var cands = [ts(c.lastActivity), ts(c.dateUpdated), ts(c.lastSessionActivityAt)];
+  var best = null;
+  cands.forEach(function(t){ if (t && (!best || t > best)) best = t; });
+  return best;
+}
+
+function fmtCDT(ms){
+  if (!ms) return '—';
+  try{
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone:'America/Chicago', month:'short', day:'numeric', hour:'numeric', minute:'2-digit'
+    }).format(new Date(ms)) + ' CDT';
+  }catch(e){ return new Date(ms).toISOString(); }
+}
+
 function signalsFrom(contact){
   var tags = contact.tags || [];
   var out = [];
   if (tags.indexOf('fit-asap') > -1) out.push('ASAP');
-  if (tags.indexOf('fit-credit-700') > -1) out.push('Credit 700+');
-  else if (tags.indexOf('fit-credit-650') > -1) out.push('Credit 650+');
-  else if (tags.indexOf('fit-credit-low') > -1) out.push('Credit <600');
+  var credit = creditFor(contact);
+  if (credit) out.push('Credit ' + credit);
   return out.join(' · ');
 }
 
@@ -67,7 +122,7 @@ function tokenFor(location){
 
 async function verifyLogin(req){
   var url = process.env.SUPABASE_URL, anon = process.env.SUPABASE_ANON;
-  if (!url || !anon) return true; // not configured here → pilot fallback
+  if (!url || !anon) return true;
   var auth = req.headers['authorization'] || '';
   if (!auth) return false;
   try{
@@ -82,11 +137,44 @@ function ghlHeaders(token, json){
   return h;
 }
 
-function mapContact(c){
-  var score = engagementScore(c);
+function mapContact(c, now){
+  var score  = engagementScore(c);
+  var credit = creditFor(c);
+  var creditHigh = credit === '700+';
+  var creditMid  = credit === '620-699';
+  var tags   = c.tags || [];
+  var added  = ts(c.dateAdded);
+  var lastA  = lastActivityMs(c);
+  var isNew  = !!(added && (now - added) <= NEW_HOURS*3600*1000);
+  var daysInactive = lastA ? Math.floor((now - lastA)/(24*3600*1000)) : null;
+  var nurtureEnrolled = tags.indexOf(NURTURE_TAG) > -1;
+  var needsNurture = !nurtureEnrolled && !isNew &&
+        (score >= HIGH_SCORE || creditHigh) &&
+        daysInactive != null && daysInactive >= QUIET_DAYS;
+  var callToday = isNew && (creditHigh || creditMid);
+
   var first = c.firstName || (c.contactName ? c.contactName.split(' ')[0] : '') || 'Lead';
-  var lastI = c.lastName ? (' ' + c.lastName.charAt(0) + '.') : '';
-  return { name: first + lastI, score: score, band: bandFor(score), signals: signalsFrom(c) };
+  var lastN = c.lastName || '';
+  return {
+    id: c.id,
+    name: first + (lastN ? (' ' + lastN.charAt(0) + '.') : ''),
+    fullName: (first + ' ' + lastN).trim(),
+    phone: c.phone || null,
+    score: score,
+    band: bandFor(score),
+    signals: signalsFrom(c),
+    credit: credit || '—',
+    creditHigh: creditHigh,
+    creditMid: creditMid,
+    addedAt: added,
+    isNew: isNew,
+    lastActivity: lastA,
+    lastActivityCDT: fmtCDT(lastA),
+    daysInactive: daysInactive,
+    callToday: callToday,
+    needsNurture: needsNurture,
+    nurtureEnrolled: nurtureEnrolled
+  };
 }
 
 function hasAnyScoring(contacts){
@@ -97,14 +185,12 @@ function hasAnyScoring(contacts){
   return false;
 }
 
-/* Fallback: the search results carried no scoring, so read it the way
-   we know works — one contact at a time — for the most recent leads. */
 async function enrichRecent(location, token, limit){
   var listRes = await fetch('https://services.leadconnectorhq.com/contacts/?locationId=' + encodeURIComponent(location) + '&limit=' + limit, { headers: ghlHeaders(token) });
   if (!listRes.ok) return [];
   var list = (await listRes.json()).contacts || [];
   var out = [];
-  for (var i=0;i<list.length;i+=8){                     // small concurrent batches
+  for (var i=0;i<list.length;i+=8){
     var slice = list.slice(i, i+8);
     var got = await Promise.all(slice.map(function(c){
       return fetch('https://services.leadconnectorhq.com/contacts/' + c.id, { headers: ghlHeaders(token) })
@@ -126,7 +212,6 @@ module.exports = async function handler(req, res){
     var okUser = await verifyLogin(req);
     if (!okUser){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
 
-    // Search returns the full contact doc — usually including the scoring object.
     var ghl = await fetch('https://services.leadconnectorhq.com/contacts/search', {
       method: 'POST',
       headers: ghlHeaders(token, true),
@@ -139,20 +224,32 @@ module.exports = async function handler(req, res){
     }
     var contacts = (await ghl.json()).contacts || [];
 
-    // If search stripped the scoring object, enrich the most recent leads individually.
     var enriched = false;
     if (contacts.length && !hasAnyScoring(contacts)){
       var deep = await enrichRecent(location, token, 40);
       if (deep.length){ contacts = deep; enriched = true; }
     }
 
-    var leads = contacts.map(mapContact).sort(function(a,b){ return b.score - a.score; });
+    var now = Date.now();
+    var leads = contacts.map(function(c){ return mapContact(c, now); })
+                        .sort(function(a,b){ return b.score - a.score; });
 
     var counts = { Hot:0, Warm:0, Nurture:0, Cold:0 };
     leads.forEach(function(l){ counts[l.band]++; });
 
+    var priority = leads.filter(function(l){ return l.callToday; })
+                        .sort(function(a,b){ return (b.creditHigh?1:0)-(a.creditHigh?1:0) || b.score-a.score; });
+    var quiet    = leads.filter(function(l){ return l.needsNurture; })
+                        .sort(function(a,b){ return (b.daysInactive||0)-(a.daysInactive||0); });
+
     res.setHeader('Cache-Control', 'no-store');
-    res.status(200).json({ ok:true, location: location, count: leads.length, counts: counts, source: enriched ? 'enriched' : 'search', leads: leads.slice(0, 50) });
+    res.status(200).json({
+      ok:true, location: location, count: leads.length, counts: counts,
+      source: enriched ? 'enriched' : 'search',
+      generatedAt: now, generatedAtCDT: fmtCDT(now),
+      priority: priority, quiet: quiet,
+      leads: leads.slice(0, 100)
+    });
   }catch(e){
     res.status(500).json({ ok:false, error: String(e && e.message || e) });
   }
