@@ -62,20 +62,35 @@ function customFieldValue(c, id){
 
 function creditFor(contact){
   var v = customFieldValue(contact, CF_CREDIT_RANGE);
-  if (v) return v;                                  /* "700+" | "620-699" | "Under 620" */
+  if (v) return v;                                  /* normalized: "700+" | "620-699" | "Under 620" */
   var tags = contact.tags || [];
   if (tags.indexOf('fit-credit-700') > -1) return '700+';
-  if (tags.indexOf('fit-credit-650') > -1) return '620-699';
-  if (tags.indexOf('fit-credit-low') > -1) return 'Under 620';
+  if (tags.indexOf('fit-credit-650') > -1) return '650-699';
+  if (tags.indexOf('fit-credit-600') > -1) return '600-650';
+  if (tags.indexOf('fit-credit-low') > -1) return 'Under 600';
   var t = customFieldValue(contact, CF_CREDIT_TEXT);
   if (t){
-    var n = parseInt(String(t).replace(/[^0-9]/g,''), 10);
-    if (!isNaN(n)){
-      if (n >= 700) return '700+';
-      if (n >= 620) return '620-699';
-      return 'Under 620';
+    var s = String(t);
+    /* prefer an explicit range like "600-650 (Below Average)" — use the LOWER bound */
+    var range = s.match(/(\d{3})\s*[-–]\s*(\d{3})/);
+    if (range){
+      var lo = parseInt(range[1], 10);
+      if (lo >= 700) return '700+';
+      if (lo >= 650) return '650-699';
+      if (lo >= 600) return '600-650';
+      return 'Under 600';
     }
-    return t;                                       /* free text like "Good" — show as-is */
+    /* single number, e.g. "Below 600" */
+    var one = s.match(/\d{3}/);
+    if (one){
+      var n = parseInt(one[0], 10);
+      if (/below|under|less/i.test(s)) return (n <= 600 ? 'Under 600' : '600-650');
+      if (n >= 700) return '700+';
+      if (n >= 650) return '650-699';
+      if (n >= 600) return '600-650';
+      return 'Under 600';
+    }
+    return s;                                       /* free text like "Good" — show as-is */
   }
   return null;
 }
@@ -141,7 +156,7 @@ function mapContact(c, now){
   var score  = engagementScore(c);
   var credit = creditFor(c);
   var creditHigh = credit === '700+';
-  var creditMid  = credit === '620-699';
+  var creditMid  = credit === '620-699' || credit === '650-699';
   var tags   = c.tags || [];
   var added  = ts(c.dateAdded);
   var lastA  = lastActivityMs(c);
