@@ -252,6 +252,9 @@ module.exports = async function handler(req, res){
     var counts = { Hot:0, Warm:0, Nurture:0, Cold:0 };
     leads.forEach(function(l){ counts[l.band]++; });
 
+    var MS30 = 30*24*3600*1000;
+    var new30 = leads.filter(function(l){ return l.addedAt && (now - l.addedAt) <= MS30; }).length;
+
     var priority = leads.filter(function(l){ return l.callToday; })
                         .sort(function(a,b){ return (b.creditHigh?1:0)-(a.creditHigh?1:0) || b.score-a.score; });
     var quiet    = leads.filter(function(l){ return l.needsNurture; })
@@ -259,7 +262,7 @@ module.exports = async function handler(req, res){
 
     res.setHeader('Cache-Control', 'no-store');
     res.status(200).json({
-      ok:true, location: location, count: leads.length, counts: counts,
+      ok:true, location: location, count: leads.length, counts: counts, new30: new30,
       source: enriched ? 'enriched' : 'search',
       generatedAt: now, generatedAtCDT: fmtCDT(now),
       priority: priority, quiet: quiet,
