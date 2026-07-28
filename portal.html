@@ -254,7 +254,6 @@ tr:last-child td{border-bottom:0}
     <div class="navwrap">
       <div class="navgroup">Overview</div>
       <div class="nav-item active" data-view="dashboard" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▦</span> Dashboard</div>
-      <div class="nav-item" data-view="onboarding" data-roles="owner,pm" onclick="go(this)"><span class="ic">◷</span> Onboarding</div>
       <div class="navgroup">Pillar 1 · Clinical Training</div>
       <a class="nav-item" href="surgeon-assessment.html" data-roles="owner,surgeon,pm"><span class="ic">✎</span> Skill Assessment</a>
       <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
@@ -311,7 +310,23 @@ tr:last-child td{border-bottom:0}
       <!-- ===== DASHBOARD ===== -->
       <section class="view active" id="dashboard">
         <div id="tailoredBanner" style="display:none;margin-bottom:18px;background:rgba(36,92,92,.07);border:1px solid var(--hairline);border-left:3px solid var(--gold);border-radius:6px;padding:15px 20px;font-size:.95rem;color:var(--ink-70)"></div>
-        <p class="lead" style="margin-bottom:22px">Welcome to your Implanted Wisdom portal — built around the four pillars of your full-arch program. Choose a pillar to begin.</p>
+
+        <!-- ===== OWNER SCOREBOARD ===== -->
+        <div id="ownerBoard">
+          <div class="eyebrow" style="margin-bottom:4px">Pulver Oral Surgery · Implanted Wisdom</div>
+          <h2 style="font-family:var(--display);font-weight:600;font-size:1.85rem;margin:0 0 4px">Your program at a glance</h2>
+          <p style="color:var(--ink-70);margin-bottom:16px">New leads pull live from your funnel — closed cases update as you win them.</p>
+          <div class="grid g4" style="margin-bottom:16px">
+            <div class="card kpi"><div class="big" id="stNewLeads" style="color:var(--gold)">—</div><div class="lab">New Leads · 30 days</div></div>
+            <div class="card kpi"><div class="big" id="stCases">1</div><div class="lab">Cases Closed</div></div>
+            <div class="card kpi"><div class="big" id="stArches">1</div><div class="lab">Arches Closed</div></div>
+            <div class="card kpi"><div class="big" id="stRevenue">$25,000</div><div class="lab">Revenue Closed</div></div>
+          </div>
+          <div class="callout" id="ownerCheer" style="border-left:3px solid var(--gold)">🎉 <strong>First arch closed — Kim K., upper.</strong> The system worked end-to-end: a Facebook lead became a booked, closed full-arch case. One down — keep the calls fast and the next one is already in the pipeline.</div>
+          <hr style="border:0;border-top:1px solid var(--hairline);margin:28px 0 24px">
+        </div>
+
+        <p class="lead" style="margin-bottom:22px">Your four pillars — choose one to dive in.</p>
         <div class="pillar-hub">
           <div class="phub" onclick="goView('training')">
             <img src="icon-clinical.png" alt="">
@@ -1260,7 +1275,24 @@ function agoText(ms){
 }
 
 /* ---- render: everything on the lead scoring page ---- */
-function renderLeadUI(){ renderPQ(); renderNW(); renderTable(); renderDaily(); renderPanel(); }
+function renderLeadUI(){ renderPQ(); renderNW(); renderTable(); renderDaily(); renderPanel(); updateNewLeadsStat(); }
+
+/* ---- Owner scoreboard ---- */
+/* Closed-case numbers live here — update them as you win cases. */
+var IW_CLOSED = { cases:1, arches:1, revenue:25000, latest:'Kim K., upper' };
+function money(n){ try{ return '$'+Number(n).toLocaleString('en-US'); }catch(e){ return '$'+n; } }
+function renderOwnerBoard(){
+  var set=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  set('stCases', IW_CLOSED.cases);
+  set('stArches', IW_CLOSED.arches);
+  set('stRevenue', money(IW_CLOSED.revenue));
+}
+function updateNewLeadsStat(){
+  var el=document.getElementById('stNewLeads'); if(!el) return;
+  var cutoff=Date.now()-30*24*3600*1000;
+  var n=(IW.leads||[]).filter(function(l){ return l.addedAt && l.addedAt>=cutoff; }).length;
+  el.textContent = n;
+}
 
 function renderPQ(){
   var host=document.getElementById('pqBody'); if(!host) return;
@@ -1473,7 +1505,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); initLeadDemo();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
