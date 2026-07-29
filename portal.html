@@ -254,6 +254,7 @@ tr:last-child td{border-bottom:0}
     <div class="navwrap">
       <div class="navgroup">Overview</div>
       <div class="nav-item active" data-view="dashboard" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▦</span> Dashboard</div>
+      <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
       <div class="navgroup">Pillar 1 · Clinical Training</div>
       <a class="nav-item" href="surgeon-assessment.html" data-roles="owner,surgeon,pm"><span class="ic">✎</span> Skill Assessment</a>
       <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
@@ -266,7 +267,7 @@ tr:last-child td{border-bottom:0}
       <div class="navgroup">Pillar 3 · DTC Marketing</div>
       <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
       <div class="nav-item" data-view="funnel" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">⧗</span> Funnel Plan</div>
-      <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
+      <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Call &amp; Text Report Card</div>
       <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
       <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
       <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
@@ -590,8 +591,8 @@ tr:last-child td{border-bottom:0}
         <div class="card" style="margin-bottom:18px">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
             <div>
-              <div class="eyebrow" style="margin-bottom:4px">Daily Report</div>
-              <h3 style="margin-bottom:2px">Today's Call Plan</h3>
+              <div class="eyebrow" style="margin-bottom:4px" id="drEyebrow">Daily Report</div>
+              <h3 style="margin-bottom:2px" id="drTitle">Today's Call Plan</h3>
               <div style="font-size:.85rem;color:var(--ink-70)" id="drStamp"></div>
             </div>
             <button class="qbtn" id="drCopy" onclick="copyDaily()">Copy report</button>
@@ -670,6 +671,20 @@ tr:last-child td{border-bottom:0}
             <div id="cqBody"><p style="color:var(--ink-70);font-size:.92rem">No reports yet.</p></div>
           </div>
         </div>
+      </section>
+
+      <!-- ===== DTC · CALL & TEXT REPORT CARD ===== -->
+      <section class="view" id="comms">
+        <p class="lead">Every call and text with your leads — graded, flagged, and turned into coaching. Pulled live from GoHighLevel.</p>
+        <div class="callout" id="cmNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Sign in and open this page to load your live conversations. Calls are transcribed automatically because recording is on.</div>
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="card kpi"><div class="big" id="cmCalls">—</div><div class="lab">Calls (recent convos)</div></div>
+          <div class="card kpi"><div class="big" id="cmConnected">—</div><div class="lab">Live Conversations</div></div>
+          <div class="card kpi"><div class="big" id="cmResp">—</div><div class="lab">Median First Reply</div></div>
+          <div class="card kpi"><div class="big" id="cmUnanswered" style="color:#a33f28">—</div><div class="lab">Waiting on a Reply</div></div>
+        </div>
+        <div id="cmCards"></div>
+        <div class="callout" style="margin-top:16px" id="cmFoot">Report cards regenerate every time this page opens. Add an <strong>Anthropic API key</strong> in Vercel and each transcript gets an AI coaching note automatically.</div>
       </section>
 
       <!-- ===== DTC · FUNNEL PLAN ===== -->
@@ -865,7 +880,7 @@ tr:last-child td{border-bottom:0}
 <script>
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
-  coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',referral:'Inner Circle Network',
+  coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
@@ -1245,11 +1260,61 @@ function loadLeads(){
     renderLeadUI();
   }).catch(function(){});
   loadConsults();
+  loadComms();
 }
 function loadConsults(){
   apiFetch('/api/consults').then(function(d){
     if(d && d.ok && Array.isArray(d.reports)){ IW.consultsLive = true; IW.consults = d.reports; renderConsults(); }
   }).catch(function(){});
+}
+
+/* ---- Call & Text Report Card ---- */
+function loadComms(){
+  var loc = window.IW_LOCATION;
+  apiFetch('/api/comms' + (loc ? ('?location='+encodeURIComponent(loc)) : '')).then(function(d){
+    if(d && d.ok) renderComms(d);
+  }).catch(function(){});
+}
+function cmFlagStyle(level){
+  if(level==='good') return 'background:rgba(36,92,92,.12);color:var(--teal)';
+  if(level==='bad')  return 'background:rgba(163,63,40,.14);color:#a33f28';
+  return 'background:rgba(201,169,110,.18);color:#8a6733';
+}
+function renderComms(d){
+  var note=document.getElementById('cmNote'); if(note) note.style.display='none';
+  var s=d.summary||{};
+  var set=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  set('cmCalls', s.calls!=null?s.calls:'—');
+  set('cmConnected', s.connected!=null?s.connected:'—');
+  set('cmResp', s.medianResponseMins!=null?(s.medianResponseMins<60?(s.medianResponseMins+' min'):(Math.round(s.medianResponseMins/60)+' h')):'—');
+  set('cmUnanswered', s.unanswered!=null?s.unanswered:'—');
+  var host=document.getElementById('cmCards'); if(!host) return;
+  var cards=d.cards||[];
+  if(!cards.length){ host.innerHTML='<div class="card"><p style="color:var(--ink-70)">No recent conversations found.</p></div>'; return; }
+  host.innerHTML = cards.map(function(c,i){
+    var flags=(c.flags||[]).map(function(f){
+      return '<span class="lsb" style="'+cmFlagStyle(f.level)+';margin:2px 6px 2px 0;display:inline-block">'+esc(f.text)+'</span>';
+    }).join('');
+    var stats='☏ '+c.calls+' call'+(c.calls===1?'':'s')+(c.connected?(' ('+c.connected+' live)'):'')+
+              ' · 💬 '+c.textsOut+' sent / '+c.textsIn+' received'+
+              (c.responseMins!=null?(' · first reply '+(c.responseMins<60?(c.responseMins+' min'):(Math.round(c.responseMins/60)+' h'))):'');
+    var tr=(c.transcripts||[]).map(function(t){
+      return '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.86rem;color:var(--teal)">📞 Call transcript · '+esc(t.at||'')+'</summary>'+
+             '<p style="font-size:.86rem;color:var(--ink-70);margin-top:6px;white-space:pre-wrap">'+esc(t.text)+'</p></details>';
+    }).join('');
+    var ai=c.aiNotes?('<div style="margin-top:10px;padding:10px 14px;background:rgba(36,92,92,.06);border-left:3px solid var(--teal);border-radius:4px;font-size:.88rem;white-space:pre-wrap">'+esc(c.aiNotes)+'</div>'):'';
+    var thread=(c.thread&&c.thread.length)?('<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.86rem;color:var(--teal)">💬 Text thread ('+c.thread.length+')</summary>'+
+      '<div style="font-size:.85rem;color:var(--ink-70);margin-top:6px">'+c.thread.map(function(t){return '<div style="padding:3px 0;border-top:1px solid #efe7d8">'+esc(t)+'</div>';}).join('')+'</div></details>'):'';
+    return '<div class="card" style="margin-bottom:14px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px">'+
+        '<h3 style="margin:0">'+esc(c.name)+'</h3>'+
+        '<span style="font-size:.82rem;color:var(--ink-70)">last activity '+esc(c.lastMessageCDT||'—')+'</span></div>'+
+      '<p style="font-size:.9rem;color:var(--ink-70);margin:6px 0 8px">'+stats+'</p>'+
+      '<div>'+flags+'</div>'+ai+tr+thread+
+    '</div>';
+  }).join('');
+  var foot=document.getElementById('cmFoot');
+  if(foot) foot.innerHTML='Live from <strong>GoHighLevel</strong> · generated '+esc(d.generatedAtCDT||'')+' · '+(s.aiEnabled?'AI coaching notes: <strong>on</strong>.':'Add an <strong>Anthropic API key</strong> in Vercel and each call gets an AI coaching note automatically.');
 }
 
 /* ---- helpers ---- */
@@ -1337,36 +1402,70 @@ function renderTable(){
   }).join('');
 }
 
-/* ---- daily report ---- */
+/* ---- daily report (time-aware: Morning Brief / End-of-Day Brief) ---- */
+function briefMode(){
+  /* Chicago hour: before 13:00 → morning; after → end-of-day */
+  try{
+    var h = parseInt(new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',hour:'numeric',hour12:false}).format(new Date()),10);
+    return h < 13 ? 'morning' : 'eod';
+  }catch(e){ return (new Date().getHours() < 13) ? 'morning' : 'eod'; }
+}
+function totalCallsLoggedToday(){
+  return IW.notesToday.filter(function(n){ return n.kind==='call'; }).length;
+}
 function dailyLines(){
+  var mode = briefMode();
   var lines=[];
-  IW.priority.forEach(function(l){
-    var n=callsToday(l.id);
-    if(n>=2)      lines.push({t:l.name+' — both day-one calls made ✓', done:true});
-    else if(n===1)lines.push({t:l.name+' needs a 2nd call today (1 of 2 done) — new lead, credit '+l.credit, done:false});
-    else          lines.push({t:l.name+' needs call #1 — NEW lead, credit '+l.credit+'. Call now, again this afternoon.', done:false});
-  });
-  IW.leads.forEach(function(l){
-    if(l.band==='Hot' && !l.callToday && !l.nurtureEnrolled && !l.needsNurture && callsToday(l.id)===0)
-      lines.push({t:l.name+' is HOT (score '+l.score+') — no call logged yet today', done:false});
-  });
-  IW.quiet.forEach(function(l){
-    lines.push({t:l.name+' — '+(l.daysInactive!=null?(l.daysInactive+' days'):'days')+' quiet with '+(l.creditHigh?('credit '+l.credit):('score '+l.score))+' → enroll in gentle nurture', done:false});
-  });
-  if(!lines.length) lines.push({t:'Nothing urgent. Work the Warm list top-down and confirm upcoming consults.', done:false});
+  if (mode === 'morning'){
+    var fresh = IW.leads.filter(function(l){ return l.addedAt && (Date.now()-l.addedAt) <= 16*3600*1000; }).length;
+    if (fresh) lines.push({t: fresh+' lead'+(fresh>1?'s':'')+' arrived since yesterday evening — they\'re in the queue below.', done:false});
+    IW.priority.forEach(function(l){
+      var n=callsToday(l.id);
+      if(n>=2)      lines.push({t:l.name+' — both day-one calls made ✓', done:true});
+      else if(n===1)lines.push({t:l.name+' needs a 2nd call today (1 of 2 done) — new lead, credit '+l.credit, done:false});
+      else          lines.push({t:l.name+' needs call #1 — NEW lead, credit '+l.credit+'. Call before 10am, again this afternoon.', done:false});
+    });
+    IW.leads.forEach(function(l){
+      if(l.band==='Hot' && !l.callToday && !l.nurtureEnrolled && !l.needsNurture && callsToday(l.id)===0)
+        lines.push({t:l.name+' is HOT (score '+l.score+') — get a call in before lunch', done:false});
+    });
+    IW.quiet.forEach(function(l){
+      lines.push({t:l.name+' — '+(l.daysInactive!=null?(l.daysInactive+' days'):'days')+' quiet with '+(l.creditHigh?('credit '+l.credit):('score '+l.score))+' → enroll in gentle nurture', done:false});
+    });
+    if(!lines.length) lines.push({t:'Clean slate this morning. Work the Warm list top-down and confirm upcoming consults.', done:false});
+  } else {
+    var made = totalCallsLoggedToday();
+    var needed = IW.priority.reduce(function(s,l){ return s + Math.max(0, 2-callsToday(l.id)); }, 0);
+    lines.push({t:'Calls logged today: '+made+(made>0?' ✓':' — none logged. If calls were made, log them so the record is real.'), done:made>0});
+    IW.priority.forEach(function(l){
+      var n=callsToday(l.id);
+      if(n>=2)      lines.push({t:l.name+' — day-one double-touch complete ✓', done:true});
+      else          lines.push({t:l.name+' — only '+n+' of 2 calls made. Last chance today, or they roll to tomorrow\'s brief.', done:false});
+    });
+    var untouched = IW.leads.filter(function(l){ return l.band==='Hot' && callsToday(l.id)===0 && !l.nurtureEnrolled; });
+    untouched.forEach(function(l){ lines.push({t:l.name+' (HOT, score '+l.score+') went the whole day without a call → top of tomorrow morning\'s brief.', done:false}); });
+    if(needed===0 && untouched.length===0) lines.push({t:'Every priority lead got its calls today. That\'s how arches close. 👏', done:true});
+    IW.quiet.forEach(function(l){
+      lines.push({t:l.name+' still quiet ('+(l.daysInactive!=null?(l.daysInactive+' days'):'days')+') — enroll in nurture before you leave.', done:l.nurtureEnrolled});
+    });
+  }
   return lines;
 }
 function renderDaily(){
   var host=document.getElementById('drLines'); if(!host) return;
+  var mode = briefMode();
+  var eb=document.getElementById('drEyebrow'), tt=document.getElementById('drTitle');
+  if(eb) eb.textContent = mode==='morning' ? 'Morning Brief' : 'End-of-Day Brief';
+  if(tt) tt.textContent = mode==='morning' ? 'Today\'s Call Plan' : 'How Today Went';
   var stamp=document.getElementById('drStamp');
-  if(stamp){ try{ stamp.textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Chicago',weekday:'long',month:'long',day:'numeric'})+' · regenerates live as calls are logged'; }catch(e){} }
+  if(stamp){ try{ stamp.textContent=new Date().toLocaleDateString('en-US',{timeZone:'America/Chicago',weekday:'long',month:'long',day:'numeric'})+(mode==='morning'?' · switches to the end-of-day recap after 1pm':' · resets to the morning brief overnight'); }catch(e){} }
   host.innerHTML = dailyLines().map(function(x){
     return '<div class="repline'+(x.done?' done':'')+'"><span class="rdot"></span><span>'+esc(x.t)+'</span></div>';
   }).join('');
 }
 function copyDaily(){
   var d=''; try{ d=new Date().toLocaleDateString('en-US',{timeZone:'America/Chicago',weekday:'long',month:'long',day:'numeric'});}catch(e){}
-  var txt='IW Daily Call Report — '+d+'\n'+dailyLines().map(function(x){return (x.done?'[done] ':'• ')+x.t;}).join('\n');
+  var txt='IW '+(briefMode()==='morning'?'Morning Brief':'End-of-Day Brief')+' — '+d+'\n'+dailyLines().map(function(x){return (x.done?'[done] ':'• ')+x.t;}).join('\n');
   var btn=document.getElementById('drCopy');
   var flash=function(msg){ if(btn){ btn.textContent=msg; setTimeout(function(){ btn.textContent='Copy report'; },1600);} };
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){flash('Copied ✓');},function(){flash('Copy failed');}); }
