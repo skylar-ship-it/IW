@@ -64,8 +64,31 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     <div class="field"><label for="count">Active referring GPs / dentists today</label>
       <select id="count"><option value="0">None</option><option value="1">1–5</option><option value="2">6–15</option><option value="2">16+</option></select>
     </div>
-    <div class="field"><label for="program">Do you have a referral program?</label>
-      <select id="program"><option value="0">No program</option><option value="1">Informal relationships</option><option value="2">Formal, structured program</option></select>
+    <p class="hint" style="margin-bottom:8px">Categorize your active referrers — how many fall in each tier?</p>
+    <div class="checks" style="grid-template-columns:1fr 1fr">
+      <div class="field"><label for="tierA">A · 10+ referrals / month</label>
+        <select id="tierA"><option value="">—</option><option>0</option><option>1–2</option><option>3–5</option><option>6+</option></select></div>
+      <div class="field"><label for="tierB">B · 4–6 referrals / month</label>
+        <select id="tierB"><option value="">—</option><option>0</option><option>1–2</option><option>3–5</option><option>6+</option></select></div>
+      <div class="field"><label for="tierC">C · 2–3 referrals / month</label>
+        <select id="tierC"><option value="">—</option><option>0</option><option>1–2</option><option>3–5</option><option>6+</option></select></div>
+      <div class="field"><label for="tierD">D · 1 / month or fewer (incl. a few per year)</label>
+        <select id="tierD"><option value="">—</option><option>0</option><option>1–2</option><option>3–5</option><option>6+</option></select></div>
+    </div>
+    <div class="field" style="margin-top:8px"><label for="program">Do you have a formal referral program?</label>
+      <select id="program"><option value="0">No program</option><option value="1">Informal relationships</option><option value="1">Study club</option><option value="1">Practice relations coordinator</option><option value="2">Formal, structured program tracking contacts &amp; referrals</option></select>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="secnum">01B / 05</div>
+    <h2>Retirements &amp; transitions</h2>
+    <p class="hint">Referral bases erode quietly — usually through retirements and practice sales.</p>
+    <div class="field"><label for="retired5">How many of your top-5 referrers have retired in the past 5 years?</label>
+      <select id="retired5"><option value="">Select…</option><option>0</option><option>1</option><option>2</option><option>3+</option></select>
+    </div>
+    <div class="field"><label for="transdrop">When a referring office transitioned to a new dentist, what happened to referrals?</label>
+      <select id="transdrop"><option value="">Select…</option><option>Stayed steady</option><option>Dropped after transition</option><option>Stopped after transition</option><option>Mixed / varies</option><option>Hasn't happened yet</option></select>
     </div>
   </section>
 
@@ -89,8 +112,22 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     <div class="field"><label for="aware">Do your referrers know you do full-arch?</label>
       <select id="aware"><option value="0">Not really</option><option value="1">Some do</option><option value="2">Most do</option></select>
     </div>
-    <div class="field"><label for="loyalty">How secure are your top referral relationships?</label>
+    <p class="hint" style="margin-bottom:8px">Do you track referrals by procedure? (check what you track)</p>
+    <div class="checks" id="trackproc">
+      <label><input type="checkbox" value="Third molars"> Third molars</label>
+      <label><input type="checkbox" value="Implants"> Implants</label>
+      <label><input type="checkbox" value="Full arch"> Full arch</label>
+      <label><input type="checkbox" value="None"> I don't track by procedure</label>
+    </div>
+    <div class="field" style="margin-top:12px"><label for="loyalty">How secure are your top referral relationships?</label>
       <select id="loyalty"><option value="0">At risk / eroding</option><option value="1">Stable</option><option value="2">Strong &amp; loyal</option></select>
+    </div>
+    <p class="hint" style="margin:12px 0 8px">Which of these pressures worry you? (check all that apply)</p>
+    <div class="checks" id="threats">
+      <label><input type="checkbox" value="Retiring offices"> Retiring offices &amp; transitions to new dentists</label>
+      <label><input type="checkbox" value="DSO infiltration"> DSO infiltration of referring practices</label>
+      <label><input type="checkbox" value="Corporate full-arch centers"> ClearChoice / Nuvia corporate full-arch centers</label>
+      <label><input type="checkbox" value="None"> None of these currently</label>
     </div>
   </section>
 
@@ -102,6 +139,9 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     </div>
     <div class="field"><label for="track">Do you track who refers and case outcomes?</label>
       <select id="track"><option value="0">No</option><option value="1">Partially</option><option value="2">Yes</option></select>
+    </div>
+    <div class="field"><label for="future">Have you thought about how to support existing — and build new — referral relationships, particularly around full-arch?</label>
+      <select id="future"><option value="0">Not yet</option><option value="1">Thought about it, no plan</option><option value="2">Yes, actively working on it</option></select>
     </div>
   </section>
 
@@ -125,6 +165,7 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     <p id="rDesc" style="color:var(--ink-70);margin-top:6px"></p>
     <h3 style="margin:20px 0 8px">Where IW will focus first</h3>
     <ul class="plain" id="rGaps"></ul>
+    <p style="margin-top:20px;padding:14px 18px;background:rgba(36,92,92,.07);border-left:3px solid var(--gold);border-radius:4px;color:var(--ink-70)"><strong style="font-weight:500">Inner Circle–focused marketing and development, in conjunction with DTC outreach — the perfect combination to support your community and your future.</strong></p>
     <div class="actions">
       <button class="btn btn-gold" onclick="location.href='onboarding.html'">Continue Onboarding →</button>
       <button class="btn btn-line" onclick="location.reload()">Retake</button>
@@ -144,7 +185,8 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
       ['Structured program', v('program')],
       ['Full-arch awareness', v('aware')],
       ['Relationship strength', v('loyalty')],
-      ['Referral tracking', v('track')]
+      ['Referral tracking', v('track')],
+      ['Referral growth plan', v('future')]
     ];
     var channels=[...document.querySelectorAll('#channels input:checked')].map(x=>x.value);
     var got=dims.reduce((s,d)=>s+d[1],0), max=dims.length*2;
@@ -162,7 +204,13 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     document.getElementById('rGaps').innerHTML=(gaps.length?gaps:['Optimization only']).map(g=>'<li class="gapli">'+g+'</li>').join('');
 
     try{
-      localStorage.setItem('iw_inner',JSON.stringify({score:score,band:band,gaps:gaps,channels:channels,date:new Date().toISOString()}));
+      var sv=function(id){var el=document.getElementById(id);return el?el.value:'';};
+      var chk=function(sel){return [...document.querySelectorAll(sel+' input:checked')].map(x=>x.value);};
+      localStorage.setItem('iw_inner',JSON.stringify({score:score,band:band,gaps:gaps,channels:channels,
+        tiers:{A:sv('tierA'),B:sv('tierB'),C:sv('tierC'),D:sv('tierD')},
+        retiredTop5:sv('retired5'),transitionImpact:sv('transdrop'),
+        trackByProcedure:chk('#trackproc'),threats:chk('#threats'),
+        date:new Date().toISOString()}));
       localStorage.setItem('iw_onboard_step3','done');
     }catch(x){}
 

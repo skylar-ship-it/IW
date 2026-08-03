@@ -71,17 +71,58 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
       <label><input type="checkbox" value="Google ads"> Google ads</label>
       <label><input type="checkbox" value="Website"> Practice website</label>
       <label><input type="checkbox" value="None yet"> No active marketing yet</label>
+      <label><input type="checkbox" value="Don't track"> I don't keep track</label>
+    </div>
+    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+      <div class="field"><label for="refpct">Roughly what percentage of your patients come from GP referrals?</label>
+        <select id="refpct"><option value="">Select…</option><option>75%+</option><option>50–75%</option><option>25–50%</option><option>Under 25%</option><option>I don't track this</option></select>
+      </div>
+      <div class="field"><label for="mixchange">Has your patient-source mix changed over the past 5 years?</label>
+        <select id="mixchange"><option value="">Select…</option><option>Yes</option><option>No</option><option>Not sure</option></select>
+      </div>
+      <p class="hint" style="margin-bottom:8px">If it changed — where is growth coming from now? (check all that apply)</p>
+      <div class="checks" id="mixshift">
+        <label><input type="checkbox" value="More word of mouth"> More word of mouth</label>
+        <label><input type="checkbox" value="More friends/family"> More from friends / family</label>
+        <label><input type="checkbox" value="More from marketing"> More from marketing</label>
+        <label><input type="checkbox" value="Fewer GP referrals"> Fewer GP referrals</label>
+      </div>
+      <div class="field" style="margin-top:12px"><label for="othersrc">Other sources (list any)</label>
+        <input type="text" id="othersrc" placeholder="e.g., hospital ER referrals, senior communities…">
+      </div>
     </div>
   </section>
 
   <section class="block">
     <div class="secnum">02 / 05</div>
     <h2>Spend &amp; paid acquisition</h2>
-    <div class="field"><label for="spend">Approx. monthly marketing spend</label>
+    <div class="field"><label for="spend">Approx. monthly marketing spend per office</label>
       <select id="spend"><option value="0">$0 — none</option><option value="1">Under $2,000</option><option value="2">$2,000–$5,000</option><option value="3">$5,000–$10,000</option><option value="4">$10,000+</option></select>
     </div>
     <div class="field"><label for="paid">Are you running paid full-arch ads now?</label>
       <select id="paid"><option value="0">No</option><option value="1">Yes — but unsure it's working</option><option value="2">Yes — and tracking results</option></select>
+    </div>
+    <p class="hint" style="margin:14px 0 8px">Where is your spend focused today? (check all that apply)</p>
+    <div class="checks" id="spendfocus">
+      <label><input type="checkbox" value="Third molars"> Third molars</label>
+      <label><input type="checkbox" value="Implants"> Implants</label>
+      <label><input type="checkbox" value="Full arch"> Full arch</label>
+      <label><input type="checkbox" value="Other"> Other</label>
+    </div>
+    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+      <p class="hint" style="margin-bottom:8px">Referral-relationship marketing — check what you run today.</p>
+      <div class="checks" id="refmktg">
+        <label><input type="checkbox" value="Study club"> Study club</label>
+        <label><input type="checkbox" value="Lunch & learn"> Lunch &amp; learns</label>
+        <label><input type="checkbox" value="Quarterly speaker series"> Quarterly speaker series</label>
+        <label><input type="checkbox" value="None"> None of these</label>
+      </div>
+      <div class="field" style="margin-top:12px"><label for="refspend">Approx. annual spend on these referral programs</label>
+        <select id="refspend"><option value="">Select…</option><option>$0</option><option>Under $5,000</option><option>$5,000–$15,000</option><option>$15,000+</option><option>I don't track this</option></select>
+      </div>
+      <div class="field"><label for="refroi">Do you see a return — has referral revenue increased from these programs?</label>
+        <select id="refroi"><option value="">Select…</option><option>Yes, clearly</option><option>Somewhat / hard to tell</option><option>No</option><option>I don't track this</option></select>
+      </div>
     </div>
   </section>
 
@@ -170,7 +211,12 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
     document.getElementById('rOk').innerHTML=(oks.length?oks:['Foundation to be built']).map(g=>'<li class="okli">'+g+'</li>').join('');
 
     try{
-      localStorage.setItem('iw_marketing',JSON.stringify({score:score,band:band,gaps:gaps,sources:sources,date:new Date().toISOString()}));
+      var chk=function(sel){return [...document.querySelectorAll(sel+' input:checked')].map(x=>x.value);};
+      var sv=function(id){var el=document.getElementById(id);return el?el.value:'';};
+      localStorage.setItem('iw_marketing',JSON.stringify({score:score,band:band,gaps:gaps,sources:sources,
+        refPct:sv('refpct'),mixChange:sv('mixchange'),mixShift:chk('#mixshift'),otherSources:sv('othersrc'),
+        spendFocus:chk('#spendfocus'),refMarketing:chk('#refmktg'),refSpend:sv('refspend'),refRoi:sv('refroi'),
+        date:new Date().toISOString()}));
       localStorage.setItem('iw_onboard_step2','done');
     }catch(x){}
 

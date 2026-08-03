@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Surgeon Skill Assessment — Implanted Wisdom</title>
-<meta property="og:title" content="Surgeon Skill Assessment — Implanted Wisdom">
+<title>Surgeon Experience Assessment — Implanted Wisdom</title>
+<meta property="og:title" content="Surgeon Experience Assessment — Implanted Wisdom">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://implantedwisdomcollective.com/og-image.png">
 <meta property="og:url" content="https://implantedwisdomcollective.com/surgeon-assessment.html">
@@ -156,7 +156,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
   <div class="wrap">
     <a href="onboarding.html" style="display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:18px">← Back to Onboarding</a>
     <div class="label">Onboarding · Step 1 of 3 · Clinical Training + Workflow Intelligence</div>
-    <h1>Surgeon Skill <em>Assessment</em></h1>
+    <h1>Surgeon Experience <em>Assessment</em></h1>
     <p class="sub">Every prospective Implanted Wisdom partner completes this assessment before onboarding. Your responses generate a Partner Readiness Profile — case experience, technology stack, team structure, and your recommended clinical curriculum and onboarding path. Takes about 5 minutes.</p>
   </div>
 </header>
@@ -193,6 +193,30 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
         </select>
       </div>
     </div>
+    <div style="margin-top:22px;padding-top:18px;border-top:1px dashed rgba(30,22,18,.15)">
+      <p class="hint" style="margin-bottom:12px"><strong style="font-weight:500;color:var(--ink)">Your full-arch vision.</strong> How do you see full-arch fitting into your practice?</p>
+      <div class="field" style="margin-bottom:14px">
+        <label for="f_enthusiasm">My excitement and enthusiasm to move fully into full-arch (0 = less likely · 10 = most likely) *</label>
+        <select id="f_enthusiasm" required>
+          <option value="">Select 0–10…</option>
+          <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+          <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+        </select>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="f_casesInitial">Cases per year I'd like to complete initially</label>
+          <select id="f_casesInitial">
+            <option value="">Select…</option><option>1–6</option><option>7–12</option><option>13–24</option><option>25–50</option><option>50+</option>
+          </select>
+        </div>
+        <div class="field"><label for="f_casesFuture">Cases per year I could see myself completing with more experience</label>
+          <select id="f_casesFuture">
+            <option value="">Select…</option><option>1–6</option><option>7–12</option><option>13–24</option><option>25–50</option><option>50+</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="block">
@@ -204,8 +228,18 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
       <tbody>
         <tr><td>All-on-X full arch<span>Fixed full-arch on 4–6 implants</span></td>
           <td><input type="radio" name="exp_aox" value="0" required></td><td><input type="radio" name="exp_aox" value="1"></td><td><input type="radio" name="exp_aox" value="2"></td><td><input type="radio" name="exp_aox" value="3"></td><td><input type="radio" name="exp_aox" value="4"></td></tr>
+        <tr><td>All-on-X same-day / next-day delivery<span>Immediate-load workflow with day-of or next-day prosthesis</span></td>
+          <td><input type="radio" name="exp_aoxsd" value="0" required></td><td><input type="radio" name="exp_aoxsd" value="1"></td><td><input type="radio" name="exp_aoxsd" value="2"></td><td><input type="radio" name="exp_aoxsd" value="3"></td><td><input type="radio" name="exp_aoxsd" value="4"></td></tr>
+        <tr><td>FP3 restorations<span>Fixed full-arch prosthesis with prosthetic pink</span></td>
+          <td><input type="radio" name="exp_fp3" value="0" required></td><td><input type="radio" name="exp_fp3" value="1"></td><td><input type="radio" name="exp_fp3" value="2"></td><td><input type="radio" name="exp_fp3" value="3"></td><td><input type="radio" name="exp_fp3" value="4"></td></tr>
         <tr><td>FP1 restorations<span>Tooth-only fixed prosthesis, no pink</span></td>
           <td><input type="radio" name="exp_fp1" value="0" required></td><td><input type="radio" name="exp_fp1" value="1"></td><td><input type="radio" name="exp_fp1" value="2"></td><td><input type="radio" name="exp_fp1" value="3"></td><td><input type="radio" name="exp_fp1" value="4"></td></tr>
+        <tr><td>Traditional sequenced implant care<span>Full-mouth extraction, grafting, immediate/future placement, healing, referral to dentist for prosthesis</span></td>
+          <td><input type="radio" name="exp_trad" value="0" required></td><td><input type="radio" name="exp_trad" value="1"></td><td><input type="radio" name="exp_trad" value="2"></td><td><input type="radio" name="exp_trad" value="3"></td><td><input type="radio" name="exp_trad" value="4"></td></tr>
+        <tr><td>Guided surgery — individual implant<span>Static/dynamic guide for single-implant placement</span></td>
+          <td><input type="radio" name="exp_gsi" value="0" required></td><td><input type="radio" name="exp_gsi" value="1"></td><td><input type="radio" name="exp_gsi" value="2"></td><td><input type="radio" name="exp_gsi" value="3"></td><td><input type="radio" name="exp_gsi" value="4"></td></tr>
+        <tr><td>Guided surgery — full arch<span>Guided full-arch treatment</span></td>
+          <td><input type="radio" name="exp_gsf" value="0" required></td><td><input type="radio" name="exp_gsf" value="1"></td><td><input type="radio" name="exp_gsf" value="2"></td><td><input type="radio" name="exp_gsf" value="3"></td><td><input type="radio" name="exp_gsf" value="4"></td></tr>
         <tr><td>Zygomatic implants<span>Zygoma-anchored, severe maxillary atrophy</span></td>
           <td><input type="radio" name="exp_zygo" value="0" required></td><td><input type="radio" name="exp_zygo" value="1"></td><td><input type="radio" name="exp_zygo" value="2"></td><td><input type="radio" name="exp_zygo" value="3"></td><td><input type="radio" name="exp_zygo" value="4"></td></tr>
         <tr><td>Pterygoid implants<span>Posterior maxilla, graftless</span></td>
@@ -217,7 +251,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
   <section class="block">
     <div class="secnum">03 / 09</div>
     <h2>Annual Full-Arch Volume</h2>
-    <p class="hint">Arches per year across your practice, current pace.</p>
+    <p class="hint">Arches per year, per individual provider — current pace.</p>
     <div class="choices">
       <label><input type="radio" name="volume" value="0" required> 0 — not yet offering</label>
       <label><input type="radio" name="volume" value="3"> 1–12 arches</label>
@@ -230,12 +264,24 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
   <section class="block">
     <div class="secnum">04 / 09</div>
     <h2>Digital Workflow Experience</h2>
-    <p class="hint">Which best describes your current full-arch workflow?</p>
+    <p class="hint">Which best describes your current digital experience?</p>
     <div class="choices" style="flex-direction:column;align-items:flex-start">
-      <label><input type="radio" name="digital" value="0" required> Fully analog — conventional impressions and conversion dentures</label>
-      <label><input type="radio" name="digital" value="5"> Partially digital — intraoral scanning, lab handles design</label>
-      <label><input type="radio" name="digital" value="10"> Fully digital — scan, design, and print/mill in-house or with close lab integration</label>
-      <label><input type="radio" name="digital" value="15"> Same-day digital — photogrammetry-driven immediate load with day-of delivery</label>
+      <label><input type="radio" name="digital" value="0" required> No digital experience</label>
+      <label><input type="radio" name="digital" value="4"> Minimum digital experience — our lab comes in with a scanner and uses it when needed</label>
+      <label><input type="radio" name="digital" value="8"> Partial digital experience — IOS scans taken and sent to the lab for implant guides; scan-body impressions for referral offices; upper/lower + bite for night guards</label>
+      <label><input type="radio" name="digital" value="12"> Full digital experience — IOS scans taken and implant guides made in-house</label>
+      <label><input type="radio" name="digital" value="15"> All-on-X digital — IOS + CBCT + pre-op wax-up, photogrammetry, IOS reference-cap scan, print hybrid temp, process &amp; place, final photogrammetry, final IOS, final design check, final delivery</label>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+      <p class="hint" style="margin-bottom:10px">Check the digital impression experience you have today (all that apply).</p>
+      <div class="checks" id="dwtasks">
+        <label><input type="checkbox" name="dw" value="Oversee assistants taking digital impressions"> I have experience overseeing our assistants taking digital impressions</label>
+        <label><input type="checkbox" name="dw" value="Pre-op full arch scans"> Pre-op full-arch scans</label>
+        <label><input type="checkbox" name="dw" value="Night guard creation"> Night guard creation</label>
+        <label><input type="checkbox" name="dw" value="Scan body impressions for referral office"> Scan-body impressions for individual implants (referral office)</label>
+        <label><input type="checkbox" name="dw" value="Conventional impressions"> Conventional impressions for full-arch or individual implant construction</label>
+        <label><input type="checkbox" name="dw" value="No digital impression experience"> I have no experience with digital impressions</label>
+      </div>
     </div>
   </section>
 
@@ -245,8 +291,8 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     <p class="hint">Check everything currently in your practice.</p>
     <div class="checks" id="equip">
       <label><input type="checkbox" name="eq" value="cbct" data-pts="2" data-name="CBCT"> CBCT</label>
-      <label><input type="checkbox" name="eq" value="ios" data-pts="3" data-name="Intraoral scanner"> Intraoral scanner (iTero, Trios, Primescan…)</label>
-      <label><input type="checkbox" name="eq" value="pg" data-pts="4" data-name="Photogrammetry"> Photogrammetry (PIC, iCam4D, MicronMapper…)</label>
+      <label><input type="checkbox" name="eq" value="ios" data-pts="3" data-name="Intraoral scanner"> Intraoral scanner (Trios, iTero, Medit, Primescan…)</label>
+      <label><input type="checkbox" name="eq" value="pg" data-pts="4" data-name="Photogrammetry"> Photogrammetry (iMetric iCam, PIC, MicroMapper, Shining 3D, FastMap, TAbutment…)</label>
       <label><input type="checkbox" name="eq" value="printer" data-pts="2" data-name="3D printer"> 3D printer (in-house)</label>
       <label><input type="checkbox" name="eq" value="software" data-pts="2" data-name="Design software"> Design software (exocad, 3Shape, BlueSkyPlan…)</label>
       <label><input type="checkbox" name="eq" value="mill" data-pts="1" data-name="In-house mill"> In-house milling</label>
@@ -264,10 +310,30 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
       <div class="field"><label for="f_lab">Lab support</label>
         <select id="f_lab" required>
           <option value="">Select…</option>
-          <option value="3">In-house lab / technician</option>
+          <option value="3">Fully in-house lab technician</option>
           <option value="2">Dedicated outside lab partner</option>
-          <option value="1">Case-by-case outside labs</option>
-          <option value="0">No established lab relationship</option>
+          <option value="1">Case-by-case selection by referral</option>
+          <option value="0">No established lab partner</option>
+        </select>
+      </div>
+      <div class="field"><label for="f_dayof">Pre-op &amp; day-of-surgery lab support</label>
+        <select id="f_dayof">
+          <option value="">Select…</option>
+          <option>Full support — pre-op plan, attends surgery, delivery</option>
+          <option>Pre-op design + day-of design offsite</option>
+          <option>Pre-op design + onsite printing</option>
+          <option>Fully in-house lab tech</option>
+          <option>No established lab partner</option>
+        </select>
+      </div>
+      <div class="field"><label for="f_final">Final prosthesis production</label>
+        <select id="f_final">
+          <option value="">Select…</option>
+          <option>Local lab based on referral source</option>
+          <option>Dedicated lab partner</option>
+          <option>In-house milling</option>
+          <option>In-house printing</option>
+          <option>Not established yet</option>
         </select>
       </div>
     </div>
@@ -394,7 +460,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
   const pbar=document.getElementById('pbar');
 
   // progress bar as fields complete
-  const reqNames=['exp_aox','exp_fp1','exp_zygo','exp_ptery','volume','digital','timeline'];
+  const reqNames=['exp_aox','exp_aoxsd','exp_fp3','exp_fp1','exp_trad','exp_gsi','exp_gsf','exp_zygo','exp_ptery','volume','digital','timeline'];
   function updateProgress(){
     let done=0,total=reqNames.length+4;
     reqNames.forEach(n=>{if(form.querySelector(`[name="${n}"]:checked`))done++;});
@@ -407,20 +473,20 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
 
   const EXP_LABELS=['None','1–10','11–50','51–200','200+'];
   const VOL_LABELS={0:'0 — not yet offering',3:'1–12 arches/yr',7:'13–36 arches/yr',11:'37–100 arches/yr',15:'100+ arches/yr'};
-  const DIG_LABELS={0:'Fully analog',5:'Partially digital (IOS)',10:'Fully digital',15:'Same-day digital / photogrammetry'};
+  const DIG_LABELS={0:'No digital experience',4:'Minimum digital (lab brings scanner)',8:'Partial digital (IOS to lab)',12:'Full digital (guides in-house)',15:'All-on-X digital (photogrammetry, same-day)'};
 
   function val(name){const el=form.querySelector(`[name="${name}"]:checked`);return el?+el.value:null;}
 
   window.computeProfile=function(a){
     // ---- pillar scores ----
-    const expPts=a.aox*4+a.fp1*2+a.zygo*2+a.ptery*2;           // /40
+    const expPts=a.aox*2+a.aoxsd*2+a.fp3*1+a.fp1*1+a.trad*1+a.gsi*0.5+a.gsf*0.5+a.zygo*1+a.ptery*1;  // /40
     const volPts=a.volume;                                       // /15
     const digPts=a.digital;                                      // /15
     const eqPts=Math.min(15,a.equipPts);                         // /15
     let teamPts=0;
     teamPts+=a.tc?4:0; teamPts+=a.sa?4:0; teamPts+=a.rp?4:0; teamPts+=a.lab;
     teamPts=Math.min(15,teamPts);                                // /15
-    const score=expPts+volPts+digPts+eqPts+teamPts;
+    const score=Math.round(expPts+volPts+digPts+eqPts+teamPts);
 
     let band,desc;
     if(score>=75){band='Elite Partner';desc='Advanced surgical and digital foundation. Onboarding focuses on advanced curriculum, same-day systems, and deploying the full IW growth engine.';}
@@ -444,14 +510,14 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     }
 
     return {score,band,desc,curr,currList,pillars:[
-      ['Surgical Experience',expPts,40],['Case Volume',volPts,15],['Digital Workflow',digPts,15],['Equipment',eqPts,15],['Team',teamPts,15]
+      ['Surgical Experience',Math.round(expPts),40],['Case Volume',volPts,15],['Digital Workflow',digPts,15],['Equipment',eqPts,15],['Team',teamPts,15]
     ]};
   };
 
   form.addEventListener('submit',function(e){
     e.preventDefault();
     // validate
-    const need=['f_name','f_practice','f_email','f_spec','f_years'];
+    const need=['f_name','f_practice','f_email','f_spec','f_years','f_enthusiasm'];
     let ok=true;
     need.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){ok=false;el.style.borderColor='#8c2f2f';}else el.style.borderColor='';});
     reqNames.forEach(n=>{if(val(n)===null)ok=false;});
@@ -462,7 +528,8 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     // gather
     const eqChecked=[...form.querySelectorAll('input[name=eq]:checked')];
     const a={
-      aox:val('exp_aox'),fp1:val('exp_fp1'),zygo:val('exp_zygo'),ptery:val('exp_ptery'),
+      aox:val('exp_aox'),aoxsd:val('exp_aoxsd'),fp3:val('exp_fp3'),fp1:val('exp_fp1'),
+      trad:val('exp_trad'),gsi:val('exp_gsi'),gsf:val('exp_gsf'),zygo:val('exp_zygo'),ptery:val('exp_ptery'),
       volume:val('volume'),digital:val('digital'),
       equipPts:eqChecked.reduce((s,el)=>s+ +el.dataset.pts,0),
       tc:document.getElementById('t_tc').checked,
@@ -482,11 +549,18 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
       const EQ=[['ios','Intraoral scanner'],['pg','Photogrammetry'],['cbct','CBCT'],['printer','3D printer'],['software','Design software'],['mill','In-house mill'],['guides','Guided surgery']];
       const have={}; form.querySelectorAll('input[name=eq]').forEach(el=>{have[el.value]=el.checked;});
       const equipment=EQ.map(([k,n])=>({key:k,name:n,have:!!have[k]}));
+      const dwTasks=[...form.querySelectorAll('input[name=dw]:checked')].map(el=>el.value);
       const profile={
         name,practice,email:document.getElementById('f_email').value.trim(),
         score:r.score,band:r.band,curriculum:r.curr,
         pillars:r.pillars,topGaps:gaps,goals,timeline,
         equipment,digital:a.digital,volume:a.volume,
+        enthusiasm:document.getElementById('f_enthusiasm').value,
+        casesInitial:document.getElementById('f_casesInitial').value,
+        casesFuture:document.getElementById('f_casesFuture').value,
+        digitalTasks:dwTasks,
+        dayOfSupport:document.getElementById('f_dayof').value,
+        finalProduction:document.getElementById('f_final').value,
         date:new Date().toISOString()
       };
       localStorage.setItem('iw_profile',JSON.stringify(profile));
@@ -511,11 +585,18 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     }).join('');
 
     // experience kv
-    const expMap=[['All-on-X full arch',a.aox],['FP1 restorations',a.fp1],['Zygomatic implants',a.zygo],['Pterygoid implants',a.ptery]];
+    const expMap=[['All-on-X full arch',a.aox],['All-on-X same/next-day',a.aoxsd],['FP3 restorations',a.fp3],['FP1 restorations',a.fp1],
+      ['Traditional sequenced care',a.trad],['Guided — individual',a.gsi],['Guided — full arch',a.gsf],
+      ['Zygomatic implants',a.zygo],['Pterygoid implants',a.ptery]];
+    const enth=document.getElementById('f_enthusiasm').value;
+    const ci=document.getElementById('f_casesInitial').value, cf=document.getElementById('f_casesFuture').value;
     document.getElementById('p_exp').innerHTML=
       expMap.map(([k,v])=>`<div><dt>${k}</dt><dd>${EXP_LABELS[v]} cases</dd></div>`).join('')+
-      `<div><dt>Annual volume</dt><dd>${VOL_LABELS[a.volume]}</dd></div>`+
-      `<div><dt>Digital workflow</dt><dd>${DIG_LABELS[a.digital]}</dd></div>`;
+      `<div><dt>Annual volume (per provider)</dt><dd>${VOL_LABELS[a.volume]}</dd></div>`+
+      `<div><dt>Digital experience</dt><dd>${DIG_LABELS[a.digital]}</dd></div>`+
+      (enth!==''?`<div><dt>Full-arch enthusiasm</dt><dd>${enth}/10</dd></div>`:'')+
+      (ci?`<div><dt>Target cases/yr (initial)</dt><dd>${ci}</dd></div>`:'')+
+      (cf?`<div><dt>Target cases/yr (experienced)</dt><dd>${cf}</dd></div>`:'');
 
     // equipment
     const allEq=[...document.querySelectorAll('#equip input')];
