@@ -110,11 +110,8 @@ h1 .l2>span{animation-delay:.85s}
 
 <script>
 (function(){
-  /* route Get Started: onboarding if not done, else dashboard */
+  /* Get Started always continues to onboarding — the flow is login → welcome → onboarding */
   try{
-    var done = localStorage.getItem('iw_onboard_step1')==='done';
-    var btn = document.getElementById('getStarted');
-    if(done && btn){ btn.href='portal.html'; }
     /* personalize the welcome line for returning partners */
     var p = JSON.parse(localStorage.getItem('iw_profile')||'null');
     if(p && p.name){
