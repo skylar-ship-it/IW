@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Implanted Wisdom partner portal — a boutique consulting and growth partner for oral surgery and full-arch programs.">
-<meta name="theme-color" content="#1E1612">
-<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#2D241F">
+<meta name="color-scheme" content="dark">
 <title>Partner Portal — Implanted Wisdom</title>
 <meta property="og:title" content="Partner Portal — Implanted Wisdom">
 <meta property="og:type" content="website">
@@ -23,13 +23,13 @@
 <style>
 :root{
   --ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;
-  --cream:#F7F2EC;--white:#fff;--ink-70:rgba(30,22,18,.92);--cream-70:rgba(247,242,236,.96);
-  --hairline:rgba(201,169,110,.30);--line:#e9e0d2;--bg:#faf7f2;
+  --cream:#F2EEE7;--white:rgba(242,238,231,.05);--ink-70:rgba(242,238,231,.78);--cream-70:rgba(242,238,231,.85);
+  --hairline:rgba(201,169,110,.30);--line:rgba(242,238,231,.13);--bg:#2D241F;--surface:rgba(242,238,231,.05);--deep:#221a15;--deeper:#1b1410;
   --accent:#245C5C; /* practice accent, changeable in Settings */
   --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--body);font-weight:300;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+body{font-family:var(--body);font-weight:300;color:var(--cream);background:var(--bg);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
@@ -37,7 +37,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 
 /* ---------- Layout ---------- */
 .app{display:flex;min-height:100vh}
-.sidebar{width:250px;background:var(--ink);color:var(--cream);position:fixed;top:0;bottom:0;left:0;
+.sidebar{width:250px;background:var(--deeper);color:var(--cream);position:fixed;top:0;bottom:0;left:0;
   display:flex;flex-direction:column;padding:22px 0;z-index:30}
 .brand{display:flex;align-items:center;gap:11px;padding:0 22px 20px;border-bottom:1px solid rgba(201,169,110,.15)}
 .brand img{height:38px}
@@ -60,12 +60,12 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 .sidefoot a:hover{color:var(--gold)}
 
 .main{margin-left:250px;flex:1;min-width:0}
-.topbar{height:64px;background:var(--white);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+.topbar{height:64px;background:var(--deep);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
   display:flex;align-items:center;justify-content:space-between;padding:0 30px}
 .topbar .ttl{font-family:var(--display);font-size:1.45rem}
 .topctrl{display:flex;align-items:center;gap:16px}
 .rolebox{display:flex;align-items:center;gap:8px;font-size:0.93rem;color:var(--ink-70)}
-.rolebox select{padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:0.92rem;background:var(--white);color:var(--ink)}
+.rolebox select{padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:0.92rem;background:rgba(0,0,0,.25);color:var(--cream)}
 .avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;
   justify-content:center;font-family:var(--display);font-size:1rem}
 .content{padding:30px}
@@ -77,15 +77,15 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 .lead{color:var(--ink-70);font-size:1.02rem;max-width:70ch;margin-bottom:22px}
 .grid{display:grid;gap:18px}
 .g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:22px}
+.card{background:var(--surface);border:1px solid transparent;border-radius:14px;padding:22px}
 .card h3{font-size:1.2rem;margin-bottom:4px}
 .card .sub{font-size:0.9rem;color:var(--ink-70);margin-bottom:16px}
-.eyebrow{font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:0.82rem;color:var(--accent);margin-bottom:14px}
-.kpi .big{font-family:var(--display);font-size:2.6rem;color:var(--ink);line-height:1}
+.eyebrow{font-weight:500;text-transform:uppercase;letter-spacing:.2em;font-size:0.76rem;color:var(--gold);margin-bottom:14px}
+.kpi .big{font-family:var(--display);font-size:2.6rem;color:var(--cream);line-height:1}
 .kpi .lab{font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:0.82rem;color:var(--ink-70);margin-top:8px}
-.kpi .delta{font-size:0.93rem;margin-top:6px}.up{color:#3f7d57}.down{color:#b06a52}
+.kpi .delta{font-size:0.93rem;margin-top:6px}.up{color:#9fd0c3}.down{color:#e8a598}
 .demo-pill{display:inline-block;font-family:var(--mono);font-size:0.75rem;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--accent);background:rgba(36,92,92,.09);border:1px dashed rgba(36,92,92,.35);padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:middle}
+  color:#9fd0c3;background:rgba(36,92,92,.09);border:1px dashed rgba(36,92,92,.35);padding:2px 7px;border-radius:20px;margin-left:8px;vertical-align:middle}
 .bar{height:9px;background:var(--line);border-radius:20px;overflow:hidden;margin-top:8px}
 .bar > span{display:block;height:100%;background:var(--accent);border-radius:20px}
 .bar.gold > span{background:var(--gold)}
@@ -93,25 +93,25 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
   font-size:0.93rem;padding:11px 18px;border-radius:6px;cursor:pointer;border:1px solid transparent;transition:.18s}
 .btn-gold{background:var(--gold);color:var(--ink)}.btn-gold:hover{background:var(--gold-soft)}
 .btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{filter:brightness(1.08)}
-.btn-out{border-color:var(--line);color:var(--ink-70);background:#fff}.btn-out:hover{border-color:var(--accent);color:var(--accent)}
+.btn-out{border-color:var(--line);color:var(--ink-70);background:transparent}.btn-out:hover{border-color:var(--accent);color:var(--accent)}
 .badge{font-size:0.79rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:20px}
-.b-green{background:#e3efe7;color:#3f7d57}.b-amber{background:#f6ecd9;color:#9a7b3a}.b-grey{background:#eee8dd;color:#6b5d47}.b-teal{background:#dcebeb;color:var(--teal)}
+.b-green{background:rgba(63,125,87,.2);color:#a9d4b6}.b-amber{background:rgba(154,123,58,.22);color:#e2c98a}.b-grey{background:rgba(242,238,231,.1);color:#cfc6ba}.b-teal{background:rgba(36,92,92,.3);color:#9fd0c3}
 table{width:100%;border-collapse:collapse}
 th{text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:0.79rem;color:var(--ink-70);
   padding:11px 12px;border-bottom:1px solid var(--line)}
 td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:1.01rem}
 tr:last-child td{border-bottom:0}
 .field{margin-bottom:15px}
-.field label{display:block;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:0.79rem;color:var(--accent);margin-bottom:6px}
+.field label{display:block;font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:0.79rem;color:var(--gold);margin-bottom:6px}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:6px;
-  font-family:var(--body);font-size:.9rem;background:#fff;color:var(--ink)}
+  font-family:var(--body);font-size:.9rem;background:rgba(0,0,0,.25);color:var(--cream)}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .ring{transform:rotate(-90deg)}
-.ladder-step{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--line);border-radius:9px;margin-bottom:12px;background:#fff}
+.ladder-step{display:flex;align-items:center;gap:16px;padding:16px;border-radius:9px;margin-bottom:12px;background:var(--surface)}
 .ladder-step .dot{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-family:var(--display);font-size:1.15rem;flex-shrink:0}
-.dot.done{background:var(--accent);color:#fff}.dot.prog{background:var(--gold);color:var(--ink)}.dot.lock{background:#eee8dd;color:#6b5d47}
+.dot.done{background:var(--accent);color:#fff}.dot.prog{background:var(--gold);color:var(--ink)}.dot.lock{background:rgba(242,238,231,.12);color:#cfc6ba}
 .module{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
 .module:last-child{border-bottom:0}
 .module .mt{flex:1}.module .mt .nm{font-weight:500;font-size:.92rem}.module .mt .bar{max-width:340px}
@@ -127,17 +127,17 @@ tr:last-child td{border-bottom:0}
 .preview-hero .eb{font-size:0.77rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .preview-hero h3{font-family:var(--display);font-size:1.8rem;color:var(--cream);margin:8px 0}
 .preview-hero .cta{display:inline-block;margin-top:12px;background:var(--gold);color:var(--ink);padding:9px 16px;border-radius:5px;font-size:0.91rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
-.ad-card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff;max-width:330px}
+.ad-card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface);max-width:330px}
 .ad-img{height:150px;background:repeating-linear-gradient(45deg,#efe7db,#efe7db 14px,#e7dccb 14px,#e7dccb 28px);
   display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--teal);font-size:0.93rem}
 .ad-body{padding:14px}.ad-body .sp{font-size:0.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-70)}
 .ad-body .hl{font-weight:600;margin:4px 0;font-size:.94rem}.ad-body p{font-size:0.92rem;color:var(--ink-70)}
-.callout{background:rgba(36,92,92,.06);border:1px solid rgba(36,92,92,.18);border-radius:9px;padding:18px 20px;font-size:1.01rem;color:var(--ink-70)}
+.callout{background:rgba(36,92,92,.3);border-radius:9px;padding:18px 20px;font-size:.98rem;color:var(--cream-70)}
 .result-box{display:none;margin-top:18px}
 .swatches{display:flex;gap:10px;flex-wrap:wrap}
 .sw{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent}
-.sw.sel{border-color:var(--ink)}
-.menu-btn{display:none;background:none;border:0;font-size:1.5rem;color:var(--ink);cursor:pointer;margin-right:6px}
+.sw.sel{border-color:var(--cream)}
+.menu-btn{display:none;background:none;border:0;font-size:1.5rem;color:var(--cream);cursor:pointer;margin-right:6px}
 .backdrop{display:none;position:fixed;inset:0;background:rgba(20,14,10,.5);z-index:25}
 .backdrop.show{display:block}
 @media(max-width:1100px){ .g4{grid-template-columns:repeat(2,1fr)} }
@@ -173,15 +173,15 @@ tr:last-child td{border-bottom:0}
 .libdl .btn{font-size:.76rem;padding:9px 16px}
 .fstage{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
 .fstage:first-child{border-top:0}
-.fstage .fn{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--cream);border:1px solid var(--hairline);
+.fstage .fn{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:rgba(242,238,231,.08);border:1px solid var(--hairline);
   display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.8rem;color:var(--gold)}
 .fstage .fbody{flex:1}
 .fstage .fbody b{font-size:1rem}
 .fstage .fbody span{display:block;font-size:.85rem;color:var(--ink-70)}
-.fstage.gap .fn{background:rgba(176,74,52,.14);border-color:transparent;color:#a33f28}
+.fstage.gap .fn{background:rgba(176,74,52,.3);border-color:transparent;color:#e8a598}
 .fstage .fchip{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
-.fstage .fchip.ok{background:rgba(36,92,92,.12);color:var(--teal)}
-.fstage .fchip.gap{background:rgba(176,74,52,.14);color:#a33f28}
+.fstage .fchip.ok{background:rgba(36,92,92,.35);color:#9fd0c3}
+.fstage .fchip.gap{background:rgba(176,74,52,.3);color:#e8a598}
 .frec{display:grid;grid-template-columns:auto 1fr;gap:12px 16px;align-items:start;padding:16px 0;border-top:1px solid var(--line)}
 .frec:first-child{border-top:0}
 .frec .fpri{font-family:var(--mono);font-size:.72rem;color:var(--gold);white-space:nowrap;padding-top:3px}
@@ -190,9 +190,9 @@ tr:last-child td{border-bottom:0}
 .frec .fasset{font-size:.76rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-top:6px}
 .pillar-hub{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px}
 @media(max-width:760px){.pillar-hub{grid-template-columns:1fr}}
-.phub{background:var(--white);border:1px solid var(--hairline);border-top:3px solid var(--gold);border-radius:12px;
+.phub{background:var(--surface);border:1px solid transparent;border-top:3px solid var(--gold);border-radius:14px;
   padding:30px 30px;cursor:pointer;transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column}
-.phub:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(30,22,18,.10)}
+.phub:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(242,238,231,.10)}
 .phub img{width:58px;height:58px;margin-bottom:16px}
 .phub .pe{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .phub h3{font-size:1.55rem;margin:4px 0 8px}
@@ -200,25 +200,25 @@ tr:last-child td{border-bottom:0}
 .phub .tools{margin-top:16px;font-size:.75rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
 .phub .open{margin-top:10px;font-size:.8rem;color:var(--gold);font-weight:500;letter-spacing:.05em}
 .eqstat{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:12px;margin-left:4px}
-.eqstat.have{background:rgba(36,92,92,.12);color:var(--teal)}
-.eqstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
-.wfstep.gap .wfn{background:rgba(176,74,52,.14);color:#a33f28}
-.badge.wfstat.gap{background:rgba(176,74,52,.14);color:#a33f28}
+.eqstat.have{background:rgba(36,92,92,.35);color:#9fd0c3}
+.eqstat.gap{background:rgba(176,74,52,.3);color:#e8a598}
+.wfstep.gap .wfn{background:rgba(176,74,52,.3);color:#e8a598}
+.badge.wfstat.gap{background:rgba(176,74,52,.3);color:#e8a598}
 /* ---- Lead Scoring v2 / Daily report / Consult reports ---- */
 .qrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .qrow:last-child{border-bottom:0}
 .qrow .qname{font-weight:500;min-width:130px}
 .qrow .qmeta{font-size:.85rem;color:var(--ink-70);flex:1;min-width:170px}
-.qbtn{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:5px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-70);font-family:var(--body)}
+.qbtn{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:5px;border:1px solid rgba(242,238,231,.25);background:transparent;cursor:pointer;color:var(--cream-70);font-family:var(--body)}
 .qbtn:hover{border-color:var(--accent);color:var(--accent)}
 .qbtn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .qbtn.gold:hover{background:var(--gold-soft)}
 .qbtn:disabled{opacity:.5;cursor:default}
 .flag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:12px;margin:1px 4px 1px 0;white-space:nowrap}
-.flag.new{background:rgba(201,169,110,.22);color:#8a6733}
-.flag.call{background:rgba(176,74,52,.15);color:#a33f28}
-.flag.quiet{background:rgba(36,92,92,.13);color:var(--teal)}
-.flag.enrolled{background:#e3efe7;color:#3f7d57}
+.flag.new{background:rgba(201,169,110,.22);color:#d9c099}
+.flag.call{background:rgba(176,74,52,.3);color:#e8a598}
+.flag.quiet{background:rgba(36,92,92,.35);color:#9fd0c3}
+.flag.enrolled{background:rgba(63,125,87,.22);color:#a9d4b6}
 .leadrow{cursor:pointer}
 .leadrow:hover td{background:rgba(201,169,110,.05)}
 .leadrow.sel td{background:rgba(36,92,92,.06)}
@@ -230,11 +230,11 @@ tr:last-child td{border-bottom:0}
 .repline:last-child{border-bottom:0}
 .repline .rdot{flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:8px}
 .repline.done{color:var(--ink-70);opacity:.6}
-.repline.done .rdot{background:#3f7d57}
-.crep{border:1px solid var(--line);border-radius:9px;padding:16px;margin-bottom:12px;background:#fff}
+.repline.done .rdot{background:#9fd0c3}
+.crep{border-radius:9px;padding:16px;margin-bottom:12px;background:var(--surface)}
 .crep .ch{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .crep .cb{font-size:.9rem;color:var(--ink-70);margin-top:8px;line-height:1.55}
-.crep .cb b{color:var(--ink)}
+.crep .cb b{color:var(--cream)}
 </style>
 </head>
 <body>
@@ -252,32 +252,16 @@ tr:last-child td{border-bottom:0}
       <div class="tag" id="practiceTag">4 participating surgeons · Onboarding</div>
     </div>
     <div class="navwrap">
-      <div class="navgroup">Overview</div>
       <div class="nav-item active" data-view="dashboard" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▦</span> Dashboard</div>
-      <div class="nav-item" data-view="leadscore" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring Tracker</div>
-      <div class="navgroup">Pillar 1 · Clinical Training</div>
-      <a class="nav-item" href="surgeon-assessment.html" data-roles="owner,surgeon,pm"><span class="ic">✎</span> Experience Assessment</a>
-      <div class="nav-item" data-view="training" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> Training Hub</div>
-      <div class="nav-item" data-view="casereview" data-roles="owner,surgeon" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
-      <div class="nav-item" data-view="library" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◫</span> Clinical Library</div>
-      <div class="navgroup">Pillar 2 · Workflow Intelligence</div>
-      <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow Setup</div>
-      <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment Spec Sheet</div>
-      <div class="nav-item" data-view="labdeals" data-roles="owner,pm" onclick="go(this)"><span class="ic">◇</span> Lab &amp; Vendor Deals</div>
-      <div class="navgroup">Pillar 3 · DTC Marketing</div>
-      <div class="nav-item" data-view="marketing" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">◐</span> Marketing Studio</div>
-      <div class="nav-item" data-view="funnel" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">⧗</span> Funnel Plan</div>
-      <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Call &amp; Text Report Card</div>
-      <div class="nav-item" data-view="coordinator" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">☏</span> Coordinator Toolkit</div>
+      <div class="nav-item" data-view="leadscore" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring</div>
+      <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Calls &amp; Texts</div>
       <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
-      <div class="nav-item" data-view="benchmark" data-roles="owner,pm" onclick="go(this)"><span class="ic">▤</span> Benchmarking</div>
-      <div class="navgroup">Pillar 4 · Inner Circle</div>
-      <div class="nav-item" data-view="referral" data-roles="owner,coordinator" onclick="go(this)"><span class="ic">⚯</span> Referral Network</div>
-      <div class="navgroup">Tools</div>
-      <div class="nav-item" data-view="readiness" data-roles="owner,pm" onclick="go(this)"><span class="ic">✓</span> Readiness Check</div>
-      <div class="nav-item" data-view="roi" data-roles="owner,pm" onclick="go(this)"><span class="ic">∑</span> ROI Modeler</div>
-      <div class="navgroup">Account</div>
-      <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings &amp; Branding</div>
+      <div class="nav-item" data-view="library" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◫</span> Clinical Library</div>
+      <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow</div>
+      <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment</div>
+      <div class="nav-item" data-view="labdeals" data-roles="owner,pm" onclick="go(this)"><span class="ic">◇</span> Lab &amp; Vendor Deals</div>
+      <div class="nav-item" data-view="program" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> The Program</div>
+      <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings</div>
     </div>
     <div class="sidefoot">
       <a href="login.html" onclick="if(window.iwAuth){iwAuth.signOut();return false}">⏻ Log out</a>
@@ -327,46 +311,11 @@ tr:last-child td{border-bottom:0}
           <hr style="border:0;border-top:1px solid var(--hairline);margin:28px 0 24px">
         </div>
 
-        <p class="lead" style="margin-bottom:22px">Your four pillars — choose one to dive in.</p>
-        <div class="pillar-hub">
-          <div class="phub" onclick="goView('training')">
-            <img src="icon-clinical.png" alt="">
-            <div class="pe">Pillar 1</div>
-            <h3>Clinical Training</h3>
-            <p>State-of-the-art, surgeon-led case training so you can confidently take on the complex cases from day one.</p>
-            <div class="tools">Experience Assessment · Training Hub · Case Review</div>
-            <div class="open">Open →</div>
-          </div>
-          <div class="phub" onclick="goView('setupguide')">
-            <img src="icon-workflow.png" alt="">
-            <div class="pe">Pillar 2</div>
-            <h3>Workflow Intelligence</h3>
-            <p>Photogrammetry, 3D planning, printing and in-house finishing — so cases run smoothly at volume.</p>
-            <div class="tools">Setup Guide · Equipment Spec · Lab Deals</div>
-            <div class="open">Open →</div>
-          </div>
-          <div class="phub" onclick="goView('marketing')">
-            <img src="icon-dtc.png" alt="">
-            <div class="pe">Pillar 3</div>
-            <h3>DTC Marketing</h3>
-            <p>Full-transparency demand and conversion — CRM, paid ads, lead scoring, and the coordinator playbook.</p>
-            <div class="tools">Marketing Studio · Lead Scoring · Coordinator</div>
-            <div class="open">Open →</div>
-          </div>
-          <div class="phub" onclick="goView('referral')">
-            <img src="icon-inner.png" alt="">
-            <div class="pe">Pillar 4</div>
-            <h3>Inner Circle</h3>
-            <p>A branded GP referral network that protects your relationships while direct-to-consumer growth compounds.</p>
-            <div class="tools">Referral Network</div>
-            <div class="open">Open →</div>
-          </div>
-        </div>
+        
       </section>
 
       <!-- ===== ONBOARDING ===== -->
       <section class="view" id="onboarding">
-        <p class="lead">Your launch checklist — the cascade from signed agreement to first cases live.</p>
         <div class="card" style="max-width:760px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <div class="eyebrow" style="margin:0">Onboarding Progress</div>
@@ -390,7 +339,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== CASE REVIEW ===== -->
       <section class="view" id="casereview">
-        <p class="lead">Submit a case for PSP™ review — planning from scratch on bone, anatomy, and circumstances.</p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">New Submission</div>
@@ -419,7 +367,6 @@ tr:last-child td{border-bottom:0}
                 <tr><td>Case #038</td><td>FP3 · Upper</td><td>Jun 15</td><td><span class="badge b-teal">Delivered</span></td></tr>
               </tbody>
             </table>
-            <div class="callout" style="margin-top:16px">Average plan turnaround: <strong>2 business days</strong>. Plans return annotated with the PSP™ design rationale.</div>
           </div>
         </div>
 
@@ -437,13 +384,11 @@ tr:last-child td{border-bottom:0}
             <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Lab Production</div><span class="badge b-grey">Upcoming</span></div>
             <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Delivery</div><span class="badge b-grey">Upcoming</span></div>
           </div>
-          <div class="callout" style="margin-top:18px"><strong>Notifications:</strong> Design ready for review · Lab production queued · 2-week follow-up logged.</div>
         </div>
       </section>
 
       <!-- ===== TRAINING ===== -->
       <section class="view" id="training">
-        <p class="lead">Track your team's progress through the IW training curriculum.</p>
         <div class="card">
           <div class="eyebrow">Modules</div>
           <h3 style="margin-bottom:10px">Curriculum</h3>
@@ -460,7 +405,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== COORDINATOR TOOLKIT ===== -->
       <section class="view" id="coordinator">
-        <p class="lead">The conversion playbook — scripts, the first-60-seconds framework, and objection handling, ready to use.</p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">Playbooks</div>
@@ -477,14 +421,12 @@ tr:last-child td{border-bottom:0}
             <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Lead → Booked (target 25%)</span><strong class="up">26%</strong></div><div class="bar"><span style="width:26%"></span></div></div>
             <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Booked → Consulted (target 50%)</span><strong class="down">67%</strong></div><div class="bar"><span style="width:67%"></span></div></div>
             <div><div style="display:flex;justify-content:space-between;font-size:0.97rem"><span>Consulted → Closed (target 25%)</span><strong class="down">38%</strong></div><div class="bar gold"><span style="width:38%"></span></div></div>
-            <div class="callout" style="margin-top:18px">Above benchmark on show-rate; closing is the focus. Assign the Closing Methodology module to your coordinators.</div>
           </div>
         </div>
       </section>
 
       <!-- ===== CLINICAL LIBRARY ===== -->
       <section class="view" id="library">
-        <p class="lead">White-label patient forms, ready to use in your practice — download the PDF, or the Word file to add your logo.</p>
         <div class="grid g2">
           <div class="card lib">
             <div class="eyebrow">Patient Education</div>
@@ -522,12 +464,62 @@ tr:last-child td{border-bottom:0}
             </div>
           </div>
         </div>
-        <div class="callout" style="margin-top:18px">Every form is white-label. Download the Word version to add your practice logo and details, or hand out the ready-made PDF as-is.</div>
+      </section>
+
+      <!-- ===== THE PROGRAM (four pillars + program tools) ===== -->
+      <section class="view" id="program">
+<div class="pillar-hub">
+          <div class="phub" onclick="goView('training')">
+            <img src="icon-clinical.png" alt="">
+            <div class="pe">Pillar 1</div>
+            <h3>Clinical Training</h3>
+            <p>State-of-the-art, surgeon-led case training so you can confidently take on the complex cases from day one.</p>
+            <div class="tools">Experience Assessment · Training Hub · Case Review</div>
+            <div class="open">Open →</div>
+          </div>
+          <div class="phub" onclick="goView('setupguide')">
+            <img src="icon-workflow.png" alt="">
+            <div class="pe">Pillar 2</div>
+            <h3>Workflow Intelligence</h3>
+            <p>Photogrammetry, 3D planning, printing and in-house finishing — so cases run smoothly at volume.</p>
+            <div class="tools">Setup Guide · Equipment Spec · Lab Deals</div>
+            <div class="open">Open →</div>
+          </div>
+          <div class="phub" onclick="goView('marketing')">
+            <img src="icon-dtc.png" alt="">
+            <div class="pe">Pillar 3</div>
+            <h3>DTC Marketing</h3>
+            <p>Full-transparency demand and conversion — CRM, paid ads, lead scoring, and the coordinator playbook.</p>
+            <div class="tools">Marketing Studio · Lead Scoring · Coordinator</div>
+            <div class="open">Open →</div>
+          </div>
+          <div class="phub" onclick="goView('referral')">
+            <img src="icon-inner.png" alt="">
+            <div class="pe">Pillar 4</div>
+            <h3>Inner Circle</h3>
+            <p>A branded GP referral network that protects your relationships while direct-to-consumer growth compounds.</p>
+            <div class="tools">Referral Network</div>
+            <div class="open">Open →</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:22px">
+          <div class="eyebrow">Program Tools</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="qbtn" onclick="goView('training')">Training Hub</button>
+            <button class="qbtn" onclick="goView('casereview')">PSP Case Review</button>
+            <button class="qbtn" onclick="goView('marketing')">Marketing Studio</button>
+            <button class="qbtn" onclick="goView('funnel')">Funnel Plan</button>
+            <button class="qbtn" onclick="goView('coordinator')">Coordinator Toolkit</button>
+            <button class="qbtn" onclick="goView('benchmark')">Benchmarking</button>
+            <button class="qbtn" onclick="goView('referral')">Referral Network</button>
+            <button class="qbtn" onclick="goView('readiness')">Readiness Check</button>
+            <button class="qbtn" onclick="goView('roi')">ROI Modeler</button>
+          </div>
+        </div>
       </section>
 
       <!-- ===== WORKFLOW · SETUP GUIDE ===== -->
       <section class="view" id="setupguide">
-        <p class="lead">Your same-day digital pipeline — from scan to seated arch, in-house.</p>
         <div class="card" style="max-width:820px">
           <div class="eyebrow">The Workflow · Patient-Specific Protocol™</div>
           <h3 style="margin-bottom:6px">Scan → seat, the same day</h3>
@@ -541,13 +533,11 @@ tr:last-child td{border-bottom:0}
             <div class="wfstep" data-eq="stainglaze"><span class="wfn">5</span><div><strong>Stain, glaze &amp; finish</strong><div class="wfd">Characterize and finish chairside for a natural result.</div></div><span class="badge b-grey wfstat">SOP</span></div>
             <div class="wfstep"><span class="wfn">6</span><div><strong>Deliver</strong><div class="wfd">Seat the arch the same day — one visit, in your chair.</div></div><span class="badge b-grey wfstat">SOP</span></div>
           </div>
-          <div class="callout" style="margin-top:20px">White-label SOP documents (your logo) become downloadable when your workspace is connected. <strong>Coming with onboarding.</strong></div>
         </div>
       </section>
 
       <!-- ===== WORKFLOW · EQUIPMENT SPEC ===== -->
       <section class="view" id="equipment">
-        <p class="lead">What you need in-house to run the digital workflow — with tiers.</p>
         <div class="card" style="max-width:860px">
           <div class="eyebrow">Equipment Spec Sheet</div>
           <table style="margin-top:6px">
@@ -566,19 +556,16 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== WORKFLOW · LAB & VENDOR DEALS ===== -->
       <section class="view" id="labdeals">
-        <p class="lead">IW partner pricing on the systems and labs behind the workflow.</p>
         <div class="grid g3">
           <div class="card"><div class="eyebrow">Implants</div><h3 style="margin-bottom:6px">Nobel Biocare</h3><p style="font-size:.9rem;color:var(--ink-70)">Implant systems and components for the full-arch protocol.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
           <div class="card"><div class="eyebrow">Design</div><h3 style="margin-bottom:6px">Radiant</h3><p style="font-size:.9rem;color:var(--ink-70)">Prosthetic design partner for case-specific full-arch work.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
           <div class="card"><div class="eyebrow">Milling</div><h3 style="margin-bottom:6px">Radiant Mill</h3><p style="font-size:.9rem;color:var(--ink-70)">Zirconia milling coordination for final prosthetics.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">IW partner rate — confirmed at onboarding</div></div>
           <div class="card" style="border-top:3px solid var(--gold)"><div class="eyebrow">In-house</div><h3 style="margin-bottom:6px">Staining &amp; Glazing</h3><p style="font-size:.9rem;color:var(--ink-70)">Bring finishing in-house — the equipment, materials, and SOPs to characterize and glaze chairside.</p><div style="margin-top:12px;font-weight:500;color:var(--accent)">Setup guide + spec included</div></div>
         </div>
-        <div class="callout" style="margin-top:18px">Final partner pricing is set with the IW team during onboarding.</div>
       </section>
 
       <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
       <section class="view" id="leadscore">
-        <p class="lead">Every lead ranked by your live GoHighLevel <strong>Engagement Score</strong> — with credit, last activity, and today's exact call plan.</p>
         <div class="callout" id="lsNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Showing an <strong>example</strong> list. Your live leads load automatically when you're signed in and GoHighLevel is connected.</div>
         <div class="grid g4" style="margin-bottom:16px">
           <div class="card kpi"><div class="big" id="lsHot" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 20+</div></div>
@@ -643,8 +630,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · CONSULT REPORTS ===== -->
       <section class="view" id="consults">
-        <p class="lead">After every consult, the coordinator files a two-minute self-report. Kelly reviews each one and coaches from it — switch the role toggle to <strong>Practice Manager</strong> to review.</p>
-        <div class="callout" style="margin-bottom:16px;border-left:3px solid var(--gold)">Keep reports PHI-light: <strong>first name + last initial only</strong>, no clinical detail. Consult videos stay in your HIPAA-covered systems — not in the portal.</div>
         <div class="split">
           <div class="card">
             <div class="eyebrow">New Report</div>
@@ -675,13 +660,12 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · CALL & TEXT REPORT CARD ===== -->
       <section class="view" id="comms">
-        <p class="lead">Every call and text with your leads — graded, flagged, and turned into coaching. Pulled live from GoHighLevel.</p>
         <div class="callout" id="cmNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Sign in and open this page to load your live conversations. Calls are transcribed automatically because recording is on.</div>
         <div class="grid g4" style="margin-bottom:16px">
           <div class="card kpi"><div class="big" id="cmCalls">—</div><div class="lab">Calls (recent convos)</div></div>
           <div class="card kpi"><div class="big" id="cmConnected">—</div><div class="lab">Live Conversations</div></div>
           <div class="card kpi"><div class="big" id="cmResp">—</div><div class="lab">Median First Reply</div></div>
-          <div class="card kpi"><div class="big" id="cmUnanswered" style="color:#a33f28">—</div><div class="lab">Waiting on a Reply</div></div>
+          <div class="card kpi"><div class="big" id="cmUnanswered" style="color:#e8a598">—</div><div class="lab">Waiting on a Reply</div></div>
         </div>
         <div id="cmCards"></div>
         <div class="callout" style="margin-top:16px" id="cmFoot">Report cards regenerate every time this page opens. Add an <strong>Anthropic API key</strong> in Vercel and each transcript gets an AI coaching note automatically.</div>
@@ -689,13 +673,11 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · FUNNEL PLAN ===== -->
       <section class="view" id="funnel">
-        <p class="lead">Your funnel-optimization plan — generated from your Marketing Assessment, stage by stage.</p>
         <div id="funnelBody"></div>
       </section>
 
       <!-- ===== MARKETING STUDIO ===== -->
       <section class="view" id="marketing">
-        <p class="lead">Generate co-branded, full-arch demand assets in seconds — surgeon-led and on-brand.</p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">Asset Builder</div>
@@ -726,7 +708,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== INNER CIRCLE ===== -->
       <section class="view" id="referral">
-        <p class="lead">Your branded GP referral network — tiers, participation, and closed-case attribution.</p>
         <div class="grid g3" style="margin-bottom:18px">
           <div class="card kpi"><div class="big">14</div><div class="lab">Active Referring GPs</div></div>
           <div class="card kpi"><div class="big">31</div><div class="lab">Referrals (90 days)</div></div>
@@ -744,13 +725,11 @@ tr:last-child td{border-bottom:0}
               <tr><td>Gateway Dental Studio</td><td><span class="badge b-grey">Network</span></td><td>2</td><td>0</td><td><span class="badge b-amber">New</span></td></tr>
             </tbody>
           </table>
-          <div class="callout" style="margin-top:16px">À-la-carte involvement scales with participation and closed-case value. <strong>Next:</strong> upgrade Riverside &amp; Parkview to Inner Circle.</div>
         </div>
       </section>
 
       <!-- ===== BENCHMARKING ===== -->
       <section class="view" id="benchmark">
-        <p class="lead">Anonymized comparison against the IW partner network — intelligence only IW can give you.</p>
         <div class="card">
           <div class="eyebrow">You vs. Network</div>
           <div style="margin-bottom:22px">
@@ -766,13 +745,11 @@ tr:last-child td{border-bottom:0}
             <div style="display:flex;justify-content:space-between;font-size:0.99rem;margin-bottom:4px"><span><strong>Cost / booked consult</strong></span><span class="co" style="font-size:0.93rem;color:var(--ink-70)">you $420 · median $360 · best $210</span></div>
             <div class="bar" style="height:13px"><span style="width:50%"></span></div>
           </div>
-          <div class="callout" style="margin-top:22px">Biggest opportunity vs. peers: <strong>close rate</strong>. Closing the gap to network median would add ~2 arches/month at current consult volume.</div>
         </div>
       </section>
 
       <!-- ===== ROI MODELER ===== -->
       <section class="view" id="roi">
-        <p class="lead">Model the revenue impact of lifting your full-arch volume. <span class="demo-pill">illustrative — not a quote</span></p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">Inputs</div>
@@ -787,7 +764,6 @@ tr:last-child td{border-bottom:0}
               <div><div class="co" style="font-size:0.91rem;color:var(--ink-70)">Current run-rate</div><div style="font-family:var(--display);font-size:1.9rem" id="roiNow">—</div></div>
               <div><div class="co" style="font-size:0.91rem;color:var(--ink-70)">At target</div><div style="font-family:var(--display);font-size:1.9rem;color:var(--accent)" id="roiTarget">—</div></div>
             </div>
-            <div class="callout"><strong>Upside: <span id="roiDelta">—</span>/yr</strong> &nbsp;·&nbsp; <span id="roiArches">—</span> additional arches annually. Reaching ~100 arches/yr is the program goal across <span id="roiSurgTxt">4</span> surgeons.</div>
             <div style="margin-top:16px"><div class="co" style="font-size:0.91rem;color:var(--ink-70);margin-bottom:6px">Progress to 100-arch annual goal at target</div><div class="bar gold"><span id="roiGoalBar" style="width:0%"></span></div></div>
           </div>
         </div>
@@ -795,7 +771,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== READINESS ===== -->
       <section class="view" id="readiness">
-        <p class="lead">A 60-second diagnostic of your full-arch program maturity — see where IW would install first.</p>
         <div class="card" style="max-width:740px">
           <div class="eyebrow">Readiness Assessment</div>
           <form id="rdForm" oninput="calcReady()">
@@ -813,7 +788,7 @@ tr:last-child td{border-bottom:0}
               <select data-q><option value="0">No</option><option value="1">A few referrers</option><option value="2">Managed network</option></select></div>
           </form>
           <div class="result-box" id="rdResult">
-            <div class="callout"><div style="font-family:var(--display);font-size:1.4rem;color:var(--ink);margin-bottom:6px" id="rdTier"></div><div id="rdMsg"></div></div>
+<div id="rdMsg"></div></div>
           </div>
         </div>
         <div class="card" style="max-width:740px;margin-top:18px">
@@ -826,7 +801,6 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== SETTINGS ===== -->
       <section class="view" id="settings">
-        <p class="lead">Personalize the portal and your co-branded assets.</p>
         <div class="split">
           <div class="card">
             <div class="eyebrow">Practice Profile</div>
@@ -850,7 +824,6 @@ tr:last-child td{border-bottom:0}
               <div class="sw" style="background:#6b4a5a" data-c="#6b4a5a" onclick="pickColor(this)"></div>
               <div class="sw" style="background:#4a6b50" data-c="#4a6b50" onclick="pickColor(this)"></div>
             </div>
-            <div class="callout" style="margin-top:20px">Branding stays within IW guidelines — your accent, the IW system underneath.</div>
           </div>
         </div>
         <div class="card" id="securityCard" style="margin-top:22px;max-width:640px">
@@ -881,7 +854,7 @@ tr:last-child td{border-bottom:0}
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
   coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',referral:'Inner Circle Network',
-  benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',settings:'Settings & Branding'};
+  benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',program:'The Program',settings:'Settings'};
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
 function closeNav(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
@@ -1056,7 +1029,7 @@ function tailorWorkflow(){
 
 /* ---- Two-factor (TOTP) enrollment in Settings ---- */
 var _enrollFactor=null;
-function mfaMsgSet(t,ok){ var m=document.getElementById('mfaSetMsg'); if(!m)return; m.textContent=t; m.style.display='block'; m.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.14)'; m.style.color=ok?'#245C5C':'#a33f28'; }
+function mfaMsgSet(t,ok){ var m=document.getElementById('mfaSetMsg'); if(!m)return; m.textContent=t; m.style.display='block'; m.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.3)'; m.style.color=ok?'#245C5C':'#e8a598'; }
 function mfaInit(){
   if(!(window.iwAuth && iwAuth.enabled())){
     var u=document.getElementById('mfaUnavailable'); if(u)u.style.display='block';
@@ -1185,9 +1158,9 @@ function applyPractice(){
    ============================================================ */
 function lsBandStyle(band){
   if(band==='Hot')     return 'background:var(--gold);color:var(--ink)';
-  if(band==='Warm')    return 'background:rgba(201,169,110,.2);color:#8a6733';
+  if(band==='Warm')    return 'background:rgba(201,169,110,.2);color:#d9c099';
   if(band==='Nurture') return 'background:rgba(36,92,92,.14);color:var(--teal)';
-  return 'background:rgba(30,22,18,.08);color:rgba(30,22,18,.55)';
+  return 'background:rgba(242,238,231,.08);color:rgba(242,238,231,.55)';
 }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
 
@@ -1277,8 +1250,8 @@ function loadComms(){
 }
 function cmFlagStyle(level){
   if(level==='good') return 'background:rgba(36,92,92,.12);color:var(--teal)';
-  if(level==='bad')  return 'background:rgba(163,63,40,.14);color:#a33f28';
-  return 'background:rgba(201,169,110,.18);color:#8a6733';
+  if(level==='bad')  return 'background:rgba(163,63,40,.14);color:#e8a598';
+  return 'background:rgba(201,169,110,.18);color:#d9c099';
 }
 function renderComms(d){
   var note=document.getElementById('cmNote'); if(note) note.style.display='none';
@@ -1562,7 +1535,7 @@ function renderConsults(){
 function submitConsult(e){
   e.preventDefault();
   var msg=document.getElementById('crMsg');
-  var show=function(t,ok){ if(msg){ msg.textContent=t; msg.style.display='block'; msg.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.14)'; msg.style.color=ok?'#245C5C':'#a33f28'; } };
+  var show=function(t,ok){ if(msg){ msg.textContent=t; msg.style.display='block'; msg.style.background=ok?'rgba(36,92,92,.12)':'rgba(176,74,52,.3)'; msg.style.color=ok?'#245C5C':'#e8a598'; } };
   var payload={
     patient_ref:document.getElementById('crRef').value.trim(),
     consult_date:document.getElementById('crDate').value||null,
