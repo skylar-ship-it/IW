@@ -566,7 +566,7 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== DTC · LEAD SCORING TRACKER ===== -->
       <section class="view" id="leadscore">
-        <div class="callout" id="lsNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Showing an <strong>example</strong> list. Your live leads load automatically when you're signed in and GoHighLevel is connected.</div>
+        <div class="callout" id="lsNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Showing an <strong>example</strong> list. Your live leads load automatically when you're signed in.</div>
         <div class="grid g4" style="margin-bottom:16px">
           <div class="card kpi"><div class="big" id="lsHot" style="color:var(--gold)">2</div><div class="lab">🔥 Hot · 20+</div></div>
           <div class="card kpi"><div class="big" id="lsWarm">2</div><div class="lab">Warm · 5–19</div></div>
@@ -598,7 +598,7 @@ tr:last-child td{border-bottom:0}
           <div class="card">
             <div class="eyebrow">Nurture Watch</div>
             <h3 style="margin-bottom:4px">High score, gone quiet</h3>
-            <p style="font-size:.88rem;color:var(--ink-70);margin-bottom:6px">Strong leads with no activity for 5+ days — often ready, but nervous. One click enrolls them in the gentle nurture sequence in GoHighLevel.</p>
+            <p style="font-size:.88rem;color:var(--ink-70);margin-bottom:6px">Strong leads with no activity for 5+ days — often ready, but nervous. One click enrolls them in the gentle nurture sequence.</p>
             <div id="nwBody"></div>
           </div>
         </div>
@@ -612,7 +612,7 @@ tr:last-child td{border-bottom:0}
               <thead><tr><th>Lead</th><th style="text-align:right">Score</th><th>Band</th><th>Credit</th><th>Last Activity (CDT)</th><th>Flags</th></tr></thead>
               <tbody id="lsBody"></tbody>
             </table>
-            <div class="callout" style="margin-top:16px" id="lsFoot">Pulls live from <strong>GoHighLevel</strong> and re-ranks every time you open this page.</div>
+            <div class="callout" style="margin-top:16px" id="lsFoot">Pulls live from the <strong>IW Lead Engine</strong> and re-ranks every time you open this page.</div>
           </div>
           <div class="card" id="leadPanel">
             <div class="eyebrow">Lead Notes &amp; Call Log</div>
@@ -623,7 +623,7 @@ tr:last-child td{border-bottom:0}
         <div class="card" style="margin-top:18px">
           <div class="accordion"><div>
             <div class="ac-h" onclick="acc(this)">How the Engagement Score works <span>＋</span></div>
-            <div class="ac-b">This is GoHighLevel's native <strong>Engagement Score</strong> — the same number on each contact card and in your <em>Hottest Leads</em> smart list. Replies, answered calls, and bookings move it up; silence and opt-outs move it down. Edit the point rules in GHL (Contact → Actions → Engagement Score) and this page follows. Bands: Hot 20+ · Warm 5–19 · Nurture 0–4 · Cold below 0. Credit comes from the intake form (self-reported); last activity is the most recent touch GoHighLevel has seen on the contact, shown in Central time.</div>
+            <div class="ac-b">Your live <strong>Engagement Score</strong>. Replies, answered calls, and bookings move it up; silence and opt-outs move it down — the IW team tunes the point rules for you. Bands: Hot 20+ · Warm 5–19 · Nurture 0–4 · Cold below 0. Credit comes from the intake form (self-reported); last activity is the most recent touch recorded, shown in Central time.</div>
           </div></div>
         </div>
       </section>
@@ -1086,7 +1086,7 @@ function renderFunnel(){
   var REC={
     'Paid acquisition':      {stage:1, action:'Launch full-arch paid acquisition', detail:'Stand up Meta and Google campaigns targeting full-arch intent, with creative built by people who place implants.', asset:'Marketing Studio'},
     'Full-arch landing page':{stage:2, action:'Build a dedicated full-arch landing page', detail:'A single-purpose page with a clear offer and CTA — not a general implants page — so ad clicks convert.', asset:'Marketing Studio'},
-    'CRM &amp; lead management':{stage:3, action:'Install CRM &amp; pipelines', detail:'Capture every lead in GoHighLevel with stages, tasks, and ownership so nothing slips.', asset:'Lead Scoring Tracker'},
+    'CRM &amp; lead management':{stage:3, action:'Install CRM &amp; pipelines', detail:'Capture every lead in the IW CRM with stages, tasks, and ownership so nothing slips.', asset:'Lead Scoring Tracker'},
     'Follow-up automation':  {stage:3, action:'Automate nurture &amp; follow-up', detail:'Speed-to-lead SMS/email sequences that keep fear-driven shoppers warm until they book.', asset:'Coordinator Toolkit'},
     'Tracking &amp; attribution':{stage:5, action:'Turn on tracking &amp; lead scoring', detail:'Cost-per-lead, consult→close, and a 0–100 lead score so you always know what works and who to call.', asset:'Lead Scoring Tracker'},
     'Marketing ownership':   {stage:0, action:'Assign clear marketing ownership', detail:'One accountable owner (yours or IW-managed) so the system is run, not just installed.', asset:'IW Managed'}
@@ -1122,7 +1122,7 @@ function renderFunnel(){
 
 /* ---- which practice each login belongs to ----
    Add a line here per practice. The key is the login email (lowercase).
-   ghl_location = that practice's GoHighLevel location id (fill in when ready). */
+   ghl_location = that practice's lead-engine location id (fill in when ready). */
 var IW_PRACTICES = {
   'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs' },
   'wmos@iw.com': { practice:'West Michigan Oral Surgery', tag:'Partner Practice', accent:'#7c5e3b', ghl_location:'' }
@@ -1153,7 +1153,7 @@ function applyPractice(){
 }
 
 /* ============================================================
-   Lead Scoring v2 — live GHL feed + notes + call log + nurture
+   Lead Scoring v2 — live lead feed + notes + call log + nurture
    + daily report + consult reports (Kelly's review queue)
    ============================================================ */
 function lsBandStyle(band){
@@ -1229,7 +1229,7 @@ function loadLeads(){
     var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=(v||0); };
     set('lsHot',c.Hot); set('lsWarm',c.Warm); set('lsNurture',c.Nurture); set('lsCold',c.Cold);
     var foot=document.getElementById('lsFoot');
-    if(foot) foot.innerHTML='Live from <strong>GoHighLevel</strong> · '+d.count+' leads · re-ranked each time you open this page.';
+    if(foot) foot.innerHTML='Live from the <strong>IW Lead Engine</strong> · '+d.count+' leads · re-ranked each time you open this page.';
     renderLeadUI();
   }).catch(function(){});
   loadConsults();
@@ -1287,7 +1287,7 @@ function renderComms(d){
     '</div>';
   }).join('');
   var foot=document.getElementById('cmFoot');
-  if(foot) foot.innerHTML='Live from <strong>GoHighLevel</strong> · generated '+esc(d.generatedAtCDT||'')+' · '+(s.aiEnabled?'AI coaching notes: <strong>on</strong>.':'Add an <strong>Anthropic API key</strong> in Vercel and each call gets an AI coaching note automatically.');
+  if(foot) foot.innerHTML='Live from the <strong>IW Lead Engine</strong> · generated '+esc(d.generatedAtCDT||'')+' · AI coaching notes: <strong>'+(s.aiEnabled?'on':'coming soon')+'</strong>.';
 }
 
 /* ---- helpers ---- */
