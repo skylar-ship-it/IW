@@ -7,52 +7,80 @@
 <title>Marketing Assessment — Implanted Wisdom</title>
 <link rel="icon" href="favicon.png">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
-:root{--ink:#1E1612;--espresso:#2D241F;--gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;--cream:#F7F2EC;--white:#fff;
-  --ink-70:rgba(30,22,18,.92);--cream-70:rgba(247,242,236,.96);--hairline:rgba(201,169,110,.30);
-  --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap');
+:root{--espresso:#2D241F;--espresso-deep:#221a15;--espresso-deeper:#1b1410;--ink:#1E1612;
+  --gold:#C9A96E;--gold-soft:#d9c099;--teal:#245C5C;--teal-deep:#1c4a4a;
+  --cream:#F2EEE7;--cream-80:rgba(242,238,231,.85);--cream-60:rgba(242,238,231,.6);
+  --line:rgba(242,238,231,.12);
+  --display:'Cormorant Garamond',Georgia,serif;--body:'Jost',system-ui,sans-serif;--mono:'Courier Prime',monospace;
+  --easing:cubic-bezier(0.22,1,0.36,1);}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15}
+body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--cream);background:var(--espresso);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;color:var(--cream)}
 a{color:inherit}
-.wrap{max-width:820px;margin:0 auto;padding:0 24px}
-.label{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;color:var(--gold)}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.label{font-weight:500;text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;color:var(--gold)}
 .tm{font-size:.6em;vertical-align:.55em;font-weight:500;font-family:var(--body)}
-header.hero{background:var(--espresso);color:var(--cream);padding:48px 0 40px;text-align:center;border-bottom:1px solid var(--hairline)}
-header.hero a.back{display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:16px}
-header.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:300}
+.wave{position:fixed;pointer-events:none;z-index:0}
+.wave svg{display:block}
+header.hero{position:relative;z-index:1;padding:84px 0 36px;text-align:center}
+header.hero a.back{display:inline-block;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-60);margin-bottom:22px;text-decoration:none;transition:color .25s}
+header.hero a.back:hover{color:var(--gold)}
+header.hero h1{font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:400}
 header.hero h1 em{font-style:italic;color:var(--gold)}
-header.hero p.sub{max-width:600px;margin:12px auto 0;color:var(--cream-70);font-size:1rem}
-section.block{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:24px 0;padding:30px 32px}
-.secnum{font-family:var(--mono);color:var(--gold);font-size:.82rem;letter-spacing:.1em}
-section.block h2{font-size:1.4rem;margin:2px 0 4px}
-.hint{color:rgba(30,22,18,.6);font-size:.9rem;margin-bottom:16px}
+header.hero p.sub{max-width:500px;margin:14px auto 0;color:var(--cream-60);font-size:1rem}
+.progressbar{position:sticky;top:0;z-index:40;height:4px;background:rgba(242,238,231,.1)}
+.progressbar>div{height:100%;width:0;background:var(--gold);transition:width .5s var(--easing)}
+section.block{position:relative;z-index:1;background:rgba(242,238,231,.045);border-radius:16px;margin:26px 0;padding:32px 34px}
+.secnum{font-family:var(--mono);color:var(--gold);font-size:.8rem;letter-spacing:.12em}
+section.block h2{font-size:1.45rem;margin:2px 0 4px}
+.hint{color:var(--cream-60);font-size:.9rem;margin-bottom:16px}
 .field{margin-bottom:16px}
-.field label{display:block;font-weight:500;font-size:.92rem;margin-bottom:5px}
-.field select,.field input,textarea{width:100%;padding:11px 13px;border:1px solid rgba(30,22,18,.22);border-radius:4px;font-family:var(--body);font-size:.97rem;background:var(--white);color:var(--ink)}
-.field select:focus,textarea:focus,.field input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.field label{display:block;font-weight:400;font-size:.92rem;margin-bottom:6px;color:var(--cream-80)}
+.field select,.field input,textarea{width:100%;padding:12px 14px;border:1px solid rgba(242,238,231,.2);border-radius:8px;font-family:var(--body);font-size:.97rem;background:rgba(0,0,0,.24);color:var(--cream)}
+.field input::placeholder,textarea::placeholder{color:rgba(242,238,231,.4)}
+.field select option{background:var(--espresso-deep);color:var(--cream)}
+.field select:focus,textarea:focus,.field input:focus{outline:none;border-color:var(--gold)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
 @media(max-width:640px){.checks{grid-template-columns:1fr}section.block{padding:24px 20px}}
-.checks label{display:flex;align-items:center;gap:9px;font-size:.95rem;font-weight:300}
-.checks input{width:auto}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 50px}
-.btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;padding:13px 24px;border-radius:3px;cursor:pointer;border:1px solid transparent}
-.btn-gold{background:var(--gold);color:var(--ink)}.btn-gold:hover{background:var(--gold-soft)}
-.btn-line{border-color:var(--gold);color:var(--gold);background:transparent}.btn-line:hover{background:var(--gold);color:var(--ink)}
-#result{display:none}
-.rcard{background:var(--white);border:1px solid var(--hairline);border-radius:6px;padding:34px 36px;margin:24px 0}
-.band{font-family:var(--display);font-size:2rem;color:var(--gold)}
-.plain{list-style:none;padding:0}.plain li{padding:8px 0;border-top:1px solid #efe7d8}.plain li:first-child{border-top:0}
-.gapli{color:#a33f28;font-weight:400}.okli{color:var(--teal)}
+.checks label{display:flex;align-items:center;gap:10px;font-size:.94rem;font-weight:300;cursor:pointer;padding:10px 13px;border:1px solid rgba(242,238,231,.16);border-radius:10px;transition:all .25s var(--easing);color:var(--cream-80)}
+.checks label:hover{border-color:rgba(201,169,110,.5)}
+.checks label:has(input:checked){border-color:var(--gold);background:rgba(201,169,110,.1);color:var(--cream)}
+.checks input{width:16px;height:16px;accent-color:var(--gold);flex-shrink:0}
+.checks .field{margin-bottom:0}
+.checks .field label{display:block;border:0;padding:0;background:none;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0 60px;position:relative;z-index:1}
+.btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.2em;font-size:.82rem;padding:16px 34px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;transition:all .3s var(--easing)}
+.btn-gold{background:var(--gold);color:var(--ink)}.btn-gold:hover{background:var(--gold-soft);transform:translateY(-1px)}
+.btn-line{border-color:var(--gold);color:var(--gold);background:transparent}.btn-line:hover{background:rgba(201,169,110,.1);color:var(--gold-soft)}
+#result{display:none;position:relative;z-index:1}
+.rcard{background:rgba(242,238,231,.045);border-radius:16px;padding:36px 38px;margin:40px 0}
+@media(max-width:640px){.rcard{padding:26px 20px}}
+.band{font-family:var(--display);font-size:2.1rem;color:var(--gold)}
+.plain{list-style:none;padding:0}
+.plain li{padding:9px 0}
+.gapli{color:#d19a7c}.okli{color:#9fd0c3}
 </style>
 </head>
 <body>
+<div class="wave" style="left:-6vw;top:-12vh" aria-hidden="true">
+  <svg width="40vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none">
+    <path d="M0,0 L240,0 C160,140 300,260 210,420 C130,560 250,700 150,840 C90,930 130,980 90,1000 L0,1000 Z" fill="#221a15"/>
+    <path d="M0,0 L150,0 C90,160 190,300 120,460 C60,600 150,760 70,900 C40,950 50,980 30,1000 L0,1000 Z" fill="#1b1410"/>
+  </svg>
+</div>
+<div class="wave" style="right:-6vw;bottom:-12vh" aria-hidden="true">
+  <svg width="36vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none" style="transform:scaleX(-1)">
+    <path d="M0,0 L220,0 C150,160 280,300 200,460 C120,620 240,760 140,900 C100,960 120,990 80,1000 L0,1000 Z" fill="#221a15"/>
+  </svg>
+</div>
+<div class="progressbar"><div id="pbar"></div></div>
 <header class="hero">
   <div class="wrap">
-    <a class="back" href="onboarding.html">← Back to Onboarding</a>
-    <div class="label">Onboarding · Step 2 of 3 · DTC Marketing</div>
+    <a class="back" href="onboarding.html">← Onboarding</a>
+    <div class="label">Assessment · Two of Three</div>
     <h1>Current Marketing <em>Assessment</em></h1>
-    <p class="sub">A quick picture of how you attract and convert patients today. Your answers shape a transparent DTC plan — CRM, paid ads, tracking, and lead scoring. About 3 minutes.</p>
+    <p class="sub">How you attract and convert patients today. About three minutes.</p>
   </div>
 </header>
 
@@ -73,7 +101,7 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
       <label><input type="checkbox" value="None yet"> No active marketing yet</label>
       <label><input type="checkbox" value="Don't track"> I don't keep track</label>
     </div>
-    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(242,238,231,.15)">
       <div class="field"><label for="refpct">Roughly what percentage of your patients come from GP referrals?</label>
         <select id="refpct"><option value="">Select…</option><option>75%+</option><option>50–75%</option><option>25–50%</option><option>Under 25%</option><option>I don't track this</option></select>
       </div>
@@ -109,7 +137,7 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
       <label><input type="checkbox" value="Full arch"> Full arch</label>
       <label><input type="checkbox" value="Other"> Other</label>
     </div>
-    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+    <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(242,238,231,.15)">
       <p class="hint" style="margin-bottom:8px">Referral-relationship marketing — check what you run today.</p>
       <div class="checks" id="refmktg">
         <label><input type="checkbox" value="Study club"> Study club</label>
@@ -166,9 +194,9 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
 
 <div id="result">
   <div class="rcard">
-    <div class="label" style="color:var(--teal)">Your Marketing Snapshot</div>
+    <div class="label" style="color:var(--gold-soft)">Your Marketing Snapshot</div>
     <div class="band" id="rBand"></div>
-    <p id="rDesc" style="color:var(--ink-70);margin-top:6px"></p>
+    <p id="rDesc" style="color:var(--cream-80);margin-top:6px"></p>
     <h3 style="margin:20px 0 8px">Where IW will focus first</h3>
     <ul class="plain" id="rGaps"></ul>
     <h3 style="margin:20px 0 8px">Already working for you</h3>
@@ -227,8 +255,37 @@ section.block h2{font-size:1.4rem;margin:2px 0 4px}
   });
 })();
 </script>
+<script>
+(function(){
+  var bar=document.getElementById('pbar'); if(!bar) return;
+  var form=document.querySelector('form'); if(!form) return;
+  var fields=[].slice.call(form.querySelectorAll('select, textarea, input[type=text]'));
+  var groups={};
+  [].slice.call(form.querySelectorAll('input[type=checkbox]')).forEach(function(c){
+    var g=c.closest('.checks'); if(g){ var id=g.id||'g'; groups[id]=g; }
+  });
+  var total=fields.length+Object.keys(groups).length;
+  var touched={};
+  function update(){
+    var n=Object.keys(touched).length;
+    bar.style.width=Math.min(100,Math.round(n/Math.max(1,total)*100))+'%';
+  }
+  form.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.matches('select, textarea, input[type=text]')){ touched['f'+fields.indexOf(t)]=1; }
+    if(t.matches('input[type=checkbox]')){ var g=t.closest('.checks'); touched['g'+(g&&g.id||'x')]=1; }
+    update();
+  });
+  form.addEventListener('input',function(e){
+    var t=e.target;
+    if(t.matches('textarea, input[type=text]') && t.value.trim()){ touched['f'+fields.indexOf(t)]=1; update(); }
+  });
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
+<script>window.IW_MENU_THEME='cream';</script>
+<script src="iw-menu.js"></script>
 <script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
 </body>
 </html>

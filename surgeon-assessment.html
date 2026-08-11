@@ -15,135 +15,148 @@
 <meta name="description" content="Implanted Wisdom Partner Readiness Assessment — a surgeon-led growth engine for specialty practices.">
 <link rel="icon" href="favicon.png">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,500&family=Jost:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap');
 :root{
-  --ink:#1E1612; --espresso:#2D241F; --gold:#C9A96E; --gold-soft:#d9c099;
-  --teal:#245C5C; --teal-deep:#1c4a4a; --cream:#F7F2EC; --white:#FFFFFF;
-  --ink-70:rgba(30,22,18,.92); --cream-70:rgba(247,242,236,.96);
-  --hairline:rgba(201,169,110,.30);
+  --espresso:#2D241F; --espresso-deep:#221a15; --espresso-deeper:#1b1410;
+  --ink:#1E1612; --gold:#C9A96E; --gold-soft:#d9c099;
+  --teal:#245C5C; --teal-deep:#1c4a4a;
+  --cream:#F2EEE7; --cream-80:rgba(242,238,231,.85); --cream-60:rgba(242,238,231,.6);
+  --line:rgba(242,238,231,.12);
   --display:'Cormorant Garamond', Georgia, serif;
   --body:'Jost', system-ui, sans-serif;
   --mono:'Courier Prime', monospace;
+  --easing:cubic-bezier(0.22,1,0.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15}
+body{font-family:var(--body);font-weight:300;font-size:16px;line-height:1.7;color:var(--cream);background:var(--espresso);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;color:var(--cream)}
 a{color:inherit}
 .wrap{max-width:880px;margin:0 auto;padding:0 24px}
-.label{font-weight:500;text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;color:var(--gold)}
+.label{font-weight:500;text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;color:var(--gold)}
 .mono{font-family:var(--mono)}
 .tm{font-size:.6em;vertical-align:.55em;font-weight:500;font-family:var(--body)}
 
+.wave{position:fixed;pointer-events:none;z-index:0}
+.wave svg{display:block}
+header.hero,.progressbar,.wrap,#profile{position:relative;z-index:1}
+
 /* Header */
-header.hero{background:var(--espresso);color:var(--cream);padding:56px 0 48px;text-align:center;border-bottom:1px solid var(--hairline)}
-header.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:300}
+header.hero{padding:88px 0 40px;text-align:center}
+header.hero h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:400}
 header.hero h1 em{font-style:italic;color:var(--gold)}
-header.hero p.sub{max-width:600px;margin:14px auto 0;color:var(--cream-70);font-size:1.02rem}
-.progressbar{position:sticky;top:0;z-index:40;height:4px;background:rgba(30,22,18,.12)}
-.progressbar>div{height:100%;width:0;background:var(--gold);transition:width .3s}
+header.hero p.sub{max-width:520px;margin:16px auto 0;color:var(--cream-60);font-size:1.02rem}
+header.hero a.back{display:inline-block;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream-60);margin-bottom:22px;text-decoration:none;transition:color .25s}
+header.hero a.back:hover{color:var(--gold)}
+
+/* Progress bar */
+.progressbar{position:sticky;top:0;z-index:40;height:4px;background:rgba(242,238,231,.1)}
+.progressbar>div{height:100%;width:0;background:var(--gold);transition:width .5s var(--easing)}
 
 /* Sections */
-section.block{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:26px 0;padding:34px 36px}
-section.block h2{font-size:1.55rem;margin-bottom:4px}
-section.block .hint{color:rgba(30,22,18,.62);font-size:.92rem;margin-bottom:18px}
-.secnum{font-family:var(--mono);color:var(--gold);font-size:.85rem;letter-spacing:.1em}
-form{padding:34px 0 10px}
+section.block{background:rgba(242,238,231,.045);border-radius:16px;margin:28px 0;padding:36px 38px}
+section.block h2{font-size:1.6rem;margin-bottom:4px}
+section.block .hint{color:var(--cream-60);font-size:.92rem;margin-bottom:18px}
+.secnum{font-family:var(--mono);color:var(--gold);font-size:.82rem;letter-spacing:.12em}
+form{padding:24px 0 10px}
 
 /* Fields */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}
 @media(max-width:640px){.grid2{grid-template-columns:1fr}section.block{padding:26px 20px}}
-.field label{display:block;font-weight:500;font-size:.92rem;margin-bottom:5px}
+.field label{display:block;font-weight:400;font-size:.92rem;margin-bottom:6px;color:var(--cream-80)}
 .field input[type=text],.field input[type=email],.field input[type=tel],.field select,textarea{
-  width:100%;padding:11px 13px;border:1px solid rgba(30,22,18,.22);border-radius:4px;
-  font-family:var(--body);font-size:.98rem;background:var(--white);color:var(--ink)}
-.field input:focus,.field select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+  width:100%;padding:12px 14px;border:1px solid rgba(242,238,231,.2);border-radius:8px;
+  font-family:var(--body);font-size:.98rem;background:rgba(0,0,0,.24);color:var(--cream)}
+.field input::placeholder,textarea::placeholder{color:rgba(242,238,231,.4)}
+.field select option{background:var(--espresso-deep);color:var(--cream)}
+.field input:focus,.field select:focus,textarea:focus{outline:none;border-color:var(--gold)}
 textarea{min-height:96px;resize:vertical}
 
 /* Experience matrix */
 .matrix{width:100%;border-collapse:collapse;margin-top:6px}
-.matrix th,.matrix td{padding:10px 8px;text-align:center;border-bottom:1px solid rgba(30,22,18,.08);font-size:.92rem}
-.matrix th{font-weight:500}
-.matrix td:first-child,.matrix th:first-child{text-align:left;font-weight:500}
-.matrix td:first-child span{display:block;font-weight:300;font-size:.8rem;color:rgba(30,22,18,.55)}
-.matrix input[type=radio]{width:18px;height:18px;accent-color:var(--teal);cursor:pointer}
+.matrix th,.matrix td{padding:11px 8px;text-align:center;border-bottom:1px solid var(--line);font-size:.92rem}
+.matrix th{font-weight:500;color:var(--cream-80)}
+.matrix td:first-child,.matrix th:first-child{text-align:left;font-weight:400;color:var(--cream)}
+.matrix td:first-child span{display:block;font-weight:300;font-size:.8rem;color:var(--cream-60)}
+.matrix input[type=radio]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer}
 @media(max-width:640px){.matrix th,.matrix td{padding:8px 3px;font-size:.8rem}}
 
-/* Choice pills */
+/* Choices */
 .choices{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.choices label{display:flex;align-items:center;gap:8px;border:1px solid rgba(30,22,18,.2);border-radius:999px;
-  padding:8px 16px;cursor:pointer;font-size:.93rem;background:var(--white);transition:all .15s}
-.choices label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
-.choices input{accent-color:var(--gold);cursor:pointer}
+.choices label{display:flex;align-items:center;gap:9px;border:1px solid rgba(242,238,231,.22);border-radius:10px;
+  padding:10px 18px;cursor:pointer;font-size:.93rem;background:transparent;transition:all .25s var(--easing);color:var(--cream-80)}
+.choices label:hover{border-color:var(--gold)}
+.choices label:has(input:checked){background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:400}
+.choices input{accent-color:var(--espresso);cursor:pointer}
 .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:6px}
 @media(max-width:640px){.checks{grid-template-columns:1fr}}
-.checks label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.95rem;padding:9px 12px;
-  border:1px solid rgba(30,22,18,.14);border-radius:4px;background:var(--white)}
-.checks label:has(input:checked){border-color:var(--gold);background:rgba(201,169,110,.08)}
-.checks input{width:17px;height:17px;margin-top:3px;accent-color:var(--teal);flex-shrink:0}
+.checks label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.95rem;padding:11px 14px;
+  border:1px solid rgba(242,238,231,.16);border-radius:10px;background:transparent;transition:all .25s var(--easing);color:var(--cream-80)}
+.checks label:hover{border-color:rgba(201,169,110,.5)}
+.checks label:has(input:checked){border-color:var(--gold);background:rgba(201,169,110,.1);color:var(--cream)}
+.checks input{width:17px;height:17px;margin-top:3px;accent-color:var(--gold);flex-shrink:0}
 
 /* Submit */
-.submitrow{text-align:center;padding:14px 0 60px}
-.btn{display:inline-block;font-family:var(--body);font-weight:500;letter-spacing:.14em;text-transform:uppercase;
-  font-size:.85rem;padding:16px 42px;border-radius:2px;border:none;cursor:pointer;transition:all .2s}
+.submitrow{text-align:center;padding:14px 0 70px}
+.btn{display:inline-block;font-family:var(--body);font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  font-size:.84rem;padding:18px 46px;border-radius:10px;border:none;cursor:pointer;transition:all .3s var(--easing)}
 .btn-gold{background:var(--gold);color:var(--ink)}
-.btn-gold:hover{background:var(--gold-soft)}
-.btn-line{background:transparent;border:1px solid var(--gold);color:inherit;padding:13px 28px;margin:0 6px}
-.btn-line:hover{background:rgba(201,169,110,.15)}
-.err{color:#8c2f2f;font-size:.9rem;margin-top:12px;display:none}
+.btn-gold:hover{background:var(--gold-soft);transform:translateY(-1px)}
+.btn-line{background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:14px 30px;margin:6px}
+.btn-line:hover{background:rgba(201,169,110,.1);color:var(--gold-soft)}
+.err{color:#e8a598;font-size:.9rem;margin-top:14px;display:none}
 
 /* ===== Profile ===== */
 #profile{display:none}
-.profile-hero{background:var(--espresso);color:var(--cream);padding:52px 0 46px;text-align:center}
-.profile-hero h2{font-size:clamp(1.8rem,4vw,2.7rem);font-weight:300}
-.profile-hero .who{color:var(--gold-soft);font-family:var(--mono);margin-top:8px;font-size:.95rem}
-.scorewrap{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;align-items:center;margin-top:34px}
+.profile-hero{padding:80px 0 48px;text-align:center}
+.profile-hero h2{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:400}
+.profile-hero .who{color:var(--gold-soft);font-family:var(--mono);margin-top:10px;font-size:.92rem}
+.scorewrap{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;align-items:center;margin-top:36px}
 .dial{position:relative;width:170px;height:170px}
 .dial svg{transform:rotate(-90deg)}
 .dial .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.dial .num b{font-family:var(--display);font-size:3rem;font-weight:500;line-height:1}
-.dial .num span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
+.dial .num b{font-family:var(--display);font-size:3rem;font-weight:500;line-height:1;color:var(--cream)}
+.dial .num span{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft)}
 .bandtag{text-align:left;max-width:330px}
 .bandtag .label{margin-bottom:6px}
 .bandtag h3{font-size:1.7rem;font-weight:500}
-.bandtag p{color:var(--cream-70);font-size:.95rem;margin-top:6px}
+.bandtag p{color:var(--cream-60);font-size:.95rem;margin-top:6px}
 
-.pcard{background:var(--white);border:1px solid var(--hairline);border-radius:6px;margin:26px 0;padding:32px 36px}
+.pcard{background:rgba(242,238,231,.045);border-radius:16px;margin:26px 0;padding:34px 38px}
 @media(max-width:640px){.pcard{padding:24px 20px}}
-.pcard h3{font-size:1.35rem;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--hairline)}
-.bars .row{display:grid;grid-template-columns:170px 1fr 60px;gap:14px;align-items:center;margin:11px 0;font-size:.93rem}
+.pcard h3{font-size:1.35rem;margin-bottom:16px}
+.bars .row{display:grid;grid-template-columns:170px 1fr 60px;gap:14px;align-items:center;margin:11px 0;font-size:.93rem;color:var(--cream-80)}
 @media(max-width:640px){.bars .row{grid-template-columns:110px 1fr 50px;font-size:.82rem}}
-.bars .track{height:9px;background:rgba(30,22,18,.09);border-radius:99px;overflow:hidden}
-.bars .fill{height:100%;background:var(--teal);border-radius:99px;transition:width .8s ease}
+.bars .track{height:8px;background:rgba(242,238,231,.12);border-radius:99px;overflow:hidden}
+.bars .fill{height:100%;background:var(--gold);border-radius:99px;transition:width .8s var(--easing)}
 .bars .fill.low{background:#a56a4e}
-.bars .fill.mid{background:var(--gold)}
-.bars .pct{font-family:var(--mono);text-align:right}
+.bars .fill.mid{background:var(--gold-soft)}
+.bars .pct{font-family:var(--mono);text-align:right;color:var(--cream-60)}
 
 .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px 30px;font-size:.95rem}
 @media(max-width:640px){.kv{grid-template-columns:1fr}}
-.kv div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed rgba(30,22,18,.12);padding:7px 0}
-.kv dt{color:rgba(30,22,18,.6)}
-.kv dd{font-weight:500;text-align:right}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:8px 0}
+.kv dt{color:var(--cream-60)}
+.kv dd{font-weight:400;text-align:right;color:var(--cream)}
 
 ul.plain{list-style:none}
-ul.plain li{padding:9px 0 9px 26px;position:relative;border-bottom:1px dashed rgba(30,22,18,.1);font-size:.96rem}
-ul.plain li:last-child{border-bottom:none}
+ul.plain li{padding:9px 0 9px 26px;position:relative;font-size:.96rem;color:var(--cream-80)}
 ul.plain li::before{content:"—";position:absolute;left:0;color:var(--gold)}
-ul.plain li.gap::before{content:"▲";font-size:.7rem;top:13px;color:#a56a4e}
-ul.plain li.ok::before{content:"✓";color:var(--teal)}
-.roadmap li b{font-weight:500}
-.tiercard{background:var(--teal);color:var(--cream);border:none}
-.tiercard h3{border-color:rgba(247,242,236,.25);color:var(--cream)}
+ul.plain li.gap::before{content:"▲";font-size:.7rem;top:13px;color:#d19a7c}
+ul.plain li.ok::before{content:"✓";color:#9fd0c3}
+.roadmap li b{font-weight:500;color:var(--cream)}
+.tiercard{background:var(--teal-deep)}
+.tiercard h3{color:var(--cream)}
 .tiercard .label{color:var(--gold-soft)}
-.tiercard ul.plain li{border-color:rgba(247,242,236,.15)}
-.actions{text-align:center;padding:10px 0 70px}
-.smallnote{font-size:.8rem;color:rgba(30,22,18,.5);text-align:center;margin-top:16px}
+.actions{text-align:center;padding:10px 0 80px}
+.smallnote{font-size:.78rem;color:var(--cream-60);text-align:center;margin-top:18px}
 
 @media print{
-  body{background:#fff}
-  #assessform,.progressbar,.actions,header.hero{display:none!important}
+  body{background:#fff;color:#000}
+  #assessform,.progressbar,.actions,header.hero,.wave{display:none!important}
   #profile{display:block!important}
-  .pcard{break-inside:avoid;border-color:#ccc}
+  .pcard{break-inside:avoid;background:#fff;border:1px solid #ccc}
+  .pcard h3,.dial .num b,h1,h2,h3,.kv dd,.roadmap li b{color:#000}
   .profile-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
@@ -152,12 +165,24 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
 
 <div class="progressbar"><div id="pbar"></div></div>
 
+<div class="wave" style="left:-6vw;top:-12vh" aria-hidden="true">
+  <svg width="40vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none">
+    <path d="M0,0 L240,0 C160,140 300,260 210,420 C130,560 250,700 150,840 C90,930 130,980 90,1000 L0,1000 Z" fill="#221a15"/>
+    <path d="M0,0 L150,0 C90,160 190,300 120,460 C60,600 150,760 70,900 C40,950 50,980 30,1000 L0,1000 Z" fill="#1b1410"/>
+  </svg>
+</div>
+<div class="wave" style="right:-6vw;bottom:-12vh" aria-hidden="true">
+  <svg width="36vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none" style="transform:scaleX(-1)">
+    <path d="M0,0 L220,0 C150,160 280,300 200,460 C120,620 240,760 140,900 C100,960 120,990 80,1000 L0,1000 Z" fill="#221a15"/>
+  </svg>
+</div>
+
 <header class="hero" id="top">
   <div class="wrap">
-    <a href="onboarding.html" style="display:inline-block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-70);margin-bottom:18px">← Back to Onboarding</a>
-    <div class="label">Onboarding · Step 1 of 3 · Clinical Training + Workflow Intelligence</div>
+    <a class="back" href="onboarding.html">← Onboarding</a>
+    <div class="label">Assessment · One of Three</div>
     <h1>Surgeon Experience <em>Assessment</em></h1>
-    <p class="sub">Every prospective Implanted Wisdom partner completes this assessment before onboarding. Your responses generate a Partner Readiness Profile — case experience, technology stack, team structure, and your recommended clinical curriculum and onboarding path. Takes about 5 minutes.</p>
+    <p class="sub">Your clinical and operational baseline. About five minutes.</p>
   </div>
 </header>
 
@@ -193,7 +218,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
         </select>
       </div>
     </div>
-    <div style="margin-top:22px;padding-top:18px;border-top:1px dashed rgba(30,22,18,.15)">
+    <div style="margin-top:22px;padding-top:18px;border-top:1px dashed rgba(242,238,231,.15)">
       <p class="hint" style="margin-bottom:12px"><strong style="font-weight:500;color:var(--ink)">Your full-arch vision.</strong> How do you see full-arch fitting into your practice?</p>
       <div class="field" style="margin-bottom:14px">
         <label for="f_enthusiasm">My excitement and enthusiasm to move fully into full-arch (0 = less likely · 10 = most likely) *</label>
@@ -272,7 +297,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
       <label><input type="radio" name="digital" value="12"> Full digital experience — IOS scans taken and implant guides made in-house</label>
       <label><input type="radio" name="digital" value="15"> All-on-X digital — IOS + CBCT + pre-op wax-up, photogrammetry, IOS reference-cap scan, print hybrid temp, process &amp; place, final photogrammetry, final IOS, final design check, final delivery</label>
     </div>
-    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(30,22,18,.15)">
+    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(242,238,231,.15)">
       <p class="hint" style="margin-bottom:10px">Check the digital impression experience you have today (all that apply).</p>
       <div class="checks" id="dwtasks">
         <label><input type="checkbox" name="dw" value="Oversee assistants taking digital impressions"> I have experience overseeing our assistants taking digital impressions</label>
@@ -604,7 +629,7 @@ ul.plain li.ok::before{content:"✓";color:var(--teal)}
     document.getElementById('p_equip').innerHTML=allEq.map(el=>{
       const nm=el.dataset.name;
       if(el.checked)return `<li class="ok">${nm} — in place</li>`;
-      const note=critical[el.value]?` <em style="color:rgba(30,22,18,.6)">${critical[el.value]}</em>`:'';
+      const note=critical[el.value]?` <em style="color:rgba(242,238,231,.6)">${critical[el.value]}</em>`:'';
       return `<li class="gap"><b>${nm} — gap.</b>${note}</li>`;
     }).join('');
 
@@ -667,6 +692,8 @@ Workflow notes: ${document.getElementById('f_workflow').value.trim()||'—'}`);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
+<script>window.IW_MENU_THEME='cream';</script>
+<script src="iw-menu.js"></script>
 <script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
 </body>
 </html>
