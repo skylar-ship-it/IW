@@ -1088,7 +1088,8 @@ async function submitCase(e){
     async function up(file,kind){
       if(!file) return;
       csMsg('Uploading '+file.name+' …');
-      var path=id+'/'+kind+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      var safeKind=kind.replace(/[^a-zA-Z0-9._-]/g,'_').replace(/_+/g,'_');
+      var path=id+'/'+safeKind+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
       var r=await sb.storage.from(CS_BUCKET).upload(path,file,{upsert:true});
       if(r.error) throw r.error;
       meta.push({kind:kind,name:file.name,path:path,size:file.size});
