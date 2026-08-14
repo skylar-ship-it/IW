@@ -288,6 +288,7 @@ tr:last-child td{border-bottom:0}
         <span class="ttl" id="viewTitle">Dashboard</span>
       </div>
       <div class="topctrl">
+        <select id="practiceSwitch" style="display:none;padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:0.92rem;background:rgba(0,0,0,.25);color:var(--cream)" onchange="switchPractice(this.value)"></select>
         <div class="rolebox">
           <span>Viewing as</span>
           <select id="roleSelect" onchange="setRole(this.value)">
@@ -1379,7 +1380,12 @@ function renderFunnel(){
    Add a line here per practice. The key is the login email (lowercase).
    ghl_location = that practice's lead-engine location id (fill in when ready). */
 var IW_PRACTICES = {
-  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs' },
+  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs',
+    locations:[ {name:'Pulver Oral Surgery · IW', tag:'Implanted Wisdom · Home Practice', ghl_location:'ua1JQW5n2yE3u80HvuUs'},
+                {name:'West Michigan Oral Surgery', tag:'Partner Practice', ghl_location:''} ] },
+  'eric@implantedwisdom.com': { practice:'Pulver Oral Surgery', tag:'Dr. L. Eric Pulver · Founder', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs',
+    locations:[ {name:'Pulver Oral Surgery · IW', tag:'Dr. L. Eric Pulver · Founder', ghl_location:'ua1JQW5n2yE3u80HvuUs'},
+                {name:'West Michigan Oral Surgery', tag:'Partner Practice', ghl_location:''} ] },
   'wmos@iw.com': { practice:'West Michigan Oral Surgery', tag:'Partner Practice', accent:'#7c5e3b', ghl_location:'' }
 };
 
@@ -1404,7 +1410,14 @@ function applyPractice(){
     if(accent){ document.documentElement.style.setProperty('--accent', accent); }
     window.IW_LOCATION = byEmail.ghl_location || m.ghl_location || app.ghl_location || null;   /* used by the live lead feed */
     window.IW_PRACTICE = practice || 'Partner Practice';
-    window.IW_IS_HOME = /home practice/i.test(tag||'') || /pulveroralsurgery/i.test(u.email||'');
+    window.IW_IS_HOME = /home practice/i.test(tag||'') || /pulveroralsurgery|@implantedwisdom\.com/i.test(u.email||'');
+    /* multi-practice accounts get the analytics switcher */
+    window.IW_LOCS = byEmail.locations || null;
+    var sw=document.getElementById('practiceSwitch');
+    if(sw && window.IW_LOCS && window.IW_LOCS.length>1){
+      sw.innerHTML = window.IW_LOCS.map(function(l,i){ return '<option value="'+i+'">'+l.name+'</option>'; }).join('');
+      sw.style.display='inline-block';
+    }
     loadLeads();
     loadCases();
   }).catch(function(){});
