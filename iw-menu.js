@@ -20,7 +20,7 @@
       theme=lum<0.5?'cream':'ink';
     }catch(e){ theme='ink'; }
   }
-  var line = theme==='cream' ? '#F2EEE7' : '#2D241F';
+  var line = theme==='cream' ? '#F2EEE7' : '#17110d';
 
   var css=''+
   '.iwm-btn{position:fixed;top:22px;right:26px;z-index:900;width:44px;height:44px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:0}'+
@@ -29,7 +29,7 @@
   '.iwm-btn.open span{background:#F2EEE7}'+
   '.iwm-btn.open span:nth-child(1){transform:translateY(4.5px) rotate(45deg)}'+
   '.iwm-btn.open span:nth-child(2){transform:translateY(-4.5px) rotate(-45deg)}'+
-  '.iwm-overlay{position:fixed;inset:0;z-index:890;background:rgba(27,19,14,.98);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .5s '+EASE+',visibility 0s .5s}'+
+  '.iwm-overlay{position:fixed;inset:0;z-index:890;background:rgba(11,8,7,.98);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .5s '+EASE+',visibility 0s .5s}'+
   '.iwm-overlay.open{opacity:1;visibility:visible;transition:opacity .5s '+EASE+'}'+
   '.iwm-nav{text-align:center;display:flex;flex-direction:column;gap:24px}'+
   '.iwm-label{font-family:Jost,system-ui,sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.4em;text-transform:uppercase;color:#C9A96E;margin-bottom:4px}'+

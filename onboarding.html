@@ -11,9 +11,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap');
 :root{
-  --espresso:#2D241F;
-  --espresso-deep:#221a15;
-  --espresso-deeper:#1b1410;
+  --espresso:#17110d;
+  --espresso-deep:#100c09;
+  --espresso-deeper:#0b0807;
   --teal:#245C5C;
   --teal-deep:#1c4a4a;
   --cream:#F2EEE7;
@@ -111,7 +111,7 @@ a{color:inherit;text-decoration:none}
 .menubtn:hover span{background:var(--gold)}
 .menubtn.open span:nth-child(1){transform:translateY(4.5px) rotate(45deg)}
 .menubtn.open span:nth-child(2){transform:translateY(-4.5px) rotate(-45deg)}
-.menu{position:fixed;inset:0;z-index:50;background:rgba(27,19,14,.98);
+.menu{position:fixed;inset:0;z-index:50;background:rgba(11,8,7,.98);
   display:flex;align-items:center;justify-content:center;
   opacity:0;visibility:hidden;transition:opacity .5s var(--easing),visibility 0s .5s}
 .menu.open{opacity:1;visibility:visible;transition:opacity .5s var(--easing)}
@@ -160,14 +160,14 @@ a{color:inherit;text-decoration:none}
 <section class="intro" id="top">
   <div class="wave" style="left:-6vw;top:-12vh" aria-hidden="true">
     <svg width="46vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none">
-      <path d="M0,0 L240,0 C160,140 300,260 210,420 C130,560 250,700 150,840 C90,930 130,980 90,1000 L0,1000 Z" fill="#221a15"/>
-      <path d="M0,0 L150,0 C90,160 190,300 120,460 C60,600 150,760 70,900 C40,950 50,980 30,1000 L0,1000 Z" fill="#1b1410"/>
+      <path d="M0,0 L240,0 C160,140 300,260 210,420 C130,560 250,700 150,840 C90,930 130,980 90,1000 L0,1000 Z" fill="#100c09"/>
+      <path d="M0,0 L150,0 C90,160 190,300 120,460 C60,600 150,760 70,900 C40,950 50,980 30,1000 L0,1000 Z" fill="#0b0807"/>
     </svg>
   </div>
   <div class="wave" style="right:-6vw;bottom:-12vh" aria-hidden="true">
     <svg width="42vw" height="124vh" viewBox="0 0 400 1000" preserveAspectRatio="none" style="transform:scaleX(-1)">
-      <path d="M0,0 L220,0 C150,160 280,300 200,460 C120,620 240,760 140,900 C100,960 120,990 80,1000 L0,1000 Z" fill="#221a15"/>
-      <path d="M0,120 L120,80 C80,240 160,380 100,540 C50,680 130,820 60,950 L0,1000 Z" fill="#1b1410"/>
+      <path d="M0,0 L220,0 C150,160 280,300 200,460 C120,620 240,760 140,900 C100,960 120,990 80,1000 L0,1000 Z" fill="#100c09"/>
+      <path d="M0,120 L120,80 C80,240 160,380 100,540 C50,680 130,820 60,950 L0,1000 Z" fill="#0b0807"/>
     </svg>
   </div>
   <div class="intro-inner">
@@ -190,7 +190,7 @@ a{color:inherit;text-decoration:none}
         <p>Clinical Training + Workflow Intelligence — case experience, volume, equipment, team.</p>
         <div class="act"><a class="startbtn" id="start1" href="surgeon-assessment.html">Start <span class="ar">→</span></a></div>
         <div class="mvisual" aria-hidden="true" style="position:relative"><img src="surgeon.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('hasimg')" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;z-index:1">
-          <svg viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice"><rect width="600" height="500" fill="#1c4a4a"/><circle cx="430" cy="180" r="150" fill="#245C5C"/><path d="M0,500 C150,340 300,470 600,360 L600,500 Z" fill="#2D241F"/><circle cx="180" cy="330" r="56" fill="#C9A96E"/></svg>
+          <svg viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice"><rect width="600" height="500" fill="#1c4a4a"/><circle cx="430" cy="180" r="150" fill="#245C5C"/><path d="M0,500 C150,340 300,470 600,360 L600,500 Z" fill="#17110d"/><circle cx="180" cy="330" r="56" fill="#C9A96E"/></svg>
         </div>
       </div>
 
@@ -199,7 +199,7 @@ a{color:inherit;text-decoration:none}
         <p>DTC Marketing — where your leads come from today and what you track.</p>
         <div class="act"><a class="startbtn" id="start2" href="marketing-assessment.html">Start <span class="ar">→</span></a></div>
         <div class="mvisual" aria-hidden="true" style="position:relative"><img src="mktg.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('hasimg')" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;z-index:1">
-          <svg viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice"><rect width="600" height="500" fill="#2D241F"/><path d="M600,0 C420,120 520,300 380,500 L600,500 Z" fill="#221a15"/><circle cx="210" cy="200" r="120" fill="#C9A96E"/><circle cx="210" cy="200" r="70" fill="#2D241F"/></svg>
+          <svg viewBox="0 0 600 500" preserveAspectRatio="xMidYMid slice"><rect width="600" height="500" fill="#17110d"/><path d="M600,0 C420,120 520,300 380,500 L600,500 Z" fill="#100c09"/><circle cx="210" cy="200" r="120" fill="#C9A96E"/><circle cx="210" cy="200" r="70" fill="#17110d"/></svg>
         </div>
       </div>
 
@@ -221,7 +221,7 @@ a{color:inherit;text-decoration:none}
           <svg viewBox="0 0 760 900" preserveAspectRatio="xMidYMid slice">
             <rect width="760" height="900" fill="#1c4a4a"/>
             <circle cx="540" cy="300" r="230" fill="#245C5C"/>
-            <path d="M0,900 C200,640 420,820 760,600 L760,900 Z" fill="#2D241F"/>
+            <path d="M0,900 C200,640 420,820 760,600 L760,900 Z" fill="#17110d"/>
             <circle cx="230" cy="560" r="86" fill="#C9A96E"/>
             <path d="M0,0 C140,120 60,280 160,420 L0,420 Z" fill="#245C5C"/>
           </svg>
@@ -229,11 +229,11 @@ a{color:inherit;text-decoration:none}
 
         <div class="visual" id="v2" data-name="current-marketing-visual"><img src="mktg.png" alt="" onerror="this.remove()" onload="this.parentNode.classList.add('hasimg')" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1">
           <svg viewBox="0 0 760 900" preserveAspectRatio="xMidYMid slice">
-            <rect width="760" height="900" fill="#2D241F"/>
-            <path d="M760,0 C520,180 660,420 480,900 L760,900 Z" fill="#221a15"/>
+            <rect width="760" height="900" fill="#17110d"/>
+            <path d="M760,0 C520,180 660,420 480,900 L760,900 Z" fill="#100c09"/>
             <circle cx="280" cy="330" r="180" fill="#C9A96E"/>
-            <circle cx="280" cy="330" r="104" fill="#2D241F"/>
-            <path d="M0,900 C160,760 120,640 300,560 L0,560 Z" fill="#221a15"/>
+            <circle cx="280" cy="330" r="104" fill="#17110d"/>
+            <path d="M0,900 C160,760 120,640 300,560 L0,560 Z" fill="#100c09"/>
           </svg>
         </div>
 
