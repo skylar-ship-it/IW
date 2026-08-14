@@ -383,7 +383,10 @@ tr:last-child td{border-bottom:0}
           </div>
           <div class="split" style="gap:14px">
             <div class="field"><label>CBCT &mdash; cone beam CT (.dcm / .zip)</label><input type="file" id="csCbct" accept=".dcm,.zip,.DCM,.ZIP"></div>
-            <div class="field"><label>Intraoral scans &mdash; IOS (.stl)</label><input type="file" id="csIos" accept=".stl,.STL,.ply,.PLY" multiple></div>
+            <div class="field"><label>Intraoral scans &mdash; IOS (.stl) &mdash; add one at a time or several at once</label>
+              <input type="file" id="csIos" accept=".stl,.STL,.ply,.PLY" multiple>
+              <div id="csIosList" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+            </div>
           </div>
         </div>
 
@@ -1003,7 +1006,7 @@ function obSync(){
 
 /* Case review */
 /* ---- PSP Case Review: real submissions to the IW case vault ---- */
-var CS_BUCKET='case-files', CS_CASES={}, CS_OPEN=null, CS_PHOTOS={};
+var CS_BUCKET='case-files', CS_CASES={}, CS_OPEN=null, CS_PHOTOS={}, CS_IOS=[];
 var PHOTO_VIEWS=[
   ['repose','Frontal full face — in repose'],
   ['maxsmile','Maximum smile'],
@@ -1015,6 +1018,23 @@ var PHOTO_VIEWS=[
 ];
 function sbc(){ return (window.iwAuth&&iwAuth.enabled())?iwAuth.client():null; }
 function csMsg(t){ var el=document.getElementById('csStatus'); if(el) el.textContent=t; }
+function renderIosList(){
+  var host=document.getElementById('csIosList'); if(!host) return;
+  host.innerHTML=CS_IOS.map(function(f,i){
+    return '<span class="qbtn" style="cursor:default">'+esc(f.name)+' · '+(f.size/1048576).toFixed(1)+' MB '+
+      '<a onclick="removeIos('+i+')" style="cursor:pointer;color:#e8a598;margin-left:6px;font-weight:600">&times;</a></span>';
+  }).join('');
+}
+function removeIos(i){ CS_IOS.splice(i,1); renderIosList(); }
+function initIosPicker(){
+  var inp=document.getElementById('csIos'); if(!inp||inp.dataset.wired) return;
+  inp.dataset.wired='1';
+  inp.addEventListener('change',function(){
+    for(var i=0;i<inp.files.length;i++){ CS_IOS.push(inp.files[i]); }
+    inp.value='';               /* allow picking again — files are kept in the list */
+    renderIosList();
+  });
+}
 function initPhotoZones(){
   var host=document.getElementById('photoZones'); if(!host||host.children.length) return;
   PHOTO_VIEWS.forEach(function(v){
@@ -1074,12 +1094,12 @@ async function submitCase(e){
       meta.push({kind:kind,name:file.name,path:path,size:file.size});
     }
     var cb=document.getElementById('csCbct').files[0]; await up(cb,'CBCT');
-    var ios=document.getElementById('csIos').files; for(var i=0;i<ios.length;i++) await up(ios[i],'IOS');
+    for(var i=0;i<CS_IOS.length;i++) await up(CS_IOS[i],'IOS');
     for(var k in CS_PHOTOS){ var lbl=''; PHOTO_VIEWS.forEach(function(v){ if(v[0]===k) lbl=v[1]; }); await up(CS_PHOTOS[k],'Photo — '+lbl); }
     await sb.from('case_submissions').update({files:meta}).eq('id',id);
     csMsg('Submitted ✓ — Dr. Pulver will review it shortly.');
     document.getElementById('csForm').reset();
-    CS_PHOTOS={}; var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
+    CS_PHOTOS={}; CS_IOS=[]; renderIosList(); var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
     loadCases();
   }catch(err){
     csMsg('Something went wrong: '+(err.message||err)+' — try again or send files to the IW team directly.');
@@ -1848,7 +1868,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
