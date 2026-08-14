@@ -256,6 +256,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="leadscore" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring</div>
       <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Calls &amp; Texts</div>
       <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
+      <div class="nav-item" data-view="casereview" data-roles="owner,surgeon,pm" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
       <div class="nav-item" data-view="library" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◫</span> Clinical Library</div>
       <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow</div>
       <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment</div>
@@ -342,47 +343,43 @@ tr:last-child td{border-bottom:0}
         <div class="split">
           <div class="card">
             <div class="eyebrow">New Submission</div>
-            <h3 style="margin-bottom:14px">Request a Case Review</h3>
-            <form onsubmit="submitCase(event)">
-              <div class="field"><label>Patient reference (no PHI)</label><input type="text" placeholder="e.g. Case #042" required></div>
-              <div class="field"><label>Arch</label><select><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
-              <div class="field"><label>Classification</label><select><option>FP1</option><option>FP2</option><option selected>FP3</option></select></div>
-              <div class="field"><label>Upload case files</label><input type="file" multiple>
-                <p class="co" style="font-size:0.82rem;color:var(--ink-70);margin-top:6px">Accepts CBCT · photogrammetry · IOS scans · design files · lab files.</p>
+            <h3 style="margin-bottom:4px">Submit a case for review</h3>
+            <p style="font-size:.9rem;color:var(--ink-70);margin-bottom:16px">Dr. Pulver reviews every submission in the order received.</p>
+            <form id="csForm" onsubmit="submitCase(event)">
+              <div class="field"><label>Patient name *</label><input type="text" id="csName" required placeholder="First Last"></div>
+              <div class="split" style="gap:14px">
+                <div class="field"><label>Arch *</label><select id="csArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
+                <div class="field"><label>Surgery date</label><input type="date" id="csSurg"></div>
               </div>
-              <div class="field"><label>Notes for review</label><textarea placeholder="Bone quality, anatomy notes, questions for the review team…"></textarea></div>
-              <button class="btn btn-accent" type="submit">Submit for Review</button>
-              <p class="co" style="font-size:0.88rem;color:var(--ink-70);margin-top:10px">🔒 Encrypted · PHI handled under BAA. Secure file storage activates with your connected workspace.</p>
+              <div class="field"><label>CBCT — cone beam CT (.dcm or .zip)</label><input type="file" id="csCbct" accept=".dcm,.zip,.DCM,.ZIP"></div>
+              <div class="field"><label>Intraoral scan — IOS (.stl)</label><input type="file" id="csIos" accept=".stl,.STL,.ply,.PLY" multiple></div>
+              <div class="field"><label>Photos</label><input type="file" id="csPhotos" accept="image/*" multiple></div>
+              <div class="field"><label>Notes</label><textarea id="csNotes" placeholder="Bone quality, anatomy notes, questions for review…"></textarea></div>
+              <button class="btn btn-gold" type="submit" id="csBtn">Submit for Review</button>
+              <p id="csStatus" style="font-size:.9rem;color:var(--gold);margin-top:10px"></p>
             </form>
           </div>
           <div class="card">
-            <div class="eyebrow">Your Cases</div>
-            <h3 style="margin-bottom:14px">Review Queue</h3>
+            <div class="eyebrow">Review Queue</div>
+            <h3 style="margin-bottom:14px">Submitted cases</h3>
             <table id="caseTable">
-              <thead><tr><th>Case</th><th>Type</th><th>Submitted</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td>Case #041</td><td>FP3 · Dual</td><td>Jun 22</td><td><span class="badge b-green">Plan Ready</span></td></tr>
-                <tr><td>Case #040</td><td>FP3 · Lower</td><td>Jun 20</td><td><span class="badge b-amber">In Review</span></td></tr>
-                <tr><td>Case #039</td><td>FP1 · Upper</td><td>Jun 18</td><td><span class="badge b-green">Plan Ready</span></td></tr>
-                <tr><td>Case #038</td><td>FP3 · Upper</td><td>Jun 15</td><td><span class="badge b-teal">Delivered</span></td></tr>
-              </tbody>
+              <thead><tr><th>Patient</th><th>Arch</th><th>Submitted</th><th>Status</th></tr></thead>
+              <tbody id="csBody"><tr><td colspan="4" style="color:var(--ink-70)">Sign in to load your cases.</td></tr></tbody>
             </table>
           </div>
         </div>
-
-        <!-- Case tracking timeline -->
-        <div class="card" style="margin-top:18px">
-          <div class="eyebrow">Case Tracking</div>
-          <h3 style="margin-bottom:4px">Case #040 · FP3 Lower</h3>
-          <div class="co" style="font-size:0.88rem;color:var(--ink-70);margin-bottom:18px">Live status across the full-arch workflow.</div>
-          <div style="display:flex;flex-wrap:wrap;gap:10px">
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Consultation</div><span class="badge b-green">Done</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Surgery</div><span class="badge b-green">Done</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">2-Week Follow-Up</div><span class="badge b-green">Done</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">iCAM Scan</div><span class="badge b-green">Done</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:2px solid var(--accent);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Design Review</div><span class="badge b-amber">In Progress</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Lab Production</div><span class="badge b-grey">Upcoming</span></div>
-            <div style="flex:1;min-width:120px;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:8px"><div style="font-size:0.86rem;font-weight:500;margin-bottom:7px">Delivery</div><span class="badge b-grey">Upcoming</span></div>
+        <div class="card" id="csDetail" style="display:none;margin-top:18px">
+          <div class="eyebrow">Case Detail</div>
+          <h3 id="cdName" style="margin-bottom:4px"></h3>
+          <p id="cdMeta" style="font-size:.9rem;color:var(--ink-70);margin-bottom:10px"></p>
+          <p id="cdNotes" style="font-size:.95rem;margin-bottom:14px"></p>
+          <div id="cdFiles" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px"></div>
+          <div id="cdReviewShow" style="display:none;padding:12px 16px;background:rgba(36,92,92,.3);border-radius:8px;margin-bottom:14px">
+            <strong>Review:</strong> <span id="cdReviewText"></span>
+          </div>
+          <div id="cdReviewWrap" style="display:none">
+            <div class="field"><label>Review notes (Dr. Pulver)</label><textarea id="cdReviewNotes" placeholder="Plan feedback, implant positions, red flags…"></textarea></div>
+            <button class="qbtn gold" onclick="saveReview()">✓ Mark Reviewed</button>
           </div>
         </div>
       </section>
@@ -506,7 +503,6 @@ tr:last-child td{border-bottom:0}
           <div class="eyebrow">Program Tools</div>
           <div style="display:flex;flex-wrap:wrap;gap:10px">
             <button class="qbtn" onclick="goView('training')">Training Hub</button>
-            <button class="qbtn" onclick="goView('casereview')">PSP Case Review</button>
             <button class="qbtn" onclick="goView('marketing')">Marketing Studio</button>
             <button class="qbtn" onclick="goView('funnel')">Funnel Plan</button>
             <button class="qbtn" onclick="goView('coordinator')">Coordinator Toolkit</button>
@@ -898,13 +894,94 @@ function obSync(){
 }
 
 /* Case review */
-function submitCase(e){e.preventDefault();
-  var ref=e.target.querySelector('input').value||'New Case';
-  var sel=e.target.querySelectorAll('select');
-  var tb=document.querySelector('#caseTable tbody');
-  var tr=document.createElement('tr');
-  tr.innerHTML='<td>'+ref+'</td><td>'+sel[1].value+' · '+sel[0].value+'</td><td>Today</td><td><span class="badge b-amber">In Review</span></td>';
-  tb.prepend(tr); e.target.reset();
+/* ---- PSP Case Review: real submissions to the IW case vault ---- */
+var CS_BUCKET='case-files', CS_CASES={}, CS_OPEN=null;
+function sbc(){ return (window.iwAuth&&iwAuth.enabled())?iwAuth.client():null; }
+function csMsg(t){ var el=document.getElementById('csStatus'); if(el) el.textContent=t; }
+async function submitCase(e){
+  e.preventDefault();
+  var sb=sbc();
+  if(!sb){ csMsg('Preview mode — sign in to submit real cases.'); return; }
+  var btn=document.getElementById('csBtn'); btn.disabled=true;
+  var name=document.getElementById('csName').value.trim();
+  var arch=document.getElementById('csArch').value;
+  var surg=document.getElementById('csSurg').value||null;
+  var notes=document.getElementById('csNotes').value.trim();
+  try{
+    csMsg('Creating case…');
+    var user=await iwAuth.currentUser();
+    var ins=await sb.from('case_submissions').insert({
+      patient:name, arch:arch, surgery_date:surg, notes:notes,
+      practice:window.IW_PRACTICE||'Partner Practice',
+      submitted_by:user&&user.email||null, status:'Awaiting Review', files:[]
+    }).select().single();
+    if(ins.error) throw ins.error;
+    var id=ins.data.id, meta=[];
+    async function up(file,kind){
+      if(!file) return;
+      csMsg('Uploading '+file.name+' …');
+      var path=id+'/'+kind+'-'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      var r=await sb.storage.from(CS_BUCKET).upload(path,file,{upsert:true});
+      if(r.error) throw r.error;
+      meta.push({kind:kind,name:file.name,path:path,size:file.size});
+    }
+    var cb=document.getElementById('csCbct').files[0]; await up(cb,'CBCT');
+    var ios=document.getElementById('csIos').files; for(var i=0;i<ios.length;i++) await up(ios[i],'IOS');
+    var ph=document.getElementById('csPhotos').files; for(var j=0;j<ph.length;j++) await up(ph[j],'Photo');
+    await sb.from('case_submissions').update({files:meta}).eq('id',id);
+    csMsg('Submitted ✓ — Dr. Pulver will review it shortly.');
+    document.getElementById('csForm').reset();
+    loadCases();
+  }catch(err){
+    csMsg('Something went wrong: '+(err.message||err)+' — try again or send files to the IW team directly.');
+  }
+  btn.disabled=false;
+}
+async function loadCases(){
+  var sb=sbc(); var body=document.getElementById('csBody'); if(!sb||!body) return;
+  var r=await sb.from('case_submissions').select('*').order('created_at',{ascending:false}).limit(60);
+  if(r.error||!r.data){ return; }
+  CS_CASES={};
+  if(!r.data.length){ body.innerHTML='<tr><td colspan="4" style="color:var(--ink-70)">No cases yet — submit your first on the left.</td></tr>'; return; }
+  body.innerHTML=r.data.map(function(c){
+    CS_CASES[c.id]=c;
+    var d=''; try{ d=new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }catch(x){}
+    var badge=c.status==='Reviewed'?'<span class="badge b-green">Reviewed</span>':'<span class="badge b-amber">Awaiting Review</span>';
+    return '<tr class="leadrow" onclick="openCase(\''+c.id+'\')"><td><strong>'+esc(c.patient)+'</strong><div style="font-size:.78rem;color:var(--ink-70)">'+esc(c.practice||'')+'</div></td><td>'+esc(c.arch||'—')+'</td><td>'+d+'</td><td>'+badge+'</td></tr>';
+  }).join('');
+}
+async function openCase(id){
+  var c=CS_CASES[id]; if(!c) return;
+  CS_OPEN=id;
+  var box=document.getElementById('csDetail'); box.style.display='block';
+  document.getElementById('cdName').textContent=c.patient;
+  document.getElementById('cdMeta').textContent=(c.practice||'')+' · '+(c.arch||'')+(c.surgery_date?(' · surgery '+c.surgery_date):'')+' · '+c.status;
+  document.getElementById('cdNotes').textContent=c.notes||'';
+  var showR=document.getElementById('cdReviewShow');
+  if(c.review_notes){ showR.style.display='block'; document.getElementById('cdReviewText').textContent=c.review_notes; }
+  else{ showR.style.display='none'; }
+  var wrap=document.getElementById('cdReviewWrap');
+  wrap.style.display=(window.IW_IS_HOME||!(window.iwAuth&&iwAuth.enabled()))?'block':'none';
+  var fl=document.getElementById('cdFiles'); fl.innerHTML='<span style="color:var(--ink-70);font-size:.9rem">Loading files…</span>';
+  var sb=sbc(); var out=[];
+  var files=c.files||[];
+  for(var i=0;i<files.length;i++){
+    var f=files[i]; var url='#';
+    if(sb){ try{ var su=await sb.storage.from(CS_BUCKET).createSignedUrl(f.path,3600); if(su.data) url=su.data.signedUrl; }catch(x){} }
+    var mb=f.size?(' · '+(f.size/1048576).toFixed(1)+' MB'):'';
+    out.push('<a class="qbtn" href="'+url+'" target="_blank" rel="noopener">'+esc(f.kind)+': '+esc(f.name)+mb+'</a>');
+  }
+  fl.innerHTML=out.length?out.join(''):'<span style="color:var(--ink-70);font-size:.9rem">No files attached.</span>';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function saveReview(){
+  var sb=sbc(); if(!sb||!CS_OPEN){ return; }
+  var notes=document.getElementById('cdReviewNotes').value.trim();
+  var user=await iwAuth.currentUser();
+  var r=await sb.from('case_submissions').update({
+    status:'Reviewed', review_notes:notes, reviewed_by:user&&user.email||null, reviewed_at:new Date().toISOString()
+  }).eq('id',CS_OPEN);
+  if(!r.error){ await loadCases(); if(CS_CASES[CS_OPEN]) openCase(CS_OPEN); }
 }
 
 /* Training */
@@ -1148,7 +1225,10 @@ function applyPractice(){
     }
     if(accent){ document.documentElement.style.setProperty('--accent', accent); }
     window.IW_LOCATION = byEmail.ghl_location || m.ghl_location || app.ghl_location || null;   /* used by the live lead feed */
+    window.IW_PRACTICE = practice || 'Partner Practice';
+    window.IW_IS_HOME = /home practice/i.test(tag||'') || /pulveroralsurgery/i.test(u.email||'');
     loadLeads();
+    loadCases();
   }).catch(function(){});
 }
 
