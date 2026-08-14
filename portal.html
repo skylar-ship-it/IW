@@ -484,6 +484,10 @@ tr:last-child td{border-bottom:0}
             <div class="field"><label>Review notes (Dr. Pulver)</label><textarea id="cdReviewNotes" placeholder="Plan feedback, implant positions, red flags&hellip;"></textarea></div>
             <button class="qbtn gold" onclick="saveReview()">&check; Mark Reviewed</button>
           </div>
+          <div id="cdDeleteWrap" style="display:none;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+            <button class="qbtn" onclick="deleteCase()" style="border-color:rgba(232,165,152,.5);color:#e8a598">Delete this case</button>
+            <span style="font-size:.78rem;color:var(--ink-70);margin-left:10px">Permanently removes the record and all uploaded files.</span>
+          </div>
         </div>
       </section>
 
@@ -1120,6 +1124,8 @@ async function openCase(id){
   else{ showR.style.display='none'; }
   var wrap=document.getElementById('cdReviewWrap');
   wrap.style.display=(window.IW_IS_HOME||!(window.iwAuth&&iwAuth.enabled()))?'block':'none';
+  var dw=document.getElementById('cdDeleteWrap');
+  if(dw){ dw.style.display=(window.IW_IS_HOME||c.practice===window.IW_PRACTICE||!(window.iwAuth&&iwAuth.enabled()))?'block':'none'; }
   var fl=document.getElementById('cdFiles'); fl.innerHTML='<span style="color:var(--ink-70);font-size:.9rem">Loading files…</span>';
   var sb=sbc(); var out=[];
   var files=c.files||[];
@@ -1131,6 +1137,20 @@ async function openCase(id){
   }
   fl.innerHTML=out.length?out.join(''):'<span style="color:var(--ink-70);font-size:.9rem">No files attached.</span>';
   box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function deleteCase(){
+  var sb=sbc(); if(!sb||!CS_OPEN){ return; }
+  var c=CS_CASES[CS_OPEN]; if(!c) return;
+  if(!confirm('Delete the case for '+(c.patient||'this patient')+'?\n\nThis permanently removes the record and every uploaded file. This cannot be undone.')) return;
+  try{
+    var paths=(c.files||[]).map(function(f){ return f.path; }).filter(Boolean);
+    if(paths.length){ await sb.storage.from(CS_BUCKET).remove(paths); }
+    var r=await sb.from('case_submissions').delete().eq('id',CS_OPEN);
+    if(r.error) throw r.error;
+    CS_OPEN=null;
+    var box=document.getElementById('csDetail'); if(box) box.style.display='none';
+    loadCases();
+  }catch(err){ alert('Could not delete: '+(err.message||err)); }
 }
 async function saveReview(){
   var sb=sbc(); if(!sb||!CS_OPEN){ return; }
