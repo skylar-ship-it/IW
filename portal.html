@@ -235,6 +235,16 @@ tr:last-child td{border-bottom:0}
 .crep .ch{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .crep .cb{font-size:.9rem;color:var(--ink-70);margin-top:8px;line-height:1.55}
 .crep .cb b{color:var(--cream)}
+.wgroup{font-weight:500;text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--gold);margin:20px 0 10px}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
+.wgrid .field{margin-bottom:4px}
+.dz{border:1.5px dashed rgba(242,238,231,.3);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:.2s;position:relative;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.dz:hover,.dz.over{border-color:var(--gold);background:rgba(201,169,110,.07)}
+.dz .dzl{font-size:.8rem;font-weight:500;color:var(--cream-70);line-height:1.35}
+.dz .dzs{font-size:.7rem;color:var(--ink-70)}
+.dz.has{border-style:solid;border-color:var(--gold)}
+.dz img{width:100%;height:70px;object-fit:cover;border-radius:6px}
+.dz input{display:none}
 </style>
 </head>
 <body>
@@ -340,46 +350,139 @@ tr:last-child td{border-bottom:0}
 
       <!-- ===== CASE REVIEW ===== -->
       <section class="view" id="casereview">
-        <div class="split">
-          <div class="card">
-            <div class="eyebrow">New Submission</div>
-            <h3 style="margin-bottom:4px">Submit a case for review</h3>
-            <p style="font-size:.9rem;color:var(--ink-70);margin-bottom:16px">Dr. Pulver reviews every submission in the order received.</p>
-            <form id="csForm" onsubmit="submitCase(event)">
-              <div class="field"><label>Patient name *</label><input type="text" id="csName" required placeholder="First Last"></div>
-              <div class="split" style="gap:14px">
-                <div class="field"><label>Arch *</label><select id="csArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
-                <div class="field"><label>Surgery date</label><input type="date" id="csSurg"></div>
-              </div>
-              <div class="field"><label>CBCT — cone beam CT (.dcm or .zip)</label><input type="file" id="csCbct" accept=".dcm,.zip,.DCM,.ZIP"></div>
-              <div class="field"><label>Intraoral scan — IOS (.stl)</label><input type="file" id="csIos" accept=".stl,.STL,.ply,.PLY" multiple></div>
-              <div class="field"><label>Photos</label><input type="file" id="csPhotos" accept="image/*" multiple></div>
-              <div class="field"><label>Notes</label><textarea id="csNotes" placeholder="Bone quality, anatomy notes, questions for review…"></textarea></div>
-              <button class="btn btn-gold" type="submit" id="csBtn">Submit for Review</button>
-              <p id="csStatus" style="font-size:.9rem;color:var(--gold);margin-top:10px"></p>
-            </form>
-          </div>
-          <div class="card">
-            <div class="eyebrow">Review Queue</div>
-            <h3 style="margin-bottom:14px">Submitted cases</h3>
-            <table id="caseTable">
-              <thead><tr><th>Patient</th><th>Arch</th><th>Submitted</th><th>Status</th></tr></thead>
-              <tbody id="csBody"><tr><td colspan="4" style="color:var(--ink-70)">Sign in to load your cases.</td></tr></tbody>
-            </table>
+
+        <!-- PSP workup flow -->
+        <div class="card" style="margin-bottom:18px;overflow-x:auto">
+          <div class="eyebrow">The PSP&trade; Workup &middot; How it flows</div>
+          <div style="display:flex;align-items:stretch;gap:0;min-width:760px">
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">1</div><strong style="font-size:.85rem">Imaging</strong><div style="font-size:.76rem;color:var(--ink-70)">CBCT &middot; IOS scans</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">2</div><strong style="font-size:.85rem">Photo series</strong><div style="font-size:.76rem;color:var(--ink-70)">7 standard views</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">3</div><strong style="font-size:.85rem">Measurements</strong><div style="font-size:.76rem;color:var(--ink-70)">Esthetic + functional</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">4</div><strong style="font-size:.85rem">Submit</strong><div style="font-size:.76rem;color:var(--ink-70)">One click, encrypted</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">5</div><strong style="font-size:.85rem">IW review</strong><div style="font-size:.76rem;color:var(--ink-70)">Dr. Pulver + team</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">6</div><strong style="font-size:.85rem">Consultation</strong><div style="font-size:.76rem;color:var(--ink-70)">Plan &middot; discussion</div></div>
           </div>
         </div>
+
+        <form id="csForm" onsubmit="submitCase(event)">
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 1 &middot; Patient &amp; Imaging</div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Patient name *</label><input type="text" id="csName" required placeholder="First Last"></div>
+            <div class="field"><label>Surgery date</label><input type="date" id="csSurg"></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Arch *</label><select id="csArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
+            <div class="field"><label>Requested service</label><select id="csService"><option>PSP Full Workup Review</option><option>Pre-Surgical Design (Wax-Up)</option><option>Case Consultation Only</option><option>Surgery Day - AOX Conversion Support</option></select></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>CBCT &mdash; cone beam CT (.dcm / .zip)</label><input type="file" id="csCbct" accept=".dcm,.zip,.DCM,.ZIP"></div>
+            <div class="field"><label>Intraoral scans &mdash; IOS (.stl)</label><input type="file" id="csIos" accept=".stl,.STL,.ply,.PLY" multiple></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 2 &middot; Photo Series</div>
+          <p style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">Drop each photo into its box &mdash; consistent views make the esthetic workup reliable.</p>
+          <div id="photoZones" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 3 &middot; Esthetic &amp; Functional Measurements</div>
+
+          <p class="wgroup">Tooth &amp; gingiva display</p>
+          <div class="wgrid">
+            <div class="field"><label>Tooth show at rest (mm)</label><input type="number" step="0.5" data-w="Tooth show at rest (mm)"></div>
+            <div class="field"><label>Tooth show at maximum smile (mm)</label><input type="number" step="0.5" data-w="Tooth show at max smile (mm)"></div>
+            <div class="field"><label>Gingiva show at full smile (mm)</label><input type="number" step="0.5" data-w="Gingiva show at full smile (mm)"></div>
+          </div>
+
+          <p class="wgroup">Midlines &amp; CANT</p>
+          <div class="wgrid">
+            <div class="field"><label>Maxillary midline vs facial midline</label><select data-w="Maxillary midline">
+              <option>On with facial midline</option><option>Move to left</option><option>Move to right</option></select></div>
+            <div class="field"><label>Move by (mm)</label><input type="number" step="0.5" data-w="Maxillary midline move (mm)"></div>
+            <div class="field"><label>Mandibular midline on with maxillary?</label><select data-w="Mandibular midline on">
+              <option>Yes</option><option>No</option></select></div>
+            <div class="field"><label>If no &mdash; move to patient's L (mm)</label><input type="number" step="0.5" data-w="Mand midline move L (mm)"></div>
+            <div class="field"><label>Move to patient's R (mm)</label><input type="number" step="0.5" data-w="Mand midline move R (mm)"></div>
+            <div class="field"><label>Mandibular dentition CANT?</label><select data-w="Mandibular CANT"><option>No</option><option>Yes</option></select></div>
+          </div>
+
+          <p class="wgroup">Gingival progression &amp; bite</p>
+          <div class="wgrid">
+            <div class="field"><label>Gingival progression &mdash; right symmetrical?</label><select data-w="Gingival progression R symmetrical"><option>Yes</option><option>No</option></select></div>
+            <div class="field"><label>Left symmetrical?</label><select data-w="Gingival progression L symmetrical"><option>Yes</option><option>No</option></select></div>
+            <div class="field"><label>Overjet (mm)</label><input type="number" step="0.5" data-w="Overjet (mm)"></div>
+            <div class="field"><label>Overbite (mm)</label><input type="number" step="0.5" data-w="Overbite (mm)"></div>
+          </div>
+
+          <p class="wgroup">Lip support &amp; incisal position</p>
+          <div class="wgrid">
+            <div class="field"><label>Upper lip support</label><select data-w="Upper lip support"><option>Normal</option><option>Deficient</option><option>Excessive</option></select></div>
+            <div class="field"><label>Horizontal position of incisal edge</label><select data-w="Incisal edge horizontal"><option>Good</option><option>Move forward</option><option>Move back</option></select></div>
+            <div class="field"><label>Move by (mm)</label><input type="number" step="0.5" data-w="Incisal edge move (mm)"></div>
+            <div class="field"><label>Vertical dimension</label><select data-w="Vertical dimension"><option>Good</option><option>Open</option><option>Close</option></select></div>
+            <div class="field"><label>Open/close by (mm)</label><input type="number" step="0.5" data-w="Vertical dimension change (mm)"></div>
+          </div>
+
+          <p class="wgroup">Buccal corridor</p>
+          <div class="wgrid">
+            <div class="field"><label>Left</label><select data-w="Buccal corridor left"><option>Good</option><option>Widen</option><option>Narrow</option></select></div>
+            <div class="field"><label>Left change (mm)</label><input type="number" step="0.5" data-w="Buccal corridor left (mm)"></div>
+            <div class="field"><label>Right</label><select data-w="Buccal corridor right"><option>Good</option><option>Widen</option><option>Narrow</option></select></div>
+            <div class="field"><label>Right change (mm)</label><input type="number" step="0.5" data-w="Buccal corridor right (mm)"></div>
+          </div>
+
+          <p class="wgroup">Hard &amp; soft tissue</p>
+          <div class="wgrid">
+            <div class="field" style="grid-column:1/-1"><label>Specific areas of vertical bone loss</label><input type="text" data-w="Vertical bone loss areas" placeholder="e.g., posterior right maxilla #3&ndash;5"></div>
+            <div class="field" style="grid-column:1/-1"><label>Specific areas of soft tissue loss</label><input type="text" data-w="Soft tissue loss areas"></div>
+          </div>
+
+          <p class="wgroup">Occlusion &amp; tooth shape</p>
+          <div class="wgrid">
+            <div class="field"><label>Level plane of occlusion?</label><select data-w="Level plane of occlusion"><option>Yes</option><option>No</option></select></div>
+            <div class="field"><label>Curve of Spee excessive?</label><select data-w="Curve of Spee excessive"><option>No</option><option>Yes</option></select></div>
+            <div class="field"><label>Stable flat-plane opposing dentition</label><select data-w="Opposing dentition"><option>Yes</option><option>No</option><option>Needs work</option></select></div>
+            <div class="field"><label>Tooth shape</label><select data-w="Tooth shape"><option>Square</option><option>Ovoid</option><option>Tapered</option><option>Square-tapered</option></select></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 4 &middot; Notes &amp; Submit</div>
+          <div class="field"><label>Notes for review</label><textarea id="csNotes" placeholder="Bone quality, anatomy notes, questions for Dr. Pulver&hellip;"></textarea></div>
+          <button class="btn btn-gold" type="submit" id="csBtn">Submit for Review</button>
+          <p id="csStatus" style="font-size:.9rem;color:var(--gold);margin-top:10px"></p>
+        </div>
+        </form>
+
+        <div class="card">
+          <div class="eyebrow">Review Queue</div>
+          <table id="caseTable">
+            <thead><tr><th>Patient</th><th>Arch</th><th>Surgery</th><th>Status</th></tr></thead>
+            <tbody id="csBody"><tr><td colspan="4" style="color:var(--ink-70)">Sign in to load your cases.</td></tr></tbody>
+          </table>
+        </div>
+
         <div class="card" id="csDetail" style="display:none;margin-top:18px">
           <div class="eyebrow">Case Detail</div>
           <h3 id="cdName" style="margin-bottom:4px"></h3>
           <p id="cdMeta" style="font-size:.9rem;color:var(--ink-70);margin-bottom:10px"></p>
           <p id="cdNotes" style="font-size:.95rem;margin-bottom:14px"></p>
+          <div id="cdWorkup" style="margin-bottom:16px"></div>
           <div id="cdFiles" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px"></div>
           <div id="cdReviewShow" style="display:none;padding:12px 16px;background:rgba(36,92,92,.3);border-radius:8px;margin-bottom:14px">
             <strong>Review:</strong> <span id="cdReviewText"></span>
           </div>
           <div id="cdReviewWrap" style="display:none">
-            <div class="field"><label>Review notes (Dr. Pulver)</label><textarea id="cdReviewNotes" placeholder="Plan feedback, implant positions, red flags…"></textarea></div>
-            <button class="qbtn gold" onclick="saveReview()">✓ Mark Reviewed</button>
+            <div class="field"><label>Review notes (Dr. Pulver)</label><textarea id="cdReviewNotes" placeholder="Plan feedback, implant positions, red flags&hellip;"></textarea></div>
+            <button class="qbtn gold" onclick="saveReview()">&check; Mark Reviewed</button>
           </div>
         </div>
       </section>
@@ -895,23 +998,63 @@ function obSync(){
 
 /* Case review */
 /* ---- PSP Case Review: real submissions to the IW case vault ---- */
-var CS_BUCKET='case-files', CS_CASES={}, CS_OPEN=null;
+var CS_BUCKET='case-files', CS_CASES={}, CS_OPEN=null, CS_PHOTOS={};
+var PHOTO_VIEWS=[
+  ['repose','Frontal full face — in repose'],
+  ['maxsmile','Maximum smile'],
+  ['exsmile','Exaggerated smile'],
+  ['cant','Tongue blade (horizontal) — CANT'],
+  ['profile','Profile view'],
+  ['left','Left lateral'],
+  ['right','Right lateral']
+];
 function sbc(){ return (window.iwAuth&&iwAuth.enabled())?iwAuth.client():null; }
 function csMsg(t){ var el=document.getElementById('csStatus'); if(el) el.textContent=t; }
+function initPhotoZones(){
+  var host=document.getElementById('photoZones'); if(!host||host.children.length) return;
+  PHOTO_VIEWS.forEach(function(v){
+    var key=v[0], label=v[1];
+    var dz=document.createElement('div'); dz.className='dz'; dz.id='dz-'+key;
+    dz.innerHTML='<span class="dzl">'+label+'</span><span class="dzs">Drop photo or click</span><input type="file" accept="image/*">';
+    var inp=dz.querySelector('input');
+    function setFile(f){
+      if(!f||!f.type||f.type.indexOf('image')!==0) return;
+      CS_PHOTOS[key]=f;
+      dz.classList.add('has');
+      var r=new FileReader();
+      r.onload=function(ev){ dz.innerHTML='<img src="'+ev.target.result+'" alt=""><span class="dzl">'+label+'</span><span class="dzs">'+f.name+'</span>'; };
+      r.readAsDataURL(f);
+    }
+    dz.addEventListener('click',function(){ inp.click(); });
+    inp.addEventListener('change',function(){ setFile(inp.files[0]); });
+    dz.addEventListener('dragover',function(ev){ ev.preventDefault(); dz.classList.add('over'); });
+    dz.addEventListener('dragleave',function(){ dz.classList.remove('over'); });
+    dz.addEventListener('drop',function(ev){ ev.preventDefault(); dz.classList.remove('over'); setFile(ev.dataTransfer.files[0]); });
+    host.appendChild(dz);
+  });
+}
+function collectWorkup(){
+  var out={};
+  [].slice.call(document.querySelectorAll('#csForm [data-w]')).forEach(function(el){
+    var v=(el.value||'').trim();
+    if(v!=='') out[el.getAttribute('data-w')]=v;
+  });
+  return out;
+}
 async function submitCase(e){
   e.preventDefault();
   var sb=sbc();
   if(!sb){ csMsg('Preview mode — sign in to submit real cases.'); return; }
   var btn=document.getElementById('csBtn'); btn.disabled=true;
-  var name=document.getElementById('csName').value.trim();
-  var arch=document.getElementById('csArch').value;
-  var surg=document.getElementById('csSurg').value||null;
-  var notes=document.getElementById('csNotes').value.trim();
   try{
     csMsg('Creating case…');
     var user=await iwAuth.currentUser();
     var ins=await sb.from('case_submissions').insert({
-      patient:name, arch:arch, surgery_date:surg, notes:notes,
+      patient:document.getElementById('csName').value.trim(),
+      arch:document.getElementById('csArch').value,
+      surgery_date:document.getElementById('csSurg').value||null,
+      notes:(document.getElementById('csService').value+'. ')+document.getElementById('csNotes').value.trim(),
+      workup:collectWorkup(),
       practice:window.IW_PRACTICE||'Partner Practice',
       submitted_by:user&&user.email||null, status:'Awaiting Review', files:[]
     }).select().single();
@@ -927,10 +1070,11 @@ async function submitCase(e){
     }
     var cb=document.getElementById('csCbct').files[0]; await up(cb,'CBCT');
     var ios=document.getElementById('csIos').files; for(var i=0;i<ios.length;i++) await up(ios[i],'IOS');
-    var ph=document.getElementById('csPhotos').files; for(var j=0;j<ph.length;j++) await up(ph[j],'Photo');
+    for(var k in CS_PHOTOS){ var lbl=''; PHOTO_VIEWS.forEach(function(v){ if(v[0]===k) lbl=v[1]; }); await up(CS_PHOTOS[k],'Photo — '+lbl); }
     await sb.from('case_submissions').update({files:meta}).eq('id',id);
     csMsg('Submitted ✓ — Dr. Pulver will review it shortly.');
     document.getElementById('csForm').reset();
+    CS_PHOTOS={}; var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
     loadCases();
   }catch(err){
     csMsg('Something went wrong: '+(err.message||err)+' — try again or send files to the IW team directly.');
@@ -942,12 +1086,20 @@ async function loadCases(){
   var r=await sb.from('case_submissions').select('*').order('created_at',{ascending:false}).limit(60);
   if(r.error||!r.data){ return; }
   CS_CASES={};
-  if(!r.data.length){ body.innerHTML='<tr><td colspan="4" style="color:var(--ink-70)">No cases yet — submit your first on the left.</td></tr>'; return; }
+  if(!r.data.length){ body.innerHTML='<tr><td colspan="4" style="color:var(--ink-70)">No cases yet — submit your first above.</td></tr>'; return; }
+  /* sort: awaiting first, then soonest surgery */
+  r.data.sort(function(a,b){
+    var aw=(a.status!=='Reviewed'?0:1)-(b.status!=='Reviewed'?0:1);
+    if(aw) return aw;
+    return (a.surgery_date||'9999').localeCompare(b.surgery_date||'9999');
+  });
+  var today=new Date().toISOString().slice(0,10);
   body.innerHTML=r.data.map(function(c){
     CS_CASES[c.id]=c;
-    var d=''; try{ d=new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }catch(x){}
+    var surg=c.surgery_date||'—';
+    var urgent=c.surgery_date && c.status!=='Reviewed' && (new Date(c.surgery_date)-new Date())<14*24*3600*1000;
     var badge=c.status==='Reviewed'?'<span class="badge b-green">Reviewed</span>':'<span class="badge b-amber">Awaiting Review</span>';
-    return '<tr class="leadrow" onclick="openCase(\''+c.id+'\')"><td><strong>'+esc(c.patient)+'</strong><div style="font-size:.78rem;color:var(--ink-70)">'+esc(c.practice||'')+'</div></td><td>'+esc(c.arch||'—')+'</td><td>'+d+'</td><td>'+badge+'</td></tr>';
+    return '<tr class="leadrow" onclick="openCase(&quot;'+c.id+'&quot;)"><td><strong>'+esc(c.patient)+'</strong><div style="font-size:.78rem;color:var(--ink-70)">'+esc(c.practice||'')+'</div></td><td>'+esc(c.arch||'—')+'</td><td'+(urgent?' style="color:#e8a598;font-weight:500"':'')+'>'+esc(surg)+'</td><td>'+badge+'</td></tr>';
   }).join('');
 }
 async function openCase(id){
@@ -957,6 +1109,12 @@ async function openCase(id){
   document.getElementById('cdName').textContent=c.patient;
   document.getElementById('cdMeta').textContent=(c.practice||'')+' · '+(c.arch||'')+(c.surgery_date?(' · surgery '+c.surgery_date):'')+' · '+c.status;
   document.getElementById('cdNotes').textContent=c.notes||'';
+  var w=c.workup||{}; var keys=Object.keys(w);
+  var wu=document.getElementById('cdWorkup');
+  if(keys.length){
+    wu.innerHTML='<div class="eyebrow" style="margin-bottom:8px">Esthetic &amp; Functional Workup</div><div class="wgrid">'+
+      keys.map(function(k){ return '<div style="font-size:.86rem;padding:6px 0"><span style="color:var(--ink-70)">'+esc(k)+':</span> <strong>'+esc(w[k])+'</strong></div>'; }).join('')+'</div>';
+  } else { wu.innerHTML=''; }
   var showR=document.getElementById('cdReviewShow');
   if(c.review_notes){ showR.style.display='block'; document.getElementById('cdReviewText').textContent=c.review_notes; }
   else{ showR.style.display='none'; }
@@ -1014,9 +1172,9 @@ function calcRoi(){
   var aNow=now*12*price, aTgt=tgt*12*price;
   document.getElementById('roiNow').textContent=money(aNow);
   document.getElementById('roiTarget').textContent=money(aTgt);
-  document.getElementById('roiDelta').textContent=money(aTgt-aNow);
-  document.getElementById('roiArches').textContent=((tgt-now)*12);
-  document.getElementById('roiSurgTxt').textContent=surg;
+  (document.getElementById('roiDelta')||{}).textContent=money(aTgt-aNow);
+  (document.getElementById('roiArches')||{}).textContent=((tgt-now)*12);
+  (document.getElementById('roiSurgTxt')||{}).textContent=surg;
   document.getElementById('roiGoalBar').style.width=Math.min(100,(tgt*12/100*100))+'%';
 }
 
@@ -1028,7 +1186,7 @@ function calcReady(){
   if(pct<.4){tier='Emerging';msg='Strong upside. IW would install the core platform first — PSP™ standard, KPI scorecard, and coordinator training — to build a foundation fast.';}
   else if(pct<.75){tier='Developing';msg='A solid base with clear gaps. IW would prioritize the weakest pillars and layer in technology and the referral network to accelerate.';}
   else{tier='Ready to Scale';msg='Mature program. IW would focus on optimization, benchmarking, and the Inner Circle network to push toward top-quartile volume.';}
-  document.getElementById('rdTier').textContent=tier+' · '+s+'/'+max;
+  (document.getElementById('rdTier')||{}).textContent=tier+' · '+s+'/'+max;
   document.getElementById('rdMsg').textContent=msg;
   document.getElementById('rdResult').style.display='block';
 }
@@ -1657,7 +1815,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
