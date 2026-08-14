@@ -1035,6 +1035,52 @@ function initIosPicker(){
     renderIosList();
   });
 }
+/* ---- case form draft autosave (fields only — files must be re-attached) ---- */
+var CS_DRAFT_KEY='iw_case_draft', _csDraftT=null;
+function caseDraftFields(){
+  return [].slice.call(document.querySelectorAll('#csForm input[type=text], #csForm input[type=date], #csForm input[type=number], #csForm select, #csForm textarea'));
+}
+function saveCaseDraft(){
+  try{
+    var d={};
+    caseDraftFields().forEach(function(el,i){
+      var k=el.id||el.getAttribute('data-w')||('f'+i);
+      if((el.value||'')!=='') d[k]=el.value;
+    });
+    if(Object.keys(d).length){ localStorage.setItem(CS_DRAFT_KEY,JSON.stringify(d)); showDraftNote(); }
+    else{ localStorage.removeItem(CS_DRAFT_KEY); }
+  }catch(e){}
+}
+function showDraftNote(){ var n=document.getElementById('csDraftNote'); if(n) n.style.display='block'; }
+function restoreCaseDraft(){
+  try{
+    var d=JSON.parse(localStorage.getItem(CS_DRAFT_KEY)||'null'); if(!d) return;
+    caseDraftFields().forEach(function(el,i){
+      var k=el.id||el.getAttribute('data-w')||('f'+i);
+      if(d[k]!=null) el.value=d[k];
+    });
+    showDraftNote();
+    csMsg('Draft restored — re-attach any files before submitting.');
+  }catch(e){}
+}
+function clearCaseDraft(alsoReset){
+  try{ localStorage.removeItem(CS_DRAFT_KEY); }catch(e){}
+  var n=document.getElementById('csDraftNote'); if(n) n.style.display='none';
+  if(alsoReset){
+    var f=document.getElementById('csForm'); if(f) f.reset();
+    CS_PHOTOS={}; CS_IOS=[]; if(typeof renderIosList==='function') renderIosList();
+    var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
+    csMsg('');
+  }
+}
+function initCaseDraft(){
+  var f=document.getElementById('csForm'); if(!f||f.dataset.draftWired) return;
+  f.dataset.draftWired='1';
+  restoreCaseDraft();
+  function queue(){ clearTimeout(_csDraftT); _csDraftT=setTimeout(saveCaseDraft,600); }
+  f.addEventListener('input',queue);
+  f.addEventListener('change',queue);
+}
 function initPhotoZones(){
   var host=document.getElementById('photoZones'); if(!host||host.children.length) return;
   PHOTO_VIEWS.forEach(function(v){
@@ -1099,6 +1145,7 @@ async function submitCase(e){
     for(var k in CS_PHOTOS){ var lbl=''; PHOTO_VIEWS.forEach(function(v){ if(v[0]===k) lbl=v[1]; }); await up(CS_PHOTOS[k],'Photo — '+lbl); }
     await sb.from('case_submissions').update({files:meta}).eq('id',id);
     csMsg('Submitted ✓ — Dr. Pulver will review it shortly.');
+    clearCaseDraft(false);
     document.getElementById('csForm').reset();
     CS_PHOTOS={}; CS_IOS=[]; renderIosList(); var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
     loadCases();
@@ -1869,7 +1916,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker(); initCaseDraft();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
