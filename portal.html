@@ -16,7 +16,6 @@
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap">
@@ -38,7 +37,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 /* ---------- Layout ---------- */
 .app{display:flex;min-height:100vh}
 .sidebar{width:250px;background:var(--deeper);color:var(--cream);position:fixed;top:0;bottom:0;left:0;
-  display:flex;flex-direction:column;padding:22px 0;z-index:30}
+  display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) 0 22px;z-index:30}
 .brand{display:flex;align-items:center;gap:11px;padding:0 22px 20px;border-bottom:1px solid rgba(201,169,110,.15)}
 .brand img{height:38px}
 .brand .nm{font-family:var(--display);font-size:1.15rem}
@@ -60,7 +59,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.15}
 .sidefoot a:hover{color:var(--gold)}
 
 .main{margin-left:250px;flex:1;min-width:0}
-.topbar{height:64px;background:var(--deep);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+.topbar{height:calc(64px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:var(--deep);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
   display:flex;align-items:center;justify-content:space-between;padding:0 30px}
 .topbar .ttl{font-family:var(--display);font-size:1.45rem}
 .topctrl{display:flex;align-items:center;gap:16px}
