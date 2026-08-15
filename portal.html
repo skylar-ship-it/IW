@@ -388,6 +388,10 @@ tr:last-child td{border-bottom:0}
               <div id="csIosList" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
             </div>
           </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Edentulous patient &mdash; dual arch / single denture scan (.dcm / .zip)</label><input type="file" id="csEdent" accept=".dcm,.zip,.DCM,.ZIP"></div>
+            <div class="field"><label>360 denture scan (.stl)</label><input type="file" id="csDenture" accept=".stl,.STL,.ply,.PLY"></div>
+          </div>
         </div>
 
         <div class="card" style="margin-bottom:18px">
@@ -1183,6 +1187,8 @@ async function submitCase(e){
       meta.push({kind:kind,name:file.name,path:path,size:file.size});
     }
     var cb=document.getElementById('csCbct').files[0]; await up(cb,'CBCT');
+    var ed=document.getElementById('csEdent').files[0]; await up(ed,'CBCT — Edentulous dual arch / denture scan');
+    var dn=document.getElementById('csDenture').files[0]; await up(dn,'IOS — 360 Denture Scan');
     for(var i=0;i<CS_IOS.length;i++) await up(CS_IOS[i],'IOS');
     for(var k in CS_PHOTOS){ var lbl=''; PHOTO_VIEWS.forEach(function(v){ if(v[0]===k) lbl=v[1]; }); await up(CS_PHOTOS[k],'Photo — '+lbl); }
     for(var mi=0;mi<CS_MISC.length;mi++) await up(CS_MISC[mi],'Photo — Miscellaneous');
