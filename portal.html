@@ -165,8 +165,6 @@ tr:last-child td{border-bottom:0}
   .rolebox{display:none}
   .topbar{padding:env(safe-area-inset-top,0px) 14px 0;height:calc(58px + env(safe-area-inset-top,0px))}
   .topbar .ttl{font-size:1.15rem}
-  .rolebox > span{display:none}
-  .rolebox select{font-size:0.93rem;padding:6px 8px;max-width:140px}
   .content{padding:15px}
   .card{padding:18px;overflow-x:auto}
   table{min-width:430px}
@@ -294,6 +292,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment</div>
       <div class="nav-item" data-view="labdeals" data-roles="owner,pm" onclick="go(this)"><span class="ic">◇</span> Lab &amp; Vendor Deals</div>
       <div class="nav-item" data-view="program" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◈</span> The Program</div>
+      <div class="nav-item" data-roles="owner,surgeon,coordinator,pm" onclick="location.href='onboarding.html'"><span class="ic">➔</span> Onboarding</div>
       <div class="nav-item" data-view="settings" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">⚙</span> Settings</div>
     </div>
     <div class="sidefoot">
@@ -312,13 +311,7 @@ tr:last-child td{border-bottom:0}
       <div class="topctrl">
         <select id="practiceSwitch" style="display:none;padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-family:var(--body);font-size:0.92rem;background:rgba(0,0,0,.25);color:var(--cream)" onchange="switchPractice(this.value)"></select>
         <div class="rolebox">
-          <span>Viewing as</span>
-          <select id="roleSelect" onchange="setRole(this.value)">
-            <option value="owner">Surgeon / Owner</option>
-            <option value="surgeon">Surgeon</option>
-            <option value="coordinator">Treatment Coordinator</option>
-            <option value="pm">Practice Manager</option>
-          </select>
+          <span id="roleLabel" style="font-family:var(--body);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,169,110,.4);border-radius:999px;padding:6px 14px;white-space:nowrap">Surgeon / Owner</span>
         </div>
         <div class="avatar" id="avatar">M</div>
       </div>
@@ -955,12 +948,6 @@ tr:last-child td{border-bottom:0}
             <div class="eyebrow">Practice Profile</div>
             <div class="field"><label>Practice / group name</label><input id="setName" value="Oral Surgery Practice" oninput="applyBrand()"></div>
             <div class="field"><label>Status tag</label><input id="setTag" value="4 participating surgeons · Onboarding" oninput="applyBrand()"></div>
-            <div class="field"><label>Default role</label>
-              <select onchange="setRole(this.value);document.getElementById('roleSelect').value=this.value">
-                <option value="owner">Surgeon / Owner</option><option value="surgeon">Surgeon</option>
-                <option value="coordinator">Treatment Coordinator</option><option value="pm">Practice Manager</option>
-              </select>
-            </div>
           </div>
           <div class="card">
             <div class="eyebrow">Brand Accent</div>
@@ -1678,13 +1665,13 @@ function renderFunnel(){
    Add a line here per practice. The key is the login email (lowercase).
    ghl_location = that practice's lead-engine location id (fill in when ready). */
 var IW_PRACTICES = {
-  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs',
+  'skylar@pulveroralsurgery.com': { practice:'Pulver Oral Surgery', tag:'Implanted Wisdom · Home Practice', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs', role:'owner', role_label:'Surgeon / Owner',
     locations:[ {name:'Pulver Oral Surgery · IW', tag:'Implanted Wisdom · Home Practice', ghl_location:'ua1JQW5n2yE3u80HvuUs'},
                 {name:'West Michigan Oral Surgery', tag:'Partner Practice', ghl_location:''} ] },
-  'eric@implantedwisdom.com': { practice:'Pulver Oral Surgery', tag:'Dr. L. Eric Pulver · Founder', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs',
+  'eric@implantedwisdom.com': { practice:'Pulver Oral Surgery', tag:'Dr. L. Eric Pulver · Founder', accent:'#245C5C', ghl_location:'ua1JQW5n2yE3u80HvuUs', role:'owner', role_label:'Surgeon',
     locations:[ {name:'Pulver Oral Surgery · IW', tag:'Dr. L. Eric Pulver · Founder', ghl_location:'ua1JQW5n2yE3u80HvuUs'},
                 {name:'West Michigan Oral Surgery', tag:'Partner Practice', ghl_location:''} ] },
-  'wmos@iw.com': { practice:'West Michigan Oral Surgery', tag:'Partner Practice', accent:'#7c5e3b', ghl_location:'' }
+  'wmos@iw.com': { practice:'West Michigan Oral Surgery', tag:'Partner Practice', accent:'#7c5e3b', ghl_location:'', role:'owner', role_label:'Surgeon / Owner' }
 };
 
 function applyPractice(){
@@ -1712,6 +1699,11 @@ function applyPractice(){
     /* multi-practice accounts get the analytics switcher */
     if(window.IW_IS_HOME){ var tb=document.getElementById('tailoredBanner'); if(tb) tb.style.display='none'; }
     window.IW_LOCS = byEmail.locations || null;
+    /* per-user role: no picker — each login gets its own role + label */
+    window.IW_ROLE = byEmail.role || m.role || app.role || 'owner';
+    var rl=document.getElementById('roleLabel');
+    if(rl) rl.textContent = byEmail.role_label || m.role_label || app.role_label || 'Surgeon / Owner';
+    try{ setRole(window.IW_ROLE); }catch(e){}
     var sw=document.getElementById('practiceSwitch');
     if(sw && window.IW_LOCS && window.IW_LOCS.length>1){
       sw.innerHTML = window.IW_LOCS.map(function(l,i){ return '<option value="'+i+'">'+l.name+'</option>'; }).join('');
@@ -1736,7 +1728,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){retur
 
 var IW = { leads:[], priority:[], quiet:[], notesToday:[], notesCache:{}, consults:[], selectedId:null, live:false, consultsLive:false };
 
-function curRole(){ var s=document.getElementById('roleSelect'); return s ? s.value : 'owner'; }
+function curRole(){ return window.IW_ROLE || 'owner'; }
 
 /* fetch wrapper — attaches the Supabase login token when available */
 function apiFetch(path, opts){
