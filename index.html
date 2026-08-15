@@ -3,41 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Implanted Wisdom — The Operating System Behind Surgeon-Led Full-Arch</title>
-<meta property="og:title" content="Implanted Wisdom — A Surgeon-Led Growth Engine for Specialty Practices">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://implantedwisdomcollective.com/og-image.png">
-<meta property="og:url" content="https://implantedwisdomcollective.com/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://implantedwisdomcollective.com/og-image.png">
-
-<meta name="description" content="Implanted Wisdom — a boutique consulting and growth partner for oral surgery and full-arch programs. Surgeon-led, built on the Patient-Specific Protocol™.">
+<title>Implanted Wisdom — A Surgeon-Led Boutique Consultancy</title>
+<meta name="description" content="Implanted Wisdom — a surgeon-led boutique consultancy for full-arch programs. We listened to your concerns and built the roadmap to answer each one.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 /* ============================================================
-   IMPLANTED WISDOM — B2B PLATFORM SITE
+   IMPLANTED WISDOM — B2B PLATFORM SITE  (index2 test)
    Shared stylesheet. Brand tokens from Brand Identity System 2026.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
 
 :root{
-  /* Color */
-  --ink:#1E1612;        /* Warm Ink — primary dark */
-  --espresso:#2D241F;   /* Espresso — hero/section dark */
-  --gold:#C9A96E;       /* Antique Gold — primary accent */
+  --ink:#1E1612;
+  --espresso:#2D241F;
+  --gold:#C9A96E;
   --gold-soft:#d9c099;
-  --teal:#245C5C;       /* Dark Teal — section/CTA accent */
+  --teal:#245C5C;
   --teal-deep:#1c4a4a;
-  --cream:#F7F2EC;      /* Warm Cream — card/quote bg */
+  --cream:#F7F2EC;
   --white:#FFFFFF;
   --ink-70:rgba(30,22,18,.92);
   --cream-70:rgba(247,242,236,.96);
   --hairline:rgba(201,169,110,.30);
+  --clay:#b06a52;
 
-  /* Type */
   --display:'Cormorant Garamond', Georgia, serif;
   --body:'Jost', system-ui, sans-serif;
   --mono:'Courier Prime', monospace;
@@ -49,33 +41,24 @@
 html{scroll-behavior:smooth}
 [id]{scroll-margin-top:134px}
 body{
-  font-family:var(--body);
-  font-weight:300;
-  font-size:16px;
-  line-height:1.75;
-  color:var(--ink);
-  background:var(--white);
-  -webkit-font-smoothing:antialiased;
+  font-family:var(--body);font-weight:300;font-size:16px;line-height:1.75;
+  color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;
 }
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 
-/* ---------- Typography helpers ---------- */
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.1;letter-spacing:.005em}
 h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:300}
 h2{font-size:clamp(2rem,4vw,3rem)}
 h3{font-size:clamp(1.4rem,2.4vw,1.9rem)}
 .italic-gold{font-style:italic;color:var(--gold);font-weight:300}
-.label{
-  font-family:var(--body);font-weight:500;text-transform:uppercase;
-  letter-spacing:.18em;font-size:0.83rem;color:var(--gold);
-}
+.label{font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.18em;font-size:0.83rem;color:var(--gold)}
 .label.teal{color:var(--teal)}
 .mono{font-family:var(--mono);letter-spacing:.02em}
 .lead{font-size:1.15rem;line-height:1.7;color:var(--ink-70);max-width:62ch}
 .tm{font-size:.62em;vertical-align:.55em;font-family:var(--body);font-weight:500}
 
-/* ---------- Layout ---------- */
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 section{padding:96px 0}
 .section-dark{background:var(--espresso);color:var(--cream)}
@@ -83,31 +66,18 @@ section{padding:96px 0}
 .section-ink{background:var(--ink);color:var(--cream)}
 .section-ink .lead{color:var(--cream-70)}
 .section-cream{background:var(--cream)}
-.section-teal{background:var(--teal);color:var(--cream)}
-.section-teal .lead{color:var(--cream-70)}
-.section-teal .label{color:var(--gold-soft)}
 .eyebrow{margin-bottom:18px}
 .center{text-align:center}
 .center .lead{margin-left:auto;margin-right:auto}
 .narrow{max-width:760px}
 
-/* ---------- Header / Nav ---------- */
-.site-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(30,22,18,.92);
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(201,169,110,.18);
-}
+/* Header / Nav */
+.site-header{position:sticky;top:0;z-index:50;background:rgba(30,22,18,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid rgba(201,169,110,.18)}
 .nav{display:flex;align-items:center;justify-content:space-between;
   height:118px;max-width:var(--maxw);margin:0 auto;padding:0 28px}
 .brand{display:flex;align-items:center;gap:13px;color:var(--cream)}
 .brand .brand-logo{height:84px;width:auto;display:block;object-fit:contain}
-.brand .mono-monogram{
-  font-family:var(--display);font-weight:600;font-size:1.05rem;
-  width:38px;height:38px;border:1px solid var(--gold);color:var(--gold);
-  display:flex;align-items:center;justify-content:center;border-radius:50%;
-  letter-spacing:.02em;
-}
 .brand .wordmark{line-height:1.05}
 .brand .wordmark .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
 .brand .wordmark .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
@@ -116,136 +86,131 @@ section{padding:96px 0}
 .nav-links a{font-family:var(--body);font-weight:400;font-size:1.18rem;
   text-transform:uppercase;letter-spacing:.12em;color:var(--cream-70);transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--gold)}
-.nav-cta{
-  font-family:var(--body)!important;font-weight:500!important;
+.nav-cta{font-family:var(--body)!important;font-weight:500!important;
   border:1px solid var(--gold);color:var(--gold)!important;
-  padding:9px 18px;border-radius:2px;letter-spacing:.1em!important;font-size:1.05rem!important;
-}
+  padding:9px 18px;border-radius:2px;letter-spacing:.1em!important;font-size:1.05rem!important}
 .nav-cta:hover{background:var(--gold);color:var(--ink)!important}
 .nav-toggle{display:none;background:none;border:0;color:var(--gold);font-size:1.5rem;cursor:pointer}
 
-/* ---------- Buttons ---------- */
-.btn{
-  display:inline-block;font-family:var(--body);font-weight:500;
-  text-transform:uppercase;letter-spacing:.14em;font-size:0.9rem;
-  padding:15px 30px;border-radius:2px;cursor:pointer;transition:all .22s;border:1px solid transparent;
-}
+/* Buttons */
+.btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;
+  letter-spacing:.14em;font-size:0.9rem;padding:15px 30px;border-radius:2px;cursor:pointer;
+  transition:all .22s;border:1px solid transparent}
 .btn-gold{background:var(--gold);color:var(--ink)}
 .btn-gold:hover{background:var(--gold-soft);transform:translateY(-1px)}
 .btn-outline{border-color:var(--gold);color:var(--gold);background:transparent}
 .btn-outline:hover{background:var(--gold);color:var(--ink)}
-.btn-outline-ink{border-color:var(--ink);color:var(--ink);background:transparent}
-.btn-outline-ink:hover{background:var(--ink);color:var(--cream)}
 .btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px}
 .center .btn-row{justify-content:center}
 .btn-row.center{justify-content:center}
 
-/* ---------- Hero ---------- */
+/* Hero */
 .hero{position:relative;overflow:hidden;background:var(--espresso);color:var(--cream);
-  padding:120px 0 110px}
-.hero::after{ /* IW watermark */
-  content:"IW";position:absolute;right:-2%;top:46%;transform:translateY(-50%);
+  padding:150px 0 140px}
+.hero::after{content:"IW";position:absolute;right:-2%;top:46%;transform:translateY(-50%);
   font-family:var(--display);font-weight:600;font-size:clamp(14rem,32vw,30rem);
-  color:rgba(201,169,110,.06);pointer-events:none;line-height:.8;
+  color:rgba(201,169,110,.06);pointer-events:none;line-height:.8}
+.hero .wrap{position:relative;z-index:2;max-width:920px}
+.hero h1{margin:0;color:var(--cream)}
+.scroll-cue{position:relative;z-index:2;margin-top:58px;font-family:var(--mono);
+  letter-spacing:.34em;text-transform:uppercase;font-size:0.72rem;color:var(--gold);
+  display:flex;flex-direction:column;align-items:center;gap:12px}
+.scroll-cue .sc-label{animation:scPulse 2.4s ease-in-out infinite}
+@keyframes scPulse{0%,100%{opacity:.45}50%{opacity:1}}
+.scroll-cue .sc-line{position:relative;width:2px;height:110px;border-radius:2px;overflow:hidden;
+  background:linear-gradient(var(--gold),rgba(201,169,110,0))}
+.scroll-cue .sc-dot{position:absolute;left:50%;top:-6px;width:6px;height:6px;border-radius:50%;
+  transform:translateX(-50%);background:var(--gold);box-shadow:0 0 12px 2px rgba(201,169,110,.9);
+  animation:scDrop 2.1s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes scDrop{0%{top:-6px;opacity:0}18%{opacity:1}82%{opacity:1}100%{top:110px;opacity:0}}
+.scroll-cue .sc-arrows{display:flex;flex-direction:column;align-items:center;margin-top:14px}
+.scroll-cue .sc-arrows i{width:13px;height:13px;margin-top:-5px;transform:rotate(45deg);
+  border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);opacity:0;
+  animation:scChev 1.9s ease-in-out infinite}
+.scroll-cue .sc-arrows i:nth-child(1){animation-delay:0s}
+.scroll-cue .sc-arrows i:nth-child(2){animation-delay:.16s}
+.scroll-cue .sc-arrows i:nth-child(3){animation-delay:.32s}
+@keyframes scChev{0%{opacity:0;transform:translateY(-5px) rotate(45deg)}
+  40%{opacity:1}100%{opacity:0;transform:translateY(6px) rotate(45deg)}}
+@media(prefers-reduced-motion:reduce){.scroll-cue *{animation:none}}
+
+/* DTC — sphere & track cinematic animation */
+.dtc-viz{max-width:960px;margin:0 auto;background:linear-gradient(180deg,rgba(247,242,236,.05),rgba(247,242,236,.015));
+  border:1px solid rgba(201,169,110,.14);border-radius:24px;padding:20px clamp(12px,3vw,30px);
+  box-shadow:0 40px 90px rgba(0,0,0,.34)}
+.shift-stage{width:100%}
+.shift-stage svg{width:100%;height:auto;display:block;overflow:visible}
+.st-track{fill:none;stroke:url(#stTrack);stroke-width:9;stroke-linecap:round}
+.st-eyebrow{opacity:0;font-size:21px}
+@media(max-width:600px){.st-eyebrow{font-size:27px;letter-spacing:1.5px}}
+.st-stat{opacity:0;transition:opacity .35s ease;pointer-events:none}
+/* hover tooltips only on real pointer devices (desktop) */
+@media (hover:hover) and (pointer:fine){
+  #txtGold,#txtRed{cursor:pointer}
+  #txtGold:hover .st-stat,#txtRed:hover .st-stat{opacity:1}
 }
-.hero .wrap{position:relative;z-index:2;max-width:880px}
-.hero h1{margin:14px 0 22px;color:var(--cream)}
-.hero .lead{color:var(--cream-70)}
-.hero-sub{font-family:var(--display);font-style:italic;color:var(--gold);
-  font-size:clamp(1.3rem,2.6vw,1.9rem);margin-top:8px;font-weight:300}
+.st-chev{opacity:.12;animation:stFlash 1.5s ease-in-out infinite}
+@keyframes stFlash{0%,100%{opacity:.12}45%{opacity:1}}
 
-/* ---------- Cards / grids ---------- */
-.grid{display:grid;gap:24px}
-.grid-2{grid-template-columns:repeat(2,1fr)}
-.grid-3{grid-template-columns:repeat(3,1fr)}
-.grid-4{grid-template-columns:repeat(4,1fr)}
-.card{
-  background:var(--white);border:1px solid var(--hairline);border-radius:4px;
-  padding:34px 30px;transition:transform .2s,box-shadow .2s;
+/* Concern -> Pillar winding roadmap */
+.rm-road{position:relative;max-width:1120px;margin:0 auto}
+.rm-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:0}
+.rm-base{fill:none;stroke:rgba(201,169,110,.28);stroke-width:4;stroke-linecap:round;stroke-dasharray:.1 18}
+.rm-prog{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;stroke-dasharray:.1 18}
+.rm-dot{position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--gold);
+  transform:translate(-50%,-50%);box-shadow:0 0 22px rgba(201,169,110,.9);opacity:0;transition:opacity .3s;z-index:3}
+.rm-node{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;transform:translate(-50%,-50%);
+  background:var(--ink);border:2px solid rgba(201,169,110,.4);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--gold);z-index:2;transition:all .45s}
+.rm-stop.in .rm-node{background:var(--gold);color:var(--ink);border-color:var(--gold);box-shadow:0 0 26px rgba(201,169,110,.55)}
+.rm-stop{display:flex;align-items:center;min-height:80vh}
+.rm-stop.left{justify-content:flex-end}
+.rm-stop.right{justify-content:flex-start}
+.rm-card{width:min(580px,54%);padding:10px 6px;position:relative;z-index:2;
+  transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.rm-road.js .rm-card{opacity:0;transform:translateY(34px)}
+.rm-road.js .rm-stop.in .rm-card{opacity:1;transform:translateY(0)}
+.rm-concern{font-family:var(--display);font-style:italic;color:var(--cream);
+  font-size:clamp(2.1rem,3.4vw,3rem);line-height:1.2;margin-bottom:26px}
+.rm-div{height:1px;background:rgba(201,169,110,.22);margin:0 0 22px}
+.rm-tag{display:block;font-family:var(--body);font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.82rem;color:var(--gold-soft);margin-bottom:8px}
+.rm-plabel{display:block;font-family:var(--display);font-weight:600;letter-spacing:.01em;
+  font-size:clamp(1.7rem,2.7vw,2.35rem);line-height:1.15;color:var(--gold);margin-bottom:14px}
+.rm-desc{color:var(--cream-70);font-size:0.95rem;line-height:1.6}
+/* gold orb background */
+.orbs{position:relative;overflow:hidden}
+.orbs-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(24px);opacity:.5;
+  background:radial-gradient(circle at 35% 35%, rgba(201,169,110,.42), rgba(201,169,110,0) 70%);
+  animation:orbDrift 26s ease-in-out infinite}
+.orb.o1{width:360px;height:360px;left:-4%;top:8%;animation-duration:30s}
+.orb.o2{width:280px;height:280px;right:2%;top:22%;animation-duration:34s;animation-delay:-6s}
+.orb.o3{width:420px;height:420px;left:10%;bottom:6%;animation-duration:38s;animation-delay:-12s}
+.orb.o4{width:240px;height:240px;right:12%;bottom:18%;animation-duration:28s;animation-delay:-3s}
+.orb.o5{width:200px;height:200px;left:44%;top:44%;animation-duration:32s;animation-delay:-9s;opacity:.35}
+@keyframes orbDrift{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-50px) scale(1.12)}
+  66%{transform:translate(-30px,30px) scale(.94)}
+  100%{transform:translate(0,0) scale(1)}
 }
-.section-cream .card{background:var(--white)}
-.card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(30,22,18,.08)}
-.card .num{font-family:var(--mono);color:var(--gold);font-size:0.94rem;letter-spacing:.1em;display:block;margin-bottom:14px}
-.card h3{margin-bottom:12px}
-.card p{color:var(--ink-70);font-size:.96rem}
-.card-dark{background:rgba(247,242,236,.04);border-color:rgba(201,169,110,.22)}
-.card-dark h3{color:var(--cream)}
-.card-dark p{color:var(--cream-70)}
-
-/* stat */
-.stat .figure{font-family:var(--display);font-size:3rem;color:var(--gold);font-weight:300;line-height:1}
-.stat .cap{font-family:var(--body);font-weight:500;text-transform:uppercase;letter-spacing:.12em;
-  font-size:0.83rem;color:var(--ink-70);margin-top:10px}
-.section-dark .stat .cap,.section-teal .stat .cap{color:var(--cream-70)}
-.placeholder-tag{display:inline-block;font-family:var(--mono);font-size:0.71rem;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--teal);background:rgba(36,92,92,.10);
-  border:1px dashed rgba(36,92,92,.4);padding:2px 8px;border-radius:3px;margin-top:8px}
-.section-dark .placeholder-tag{color:var(--gold-soft);background:rgba(201,169,110,.08);border-color:rgba(201,169,110,.4)}
-
-/* split */
-.split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.split.flip .split-media{order:-1}
-
-/* quote */
-.quote-block{background:var(--cream);border-left:3px solid var(--gold);padding:40px 44px;border-radius:4px}
-.quote-block p{font-family:var(--display);font-style:italic;font-size:1.5rem;color:var(--ink);line-height:1.45}
-.quote-block .who{font-family:var(--body);font-style:normal;font-weight:500;
-  text-transform:uppercase;letter-spacing:.12em;font-size:0.85rem;color:var(--teal);margin-top:18px}
-
-/* compare table */
-.compare{width:100%;border-collapse:collapse;margin-top:30px;background:var(--white);border-radius:4px;overflow:hidden}
-.compare th,.compare td{padding:18px 22px;text-align:left;border-bottom:1px solid var(--hairline);font-size:.95rem}
-.compare thead th{background:var(--ink);color:var(--cream);font-family:var(--body);font-weight:500;
-  text-transform:uppercase;letter-spacing:.1em;font-size:0.85rem}
-.compare thead th:last-child{background:var(--teal)}
-.compare td:first-child{font-weight:500;color:var(--ink)}
-.compare td .x{color:#b06a52}
-.compare td .check{color:var(--teal);font-weight:600}
-
-/* steps */
-.steps{counter-reset:step;display:grid;gap:0}
-.step{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:30px 0;border-bottom:1px solid var(--hairline)}
-.step:last-child{border-bottom:0}
-.step .dot{counter-increment:step;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold);
-  color:var(--gold);font-family:var(--display);font-size:1.4rem;display:flex;align-items:center;justify-content:center}
-.step .dot::before{content:counter(step)}
-.step h3{margin-bottom:8px}
-.step p{color:var(--ink-70);max-width:60ch}
-
-/* model layers */
-.layer{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;
-  padding:30px;background:rgba(247,242,236,.04);border:1px solid rgba(201,169,110,.22);
-  border-radius:4px;margin-bottom:18px}
-.layer .lyr-label{font-family:var(--mono);color:var(--gold);font-size:0.9rem;letter-spacing:.06em;
-  white-space:nowrap;padding-top:6px}
-.layer h3{color:var(--cream);margin-bottom:8px}
-.layer p{color:var(--cream-70);font-size:.96rem}
-
-/* ladder */
-.ladder{display:grid;gap:14px}
-.rung{display:flex;align-items:center;gap:20px;padding:22px 26px;border:1px solid var(--hairline);
-  border-radius:4px;background:var(--white)}
-.rung .tier{font-family:var(--mono);color:var(--teal);font-size:0.9rem;letter-spacing:.08em;min-width:120px}
-.rung .desc{color:var(--ink-70);font-size:.95rem}
-.rung strong{color:var(--ink);font-weight:500}
-
-/* form */
-.form-card{background:var(--cream);border-radius:6px;padding:44px;border:1px solid var(--hairline)}
-.field{margin-bottom:20px}
-.field label{display:block;font-family:var(--body);font-weight:500;text-transform:uppercase;
-  letter-spacing:.1em;font-size:0.83rem;color:var(--teal);margin-bottom:8px}
-.field input,.field select,.field textarea{
-  width:100%;padding:13px 14px;border:1px solid var(--hairline);border-radius:3px;
-  font-family:var(--body);font-size:.95rem;background:var(--white);color:var(--ink)}
-.field textarea{min-height:120px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
+@media(max-width:760px){
+  .rm-stop{min-height:62vh}
+  .rm-stop.left,.rm-stop.right{justify-content:flex-start}
+  .rm-card{width:auto;margin-left:60px;padding:30px 26px}
+  .rm-concern{font-size:1.75rem}
+  .rm-plabel{font-size:1.5rem}
+}
 
 /* CTA band */
-.cta-band{background:var(--teal);color:var(--cream);text-align:center}
+.cta-band{background:var(--teal);color:var(--cream);text-align:center;position:relative;overflow:hidden}
 .cta-band h2{color:var(--cream)}
 .cta-band .lead{margin:18px auto 0;color:var(--cream-70)}
+.orb.teal{background:radial-gradient(circle at 35% 35%, rgba(15,48,48,.9), rgba(15,48,48,0) 70%);opacity:.6}
 
-/* ---------- Footer ---------- */
+/* Footer */
 .site-footer{background:var(--ink);color:var(--cream-70);padding:64px 0 30px;font-size:.9rem}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;padding-bottom:40px;
   border-bottom:1px solid rgba(201,169,110,.18)}
@@ -253,7 +218,6 @@ section{padding:96px 0}
   font-size:0.83rem;color:var(--gold);margin-bottom:16px}
 .footer-grid a{display:block;color:var(--cream-70);margin-bottom:9px;transition:color .2s}
 .footer-grid a:hover{color:var(--gold)}
-.footer-contact .mono{display:block;color:var(--cream-70);margin-bottom:8px;font-size:0.99rem}
 .footer-logo{height:54px;width:auto;display:block;margin-bottom:16px;object-fit:contain}
 .footer-brand .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
 .footer-brand .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
@@ -262,7 +226,7 @@ section{padding:96px 0}
 .footer-legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   padding-top:24px;font-family:var(--mono);font-size:0.83rem;letter-spacing:.04em;color:rgba(247,242,236,.8)}
 
-/* ---------- Responsive ---------- */
+/* Responsive */
 @media(max-width:880px){
   .nav-links{display:none}
   .nav-links.open{display:flex;position:absolute;top:74px;left:0;right:0;flex-direction:column;
@@ -270,12 +234,8 @@ section{padding:96px 0}
   .nav-links.open a{padding:12px 0;width:100%}
   .nav-links.open a.nav-cta{padding:12px 18px;text-align:center}
   .nav-toggle{display:block}
-  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
-  .split{grid-template-columns:1fr;gap:34px}
-  .split.flip .split-media{order:0}
   .footer-grid{grid-template-columns:1fr}
   section{padding:64px 0}
-  .layer{grid-template-columns:1fr;gap:12px}
 }
 
 </style>
@@ -285,7 +245,7 @@ section{padding:96px 0}
 <!-- ============ HEADER ============ -->
 <header class="site-header">
   <nav class="nav">
-    <a class="brand" href="index.html">
+    <a class="brand" href="index2.html">
       <img class="brand-logo" src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png" alt="Implanted Wisdom logo">
       <span class="wordmark">
         <span class="name">Implanted Wisdom</span>
@@ -293,7 +253,7 @@ section{padding:96px 0}
     </a>
     <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">≡</button>
     <div class="nav-links" id="navlinks">
-      <a href="index.html" class="active">Home</a>
+      <a href="index2.html" class="active">Home</a>
       <a href="the-system.html">The System</a>
       <a href="training-tech.html">Training &amp; Tech</a>
       <a href="login.html">Log In</a>
@@ -302,139 +262,189 @@ section{padding:96px 0}
   </nav>
 </header>
 
-<!-- ============ HERO ============ -->
-<section class="hero">
+<!-- ============ HERO (minimal) ============ -->
+<section class="hero center">
   <div class="wrap">
-    <p class="label eyebrow">A Full-Arch Growth Engine</p>
-    <h1>Partnership <span class="italic-gold">for Growth</span></h1>
-    <p class="hero-sub">Setting the standard of full-arch care.</p>
-    <p class="lead" style="margin-top:26px">IW is the surgeon-led boutique operating system and implementation partner powering modern full-arch growth for specialty practices.</p>
-    <div class="btn-row">
-      <a href="partner.html#book" class="btn btn-gold">Request an Introduction Call</a>
+    <h1>A Surgeon-Led <span class="italic-gold">Boutique Consultancy</span></h1>
+  </div>
+  <div class="scroll-cue">
+    <span class="sc-label">Scroll</span>
+    <span class="sc-line"><span class="sc-dot"></span></span>
+    <span class="sc-arrows"><i></i><i></i><i></i></span>
+  </div>
+</section>
+
+<!-- ============ THE SHIFT — EVERYONE IS GOING DTC ============ -->
+<section class="section-dark center">
+  <div class="wrap narrow">
+    <p class="label eyebrow" style="font-size:1rem">The Shift</p>
+  </div>
+  <div class="wrap" style="margin-top:34px">
+    <div class="dtc-viz">
+      <div class="shift-stage" id="shiftStage">
+        <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A single ball rolls from a fallen standard of care up to specialists leading full-arch">
+          <defs>
+            <linearGradient id="stTrack" gradientUnits="userSpaceOnUse" x1="120" y1="312" x2="780" y2="92">
+              <stop offset="0" stop-color="#E7594C" stop-opacity=".5"></stop>
+              <stop offset="0.5" stop-color="#C9A96E" stop-opacity=".3"></stop>
+              <stop offset="1" stop-color="#C9A96E" stop-opacity=".6"></stop>
+            </linearGradient>
+            <radialGradient id="gGold" cx="34%" cy="30%" r="78%">
+              <stop offset="0" stop-color="#F8ECCF"></stop><stop offset="0.45" stop-color="#D4B577"></stop><stop offset="1" stop-color="#8A6733"></stop>
+            </radialGradient>
+            <radialGradient id="gRed" cx="34%" cy="30%" r="78%">
+              <stop offset="0" stop-color="#F6C3BB"></stop><stop offset="0.5" stop-color="#E7594C"></stop><stop offset="1" stop-color="#8A241B"></stop>
+            </radialGradient>
+            <filter id="stShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="4"></feGaussianBlur>
+            </filter>
+          </defs>
+
+          <!-- the rising track -->
+          <path id="stPath" class="st-track" d="M120 312 L 780 92"></path>
+
+          <!-- ambient flashing arrows: red down on the left, gold up on the right -->
+          <g fill="none" stroke="#E7594C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path class="st-chev" style="animation-delay:0s"    d="M26 300 L42 316 L58 300"></path>
+            <path class="st-chev" style="animation-delay:.18s"  d="M26 320 L42 336 L58 320"></path>
+            <path class="st-chev" style="animation-delay:.36s"  d="M26 340 L42 356 L58 340"></path>
+          </g>
+          <g fill="none" stroke="#C9A96E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <path class="st-chev" style="animation-delay:0s"    d="M842 100 L858 84 L874 100"></path>
+            <path class="st-chev" style="animation-delay:.18s"  d="M842 80 L858 64 L874 80"></path>
+            <path class="st-chev" style="animation-delay:.36s"  d="M842 60 L858 44 L874 60"></path>
+          </g>
+
+          <!-- LEFT: standard of care fell (red, low) — hover for full stat -->
+          <g id="txtRed">
+            <text class="st-eyebrow" x="118" y="362" fill="#E7594C" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.6">STANDARD OF CARE FELL &#8595;</text>
+            <rect x="114" y="344" width="380" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
+            <g class="st-stat">
+              <rect x="150" y="150" width="352" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(231,89,76,.4)" stroke-width="1"></rect>
+              <text x="172" y="194" fill="#E7594C" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">2&#215;</text>
+              <text x="172" y="220" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">higher implant-failure rate for</text>
+              <text x="172" y="240" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">inexperienced vs. experienced surgeons.</text>
+              <text x="172" y="260" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Dental Implant Clinical Research Group</text>
+            </g>
+          </g>
+
+          <!-- RIGHT: specialists taking full-arch back (gold, high) — hover for full stat -->
+          <g id="txtGold">
+            <text class="st-eyebrow" x="600" y="94" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">QUALIFIED SPECIALISTS TAKING</text>
+            <text class="st-eyebrow" x="600" y="120" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">FULL-ARCH BACK &mdash; LEADING IT &#8593;</text>
+            <rect x="150" y="76" width="452" height="52" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
+            <g class="st-stat">
+              <rect x="398" y="150" width="352" height="122" rx="12" fill="rgba(18,12,9,.97)" stroke="rgba(201,169,110,.4)" stroke-width="1"></rect>
+              <text x="728" y="194" text-anchor="end" fill="#E4C88E" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="600">1.3&ndash;1.7%</text>
+              <text x="728" y="220" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">early implant-failure rate for specialists</text>
+              <text x="728" y="240" text-anchor="end" fill="#F7F2EC" font-family="Jost, sans-serif" font-size="14.5">&mdash; about half that of general operators.</text>
+              <text x="728" y="260" text-anchor="end" fill="rgba(247,242,236,.5)" font-family="'Courier Prime', monospace" font-size="10.5">Clinical Oral Investigations &mdash; big-data study</text>
+            </g>
+          </g>
+
+          <!-- single ball: red -> gold as it climbs -->
+          <g id="stBall">
+            <ellipse cx="0" cy="26" rx="24" ry="6" fill="rgba(0,0,0,.42)" filter="url(#stShadow)"></ellipse>
+            <circle r="26" fill="url(#gRed)"></circle>
+            <circle id="stBallGold" r="26" fill="url(#gGold)" opacity="0"></circle>
+            <circle cx="-8" cy="-9" r="8" fill="rgba(255,255,255,.55)" filter="url(#stShadow)"></circle>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ THE PROBLEM ============ -->
-<section class="section-cream">
-  <div class="wrap narrow center">
-    <p class="label teal eyebrow">The Market Problem</p>
-    <h2>Full-arch treatment is growing rapidly — but consistency in care isn't.</h2>
-    <p class="lead" style="margin-top:20px">As more inexperienced providers enter the market, patients are often placed into standardized treatment pathways that may not reflect their unique anatomy, health, or long-term needs. The challenge isn't access to treatment — it's ensuring every patient receives individualized care guided by experience, sound clinical judgment, and a proven protocol.</p>
+<!-- ============ WE LISTENED — CONCERN → PILLAR FLOW ============ -->
+<section class="section-ink orbs">
+  <div class="orbs-bg" aria-hidden="true">
+    <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span><span class="orb o5"></span>
   </div>
-</section>
+  <div class="wrap narrow center" style="margin-bottom:20px;position:relative;z-index:1">
+    <h2 style="color:var(--cream)">We Listened to Your Concerns</h2>
+  </div>
+  <div class="wrap" style="position:relative;z-index:1">
+    <div class="rm-road js" id="rmRoad">
+      <svg class="rm-svg" id="rmSvg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="rmArrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="#C9A96E"></path>
+          </marker>
+          <clipPath id="rmClip"><rect id="rmClipRect" x="0" y="0" width="100%" height="0"></rect></clipPath>
+        </defs>
+        <path class="rm-base" id="rmBase" marker-end="url(#rmArrow)"></path>
+        <path class="rm-prog" id="rmProg" clip-path="url(#rmClip)"></path>
+      </svg>
+      <div class="rm-dot" id="rmDot"></div>
 
-<!-- ============ COUNTER-POSITIONING ============ -->
-<section class="section-ink">
-  <div class="wrap">
-    <div class="split">
-      <div>
-        <p class="label eyebrow">Our Position</p>
-        <h2 style="color:var(--cream)">Built and led by<br>a surgeon.</h2>
-        <p class="lead" style="margin-top:20px">We understand what surgeons need from a true partner: clinical credibility, practical support, and systems that drive growth.</p>
-        <a href="the-system.html" class="btn btn-outline" style="margin-top:28px">See How the System Works</a>
+      <div class="rm-stop left">
+        <div class="rm-node">1</div>
+        <div class="rm-card">
+          <p class="rm-concern">&ldquo;I&rsquo;m not confident taking the complex cases.&rdquo;</p>
+          <div class="rm-div"></div>
+          <img src="icon-clinical.png" alt="" style="width:48px;height:48px;display:block;margin-bottom:10px">
+          <span class="rm-tag">Make a Change From Day 1</span>
+          <span class="rm-plabel">Pillar 1 &mdash; Clinical Training</span>
+          <p class="rm-desc">All-on-X and FP1 through pterygoid and zygomatic implants, with surgical mentorship and live-surgery support until your team is fully fluent — so the highest-value cases stay in your practice.</p>
+        </div>
       </div>
-      <div class="split-media">
-        <div class="card card-dark">
-          <span class="num">The IW Difference</span>
-          <h3 style="color:var(--cream)">Patient-Specific. Experience-Driven. Clinically Responsible.</h3>
+
+      <div class="rm-stop right">
+        <div class="rm-node">2</div>
+        <div class="rm-card">
+          <p class="rm-concern">&ldquo;I&rsquo;m concerned that the patients will disrupt our office flow.&rdquo;</p>
+          <div class="rm-div"></div>
+          <img src="icon-workflow.png" alt="" style="width:48px;height:48px;display:block;margin-bottom:10px">
+          <span class="rm-tag">Run Day-to-Day Smoothly</span>
+          <span class="rm-plabel">Pillar 2 &mdash; Workflow Intelligence</span>
+          <p class="rm-desc">Photogrammetry, IOS scanning, planning, printing, and prosthetics brought in-house — so cases move faster and more predictably, on your schedule, not your lab&rsquo;s availability.</p>
+        </div>
+      </div>
+
+      <div class="rm-stop left">
+        <div class="rm-node">3</div>
+        <div class="rm-card">
+          <p class="rm-concern">&ldquo;There&rsquo;s no transparency in paid ads.&rdquo;</p>
+          <div class="rm-div"></div>
+<img src="icon-dtc.png" alt="" style="width:48px;height:48px;display:block;margin-bottom:10px">
+          <span class="rm-tag">Set Up Your Infrastructure From Day 1</span>
+          <span class="rm-plabel">Pillar 3 &mdash; DTC Marketing</span>
+          <p class="rm-desc">Landing pages, Meta and Google advertising, and CRM nurture automation with call management and KPI tracking.</p>
+        </div>
+      </div>
+
+      <div class="rm-stop right">
+        <div class="rm-node">4</div>
+        <div class="rm-card">
+          <p class="rm-concern">&ldquo;If I market direct-to-consumer, I&rsquo;ll torch my GP referrals.&rdquo;</p>
+          <div class="rm-div"></div>
+          <img src="icon-inner.png" alt="" style="width:48px;height:48px;display:block;margin-bottom:10px">
+          <span class="rm-plabel">Pillar 4 &mdash; Inner Circle</span>
+          <p class="rm-desc">Connect to your community and protect your referrals — an inner circle built to be ready for the future.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ THE OPERATING SYSTEM ============ -->
-<section class="section-cream">
-  <div class="wrap">
-    <div class="center narrow" style="margin:0 auto 50px">
-      <p class="label teal eyebrow">The System Starts With</p>
-      <h2>One platform. Four pillars.</h2>
-      <p class="lead" style="margin-top:18px">The four pillars we run in our own practice — packaged to deploy in yours.</p>
-    </div>
-    <div class="grid grid-3">
-      <div class="card">
-        <img src="icon-clinical.png" alt="" style="width:54px;height:54px;display:block;margin-bottom:12px">
-        <span class="num">01</span>
-        <h3>Clinical Training</h3>
-        <p>State-of-the-art case training. Make a change from Day 1 with surgeon-led clinical training.</p>
-      </div>
-      <div class="card">
-        <img src="icon-workflow.png" alt="" style="width:54px;height:54px;display:block;margin-bottom:12px">
-        <span class="num">02</span>
-        <h3>Digital Workflow</h3>
-        <p>Set up for success with digital and data management for ongoing, day-to-day operations.</p>
-      </div>
-      <div class="card">
-        <img src="icon-dtc.png" alt="" style="width:54px;height:54px;display:block;margin-bottom:12px">
-        <span class="num">03</span>
-        <h3>DTC Marketing</h3>
-        <p>Set up your infrastructure — CRM, paid ads, Google Ads, and more.</p>
-      </div>
-      <div class="card">
-        <img src="icon-inner.png" alt="" style="width:54px;height:54px;display:block;margin-bottom:12px">
-        <span class="num">04</span>
-        <h3>Inner Circle</h3>
-        <p>Connect to your community <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--gold);vertical-align:baseline;margin:0 1px"></span> and be ready for the future.</p>
-      </div>
-      <div class="card card-dark" style="display:flex;flex-direction:column;justify-content:center;background:var(--espresso);border-color:var(--espresso)">
-        <h3 style="color:var(--cream)">Deploy it as one system.</h3>
-        <p>Together, they make full-arch a defensible program.</p>
-        <a href="the-system.html" class="btn btn-outline" style="margin-top:20px;align-self:flex-start">Explore the System</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PARTNERSHIP TEASER ============ -->
-<section class="section-cream">
-  <div class="wrap">
-    <div class="center narrow" style="margin:0 auto 46px">
-      <p class="label teal eyebrow">How Partnership Works</p>
-      <h2>A genuine partnership, aligned by structure.</h2>
-      <p class="lead" style="margin-top:20px">A long-term partnership built on mutual learning — we only win as your program grows.</p>
-    </div>
-    <div class="grid grid-3">
-      <div class="card card-dark" style="background:var(--espresso);border-color:var(--espresso)">
-        <span class="num">Step 01</span>
-        <h3 style="color:var(--cream)">Introduction Call</h3>
-        <p>A 30-minute conversation on your goals, case mix, and fit — and which surgeons opt into phase one.</p>
-      </div>
-      <div class="card">
-        <span class="num">Step 02</span>
-        <h3>Partner Session</h3>
-        <p>A working session with our operations lead and strategic advisor to lock scope, timeline, and the full model.</p>
-      </div>
-      <div class="card">
-        <span class="num">Step 03</span>
-        <h3>Onboarding Kickoff</h3>
-        <p>Begin the Months 1–3 build: systems, training, equipment, and CRM go live.</p>
-      </div>
-    </div>
-    <div class="btn-row" style="justify-content:center;margin-top:38px">
-      <a href="the-system.html#model" class="btn btn-outline-ink">See the Three-Layer Model</a>
-      <a href="partner.html#book" class="btn btn-gold">Request an Introduction Call</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOUNDER BIO ============ -->
-<section class="section-ink" id="founder">
+<!-- ============ FOUNDER ============ -->
+<section class="section-dark" id="founder">
   <div class="wrap narrow center">
-    <p class="label eyebrow">The Founder</p>
-    <h2 style="color:var(--cream)">Dr. L. Eric Pulver, DDS, FRCD(C)</h2>
-    <p class="lead" style="margin-top:16px">Board-certified oral &amp; maxillofacial surgeon and creator of the Patient-Specific Protocol™.</p>
-    <div class="btn-row center" style="justify-content:center">
+    <h2 style="color:var(--cream);font-size:clamp(2.6rem,6vw,4.4rem);line-height:1.08">Built For &amp; Led By a Surgeon</h2>
+    <p class="label" style="margin-top:22px">Dr. L. Eric Pulver, DDS, FRCD(C)</p>
+    <div class="btn-row" style="justify-content:center">
       <a href="founder.html" class="btn btn-outline">Read Full Bio</a>
     </div>
   </div>
 </section>
 
 <!-- ============ CTA BAND ============ -->
-<section class="cta-band">
-  <div class="wrap narrow">
-    <p class="label eyebrow" style="color:var(--gold-soft)">Your Next Step</p>
-    <h2>Contact Us</h2>
+<section class="cta-band orbs">
+  <div class="orbs-bg" aria-hidden="true">
+    <span class="orb teal o1"></span><span class="orb teal o2"></span><span class="orb teal o3"></span><span class="orb teal o4"></span><span class="orb teal o5"></span>
+  </div>
+  <div class="wrap narrow" style="position:relative;z-index:1">
+    <h2 style="font-size:clamp(2.6rem,6vw,4.4rem)">Your Next Step</h2>
     <div class="btn-row" style="justify-content:center">
       <a href="partner.html#book" class="btn btn-gold">Request an Introduction Call</a>
     </div>
@@ -465,6 +475,82 @@ section{padding:96px 0}
     </div>
   </div>
 </footer>
+
+<script>
+/* Sphere & track — continuous looping physics animation */
+(function(){
+  var stage=document.getElementById('shiftStage'); if(!stage) return;
+  var path=document.getElementById('stPath'),
+      ball=document.getElementById('stBall'), ballGold=document.getElementById('stBallGold'),
+      txtGold=document.getElementById('txtGold'), txtRed=document.getElementById('txtRed');
+  var L=path.getTotalLength(), R=26, D=3000, t0=null, rafId=null;
+  var eIO=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;};
+  function place(frac){ var p=path.getPointAtLength(frac*L); ball.setAttribute('transform','translate('+p.x+' '+(p.y-R)+')'); }
+  function setText(g,o){ [].forEach.call(g.querySelectorAll('.st-eyebrow'),function(e){e.style.opacity=o;}); }
+  function reset(){ if(rafId){cancelAnimationFrame(rafId);rafId=null;} place(0); ballGold.style.opacity=0; setText(txtGold,0); setText(txtRed,0); }
+  function frame(now){
+    if(!t0)t0=now;
+    var t=Math.min((now-t0)/D,1);
+    var f=eIO(t);
+    place(f);
+    ballGold.style.opacity=f;                                   // red -> gold as it climbs
+    setText(txtRed,  Math.min(Math.max((t-0.04)/0.16,0),1));    // fallen state shows first
+    setText(txtGold, Math.min(Math.max((t-0.55)/0.3,0),1));     // leading reveals as it arrives
+    if(t<1){ rafId=requestAnimationFrame(frame); } else { rafId=null; }
+  }
+  function start(){ t0=null; if(rafId)cancelAnimationFrame(rafId); rafId=requestAnimationFrame(frame); }
+  reset();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting){ start(); } else { reset(); } }); },{threshold:0.3});
+    io.observe(stage);
+  } else { start(); }
+})();
+(function(){
+  var road=document.getElementById('rmRoad'); if(!road) return;
+  var svg=document.getElementById('rmSvg'), base=document.getElementById('rmBase'),
+      prog=document.getElementById('rmProg'), dot=document.getElementById('rmDot'),
+      clipRect=document.getElementById('rmClipRect'),
+      stops=[].slice.call(road.querySelectorAll('.rm-stop')),
+      nodes=[].slice.call(road.querySelectorAll('.rm-node'));
+  var L=0, H=0;
+  function build(){
+    var W=road.clientWidth; H=road.offsetHeight;
+    var mobile = W < 760;
+    svg.setAttribute('width',W); svg.setAttribute('height',H);
+    svg.style.width=W+'px'; svg.style.height=H+'px';
+    var pts=[];
+    stops.forEach(function(s,i){
+      var left=s.classList.contains('left');
+      var x = mobile ? 30 : (left?0.30:0.70)*W;
+      var y = s.offsetTop + s.offsetHeight/2;
+      nodes[i].style.left=x+'px'; nodes[i].style.top=y+'px';
+      s.dataset.frac=(y/H);
+      pts.push({x:x,y:y});
+    });
+    var d="M "+pts[0].x+" 0", prev={x:pts[0].x,y:0};
+    pts.forEach(function(p){ var m=(prev.y+p.y)/2; d+=" C "+prev.x+" "+m+" "+p.x+" "+m+" "+p.x+" "+p.y; prev=p; });
+    var m2=(prev.y+H)/2; d+=" C "+prev.x+" "+m2+" "+prev.x+" "+m2+" "+prev.x+" "+H;
+    base.setAttribute('d',d); prog.setAttribute('d',d);
+    clipRect.setAttribute('width',W);
+    L=prog.getTotalLength();
+    tick();
+  }
+  function tick(){
+    if(!L) return;
+    var r=road.getBoundingClientRect(), vh=window.innerHeight||document.documentElement.clientHeight;
+    var p=(vh*0.5 - r.top)/r.height; p=Math.max(0,Math.min(1,p));
+    var pt=prog.getPointAtLength(L*p);
+    clipRect.setAttribute('height', pt.y + 8);
+    dot.style.left=pt.x+'px'; dot.style.top=pt.y+'px'; dot.style.opacity = p>0.002?1:0;
+    stops.forEach(function(s){ if(p >= parseFloat(s.dataset.frac)-0.04) s.classList.add('in'); });
+  }
+  window.addEventListener('scroll',tick,{passive:true});
+  var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(build,150);});
+  window.addEventListener('load',build);
+  setTimeout(build,60); build();
+})();
+</script>
 
 </body>
 </html>
