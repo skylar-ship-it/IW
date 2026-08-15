@@ -245,6 +245,7 @@ tr:last-child td{border-bottom:0}
 .dz.has{border-style:solid;border-color:var(--gold)}
 .dz img{width:100%;height:70px;object-fit:cover;border-radius:6px}
 .dz input{display:none}
+.aifill{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(201,169,110,.35)}
 </style>
 </head>
 <body>
@@ -401,7 +402,16 @@ tr:last-child td{border-bottom:0}
         </div>
 
         <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Step 3 &middot; Esthetic &amp; Functional Measurements</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:6px">
+            <div class="eyebrow" style="margin-bottom:0">Step 3 &middot; Esthetic &amp; Functional Measurements</div>
+            <button type="button" class="qbtn gold" id="aiBtn" onclick="runAiAnalysis()">&#10022; AI Analysis from photos</button>
+          </div>
+          <p id="aiStatus" style="display:none;font-size:.88rem;color:var(--gold);margin-bottom:12px"></p>
+          <div id="aiSummary" style="display:none;padding:14px 18px;background:rgba(36,92,92,.3);border-radius:10px;margin-bottom:16px;font-size:.92rem">
+            <div style="font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--gold);margin-bottom:6px">AI Estimate &mdash; verify every value</div>
+            <p id="aiSummaryText" style="margin-bottom:6px"></p>
+            <p id="aiCautions" style="font-size:.84rem;color:var(--ink-70)"></p>
+          </div>
 
           <p class="wgroup">Tooth &amp; gingiva display</p>
           <div class="wgrid">
@@ -1039,6 +1049,78 @@ function initIosPicker(){
     renderIosList();
   });
 }
+/* ---- AI Analysis: estimate workup fields from the photo series ---- */
+function aiMsg(t){ var el=document.getElementById('aiStatus'); if(el){ el.style.display=t?'block':'none'; el.textContent=t||''; } }
+function shrinkPhoto(file){
+  return new Promise(function(resolve){
+    var img=new Image();
+    var url=URL.createObjectURL(file);
+    img.onload=function(){
+      var max=1000, w=img.width, hgt=img.height;
+      if(w>hgt && w>max){ hgt=Math.round(hgt*max/w); w=max; }
+      else if(hgt>=w && hgt>max){ w=Math.round(w*max/hgt); hgt=max; }
+      var c=document.createElement('canvas'); c.width=w; c.height=hgt;
+      c.getContext('2d').drawImage(img,0,0,w,hgt);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg',0.72).split(',')[1]);
+    };
+    img.onerror=function(){ URL.revokeObjectURL(url); resolve(null); };
+    img.src=url;
+  });
+}
+async function runAiAnalysis(){
+  var btn=document.getElementById('aiBtn');
+  var keys=Object.keys(CS_PHOTOS);
+  if(!keys.length && !CS_MISC.length){ aiMsg('Add photos to the series first — the analysis reads them.'); return; }
+  btn.disabled=true;
+  try{
+    aiMsg('Preparing photos…');
+    var images=[];
+    for(var i=0;i<PHOTO_VIEWS.length;i++){
+      var k=PHOTO_VIEWS[i][0];
+      if(CS_PHOTOS[k]){
+        var d=await shrinkPhoto(CS_PHOTOS[k]);
+        if(d) images.push({label:PHOTO_VIEWS[i][1], data:d});
+      }
+    }
+    for(var m=0;m<Math.min(CS_MISC.length,2);m++){
+      var dm=await shrinkPhoto(CS_MISC[m]);
+      if(dm) images.push({label:'Miscellaneous', data:dm});
+    }
+    if(!images.length){ aiMsg('Could not read the photos — try re-adding them.'); btn.disabled=false; return; }
+    aiMsg('Analyzing '+images.length+' photo'+(images.length>1?'s':'')+' — about 20 seconds…');
+    var tok=null; try{ tok=await iwAuth.accessToken(); }catch(e){}
+    var r=await fetch('/api/analyze',{
+      method:'POST',
+      headers: tok?{'Content-Type':'application/json','Authorization':'Bearer '+tok}:{'Content-Type':'application/json'},
+      body: JSON.stringify({ arch:document.getElementById('csArch').value, images:images })
+    });
+    var d2=await r.json();
+    if(!d2.ok){ aiMsg(d2.error||'Analysis failed — try again.'); btn.disabled=false; return; }
+    var est=d2.estimates||{}, filled=0, skipped=0;
+    Object.keys(est).forEach(function(label){
+      var el=document.querySelector('#csForm [data-w="'+label+'"]');
+      if(!el) return;
+      var v=String(est[label]);
+      if((el.value||'').trim()!=='' && el.tagName==='INPUT'){ skipped++; return; }   /* never overwrite typed numbers */
+      if(el.tagName==='SELECT'){
+        var has=false; [].slice.call(el.options).forEach(function(o){ if(o.value===v||o.text===v){ el.value=o.value; has=true; } });
+        if(!has) return;
+      } else { el.value=v; }
+      el.classList.add('aifill'); el.title='AI estimate — verify';
+      filled++;
+    });
+    var sum=document.getElementById('aiSummary');
+    if(sum){ sum.style.display='block';
+      document.getElementById('aiSummaryText').textContent=d2.summary||'';
+      document.getElementById('aiCautions').textContent=(d2.cautions?d2.cautions+' ':'')+'Gold-outlined fields are AI estimates from photos — confirm or correct each before submitting.';
+    }
+    aiMsg('Filled '+filled+' field'+(filled===1?'':'s')+(skipped?(' — left '+skipped+' you had already entered'):'')+'. Review each gold-outlined value.');
+    if(typeof saveCaseDraft==='function') saveCaseDraft();
+  }catch(err){ aiMsg('Something went wrong: '+(err.message||err)); }
+  btn.disabled=false;
+}
+
 /* ---- case form draft autosave (fields only — files must be re-attached) ---- */
 var CS_DRAFT_KEY='iw_case_draft', _csDraftT=null;
 function caseDraftFields(){
