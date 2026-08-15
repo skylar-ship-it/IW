@@ -148,6 +148,10 @@ tr:last-child td{border-bottom:0}
   .menu-btn{display:inline-flex!important}
   .content{padding:22px}
 }
+@media (display-mode: standalone){
+  .topbar{padding-top:max(env(safe-area-inset-top,0px),47px);height:calc(58px + max(env(safe-area-inset-top,0px),47px))}
+  .sidebar{padding-top:calc(22px + max(env(safe-area-inset-top,0px),47px))}
+}
 @media(max-width:600px){
   #ownerBoard .g4{grid-template-columns:1fr 1fr;gap:12px}
   #ownerBoard .kpi{text-align:center;padding:18px 10px}

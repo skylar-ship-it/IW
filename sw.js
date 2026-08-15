@@ -1,5 +1,5 @@
 /* IW Portal service worker — app shell cache */
-var CACHE='iw-app-v1';
+var CACHE='iw-app-v2';
 var SHELL=['login.html','welcome.html','onboarding.html','portal.html',
   'surgeon-assessment.html','marketing-assessment.html','inner-circle-assessment.html',
   'iw-auth.js','iw-menu.js','iw-icon-192.png','iw-icon-512.png','manifest.webmanifest'];

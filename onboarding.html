@@ -134,7 +134,10 @@ a{color:inherit;text-decoration:none}
 .menu.open a:nth-of-type(5){transition-delay:.36s}
 
 @media (max-width:900px), (pointer:coarse){
-  .menubtn{width:76px;height:76px;top:calc(env(safe-area-inset-top,0px) + 8px);right:8px;gap:11px;background:rgba(11,8,7,.8);border:1.5px solid rgba(201,169,110,.55);border-radius:50%;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .menubtn{width:76px;height:76px;top:max(calc(env(safe-area-inset-top,0px) + 8px),14px);right:8px;gap:11px;background:rgba(11,8,7,.8);border:1.5px solid rgba(201,169,110,.55);border-radius:50%;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+}
+@media (display-mode: standalone) and (pointer:coarse){
+  .menubtn{top:max(calc(env(safe-area-inset-top,0px) + 8px),54px)}
   .menubtn span{width:38px;height:4px;background:var(--gold)}
 }
 @media (prefers-reduced-motion: reduce){
