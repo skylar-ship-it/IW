@@ -89,11 +89,16 @@ a{color:inherit;text-decoration:none}
 .visual.active{opacity:1}
 .visual svg{width:100%;height:100%;display:block}
 .visual.hasimg svg{display:none}
+.visual img{border-radius:22px}
+.mvisual img{border-radius:16px}
 .mvisual.hasimg svg{display:none}
 @media(max-width:900px){
   .stagecol{display:none}
 }
 
+@media(max-width:700px){
+  .intro .wave svg{width:13vw !important}
+}
 /* mobile inline visuals */
 .mvisual{display:none}
 @media(max-width:900px){
@@ -183,7 +188,7 @@ a{color:inherit;text-decoration:none}
     <h1>Onboarding</h1>
     <p class="copy">Complete three assessments to help us understand your practice and create a customized implementation plan.</p>
     <div class="cta">
-      <button class="gobtn" id="getStarted" type="button">Get Started <span class="ar">→</span></button>
+      <button class="gobtn" id="getStarted" type="button">Customize Your Portal <span class="ar">→</span></button>
     </div>
   </div>
 </section>
