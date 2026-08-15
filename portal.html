@@ -149,6 +149,12 @@ tr:last-child td{border-bottom:0}
   .content{padding:22px}
 }
 @media(max-width:600px){
+  #ownerBoard .g4{grid-template-columns:1fr 1fr;gap:12px}
+  #ownerBoard .kpi{text-align:center;padding:18px 10px}
+  #ownerBoard .kpi .big{font-size:1.9rem}
+  #ownerBoard .kpi .lab{font-size:.68rem;letter-spacing:.06em}
+  #owGreet{font-size:1.6rem}
+  .rolebox{display:none}
   .topbar{padding:0 14px;height:58px}
   .topbar .ttl{font-size:1.15rem}
   .rolebox > span{display:none}
@@ -316,6 +322,7 @@ tr:last-child td{border-bottom:0}
 
         <!-- ===== OWNER SCOREBOARD ===== -->
         <div id="ownerBoard">
+          <h2 id="owGreet" style="font-family:var(--display);font-weight:400;font-size:2.1rem;margin:0 0 2px;color:var(--cream)"></h2>
           <div class="eyebrow" style="margin-bottom:4px">Pulver Oral Surgery · Implanted Wisdom</div>
           <h2 style="font-family:var(--display);font-weight:600;font-size:1.85rem;margin:0 0 4px">Your program at a glance</h2>
           <p style="color:var(--ink-70);margin-bottom:16px">New leads pull live from your funnel — closed cases update as you win them.</p>
@@ -1628,6 +1635,7 @@ function applyPractice(){
     window.IW_PRACTICE = practice || 'Partner Practice';
     window.IW_IS_HOME = /home practice/i.test(tag||'') || /pulveroralsurgery|@implantedwisdom\.com/i.test(u.email||'');
     /* multi-practice accounts get the analytics switcher */
+    if(window.IW_IS_HOME){ var tb=document.getElementById('tailoredBanner'); if(tb) tb.style.display='none'; }
     window.IW_LOCS = byEmail.locations || null;
     var sw=document.getElementById('practiceSwitch');
     if(sw && window.IW_LOCS && window.IW_LOCS.length>1){
@@ -1806,17 +1814,40 @@ function renderLeadUI(){ renderPQ(); renderNW(); renderTable(); renderDaily(); r
 /* Closed-case numbers live here — update them as you win cases. */
 var IW_CLOSED = { cases:1, arches:1, revenue:25000, latest:'Kim K., upper' };
 function money(n){ try{ return '$'+Number(n).toLocaleString('en-US'); }catch(e){ return '$'+n; } }
+function setGreeting(){
+  var el=document.getElementById('owGreet'); if(!el) return;
+  var hr=12; try{ hr=parseInt(new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',hour:'numeric',hour12:false}).format(new Date()),10); }catch(e){}
+  var word = hr<12 ? 'Good morning' : (hr<17 ? 'Good afternoon' : 'Good evening');
+  var name='';
+  try{ var p=JSON.parse(localStorage.getItem('iw_profile')||'null'); if(p&&p.name){ name=', Dr. '+String(p.name).trim().split(/\s+/).pop(); } }catch(e){}
+  el.textContent = word + name + '.';
+}
+function countUp(el, target, prefix, suffix){
+  if(!el || isNaN(target)) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent=prefix+target.toLocaleString('en-US')+ (suffix||''); return; }
+  var start=null, dur=1100;
+  function step(ts){
+    if(!start) start=ts;
+    var t=Math.min(1,(ts-start)/dur);
+    var eased=1-Math.pow(1-t,3);
+    el.textContent=prefix+Math.round(target*eased).toLocaleString('en-US')+(suffix||'');
+    if(t<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 function renderOwnerBoard(){
-  var set=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
-  set('stCases', IW_CLOSED.cases);
-  set('stArches', IW_CLOSED.arches);
-  set('stRevenue', money(IW_CLOSED.revenue));
+  setGreeting();
+  countUp(document.getElementById('stCases'), IW_CLOSED.cases, '');
+  countUp(document.getElementById('stArches'), IW_CLOSED.arches, '');
+  countUp(document.getElementById('stRevenue'), IW_CLOSED.revenue, '$');
 }
 function updateNewLeadsStat(){
   var el=document.getElementById('stNewLeads'); if(!el) return;
   var cutoff=Date.now()-30*24*3600*1000;
   var n=(IW.leads||[]).filter(function(l){ return l.addedAt && l.addedAt>=cutoff; }).length;
-  el.textContent = n;
+  if(el.dataset.animated===String(n)) { el.textContent=n; return; }
+  el.dataset.animated=String(n);
+  countUp(el, n, '');
 }
 
 function renderPQ(){
