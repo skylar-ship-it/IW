@@ -145,8 +145,12 @@ tr:last-child td{border-bottom:0}
   .sidebar.open{transform:none}
   .main{margin-left:0}
   .g4,.g3,.g2,.split{grid-template-columns:1fr}
-  .menu-btn{display:inline-flex!important}
+  .menu-btn{display:inline-flex!important;align-items:center;justify-content:center;width:52px;height:52px;font-size:2.3rem;line-height:1;color:var(--gold);border:1.5px solid rgba(201,169,110,.55);border-radius:50%;margin:0 10px 0 -4px;flex:0 0 auto}
   .content{padding:22px}
+}
+@media (max-width:980px), (pointer:coarse){
+  .iwm-btn{display:none!important}
+  .topbar .topctrl{margin-right:0!important}
 }
 @media (display-mode: standalone){
   .topbar{padding-top:max(env(safe-area-inset-top,0px),47px);height:calc(58px + max(env(safe-area-inset-top,0px),47px))}
@@ -158,7 +162,6 @@ tr:last-child td{border-bottom:0}
   #ownerBoard .kpi .big{font-size:1.9rem}
   #ownerBoard .kpi .lab{font-size:.68rem;letter-spacing:.06em}
   #owGreet{font-size:1.6rem}
-  #ownerBoard{padding-right:64px}
   .rolebox{display:none}
   .topbar{padding:env(safe-area-inset-top,0px) 14px 0;height:calc(58px + env(safe-area-inset-top,0px))}
   .topbar .ttl{font-size:1.15rem}
