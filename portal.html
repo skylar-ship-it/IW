@@ -155,7 +155,7 @@ tr:last-child td{border-bottom:0}
   #ownerBoard .kpi .lab{font-size:.68rem;letter-spacing:.06em}
   #owGreet{font-size:1.6rem}
   .rolebox{display:none}
-  .topbar{padding:0 14px;height:58px}
+  .topbar{padding:env(safe-area-inset-top,0px) 14px 0;height:calc(58px + env(safe-area-inset-top,0px))}
   .topbar .ttl{font-size:1.15rem}
   .rolebox > span{display:none}
   .rolebox select{font-size:0.93rem;padding:6px 8px;max-width:140px}
