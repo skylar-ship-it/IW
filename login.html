@@ -205,6 +205,21 @@ function requestSubmit(e){
   }).catch(function(){ msg('rqMsg','Could not send request. Email skylar@pulveroralsurgery.com.',false); });
 }
 </script>
+<script>
+/* Already signed in (session saved on this device)? Skip the form —
+   go straight to the welcome-back greeting. */
+(function(){
+  if(!(window.iwAuth && iwAuth.enabled())) return;
+  var sb = iwAuth.client();
+  sb.auth.getSession().then(function(res){
+    if(!res.data.session) return;
+    sb.auth.mfa.getAuthenticatorAssuranceLevel().then(function(a){
+      var owes2fa = a && a.data && a.data.nextLevel==='aal2' && a.data.currentLevel!=='aal2';
+      if(!owes2fa) location.replace('welcome.html?back=1');
+    }).catch(function(){ location.replace('welcome.html?back=1'); });
+  }).catch(function(){});
+})();
+</script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>

@@ -114,14 +114,28 @@ h1 .l2>span{animation-delay:.85s}
 
 <script>
 (function(){
-  /* Get Started always continues to onboarding — the flow is login → welcome → onboarding */
+  /* Two modes:
+     - First visit (from a fresh sign-in): "Welcome to IW / Elevate your practice" → Get Started → onboarding
+     - Returning (?back=1, session already on device): time-of-day greeting → Go to Dashboard → portal */
   try{
-    /* personalize the welcome line for returning partners */
     var p = JSON.parse(localStorage.getItem('iw_profile')||'null');
-    if(p && p.name){
-      var last = String(p.name).trim().split(/\s+/).pop();
-      var w = document.getElementById('welcomeLine');
-      if(w && last) w.textContent = 'Welcome back, Dr. ' + last;
+    var last = (p && p.name) ? String(p.name).trim().split(/\s+/).pop() : '';
+    var w = document.getElementById('welcomeLine');
+
+    if(/[?&]back=1/.test(location.search)){
+      var h = new Date().getHours();
+      var greet = h < 12 ? 'Good morning' : (h < 17 ? 'Good afternoon' : 'Good evening');
+      var l1 = document.querySelector('h1 .l1 > span');
+      var l2 = document.querySelector('h1 .l2 > span');
+      if(l1) l1.textContent = greet + ',';
+      if(l2) l2.textContent = last ? ('Dr. ' + last + '.') : 'welcome back.';
+      if(w) w.textContent = 'Implanted Wisdom';
+      var c = document.querySelector('.copy .mask > span');
+      if(c) c.textContent = 'Your portal is ready — leads, cases, and the day’s numbers are waiting.';
+      var b = document.getElementById('getStarted');
+      if(b){ b.href = 'portal.html'; b.innerHTML = 'Go to Dashboard <span class="ar">→</span>'; }
+    } else if(w && last){
+      w.textContent = 'Welcome back, Dr. ' + last;
     }
   }catch(e){}
 })();
@@ -131,6 +145,20 @@ h1 .l2>span{animation-delay:.85s}
 <script>window.IW_MENU_THEME='cream';</script>
 <script src="iw-menu.js"></script>
 <script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
+<script>
+/* returning mode: if the local profile had no name, use the login itself */
+(function(){
+  if(!/[?&]back=1/.test(location.search)) return;
+  if(!(window.iwAuth && iwAuth.enabled())) return;
+  var l2 = document.querySelector('h1 .l2 > span');
+  if(!l2 || l2.textContent !== 'welcome back.') return;
+  var NAMES = { 'eric@implantedwisdom.com':'Dr. Pulver.', 'skylar@pulveroralsurgery.com':'Skylar.' };
+  iwAuth.currentUser().then(function(u){
+    var n = u && u.email ? NAMES[String(u.email).toLowerCase()] : null;
+    if(n) l2.textContent = n;
+  }).catch(function(){});
+})();
+</script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>
