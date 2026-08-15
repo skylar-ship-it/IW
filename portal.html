@@ -164,7 +164,9 @@ tr:last-child td{border-bottom:0}
   #owGreet{font-size:1.6rem}
   .rolebox{display:none}
   .topbar{padding:env(safe-area-inset-top,0px) 14px 0;height:calc(58px + env(safe-area-inset-top,0px))}
-  .topbar .ttl{font-size:1.15rem}
+  .topbar > div:first-child{min-width:0;flex:1}
+  .topbar .ttl{font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  #practiceSwitch{max-width:42vw;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
   .content{padding:15px}
   .card{padding:18px;overflow-x:auto}
   table{min-width:430px}
@@ -991,6 +993,13 @@ var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case R
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
   coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',program:'The Program',settings:'Settings'};
+/* shorter titles for the phone topbar */
+var titlesShort={leadscore:'Lead Scoring',comms:'Report Card',casereview:'PSP Cases',setupguide:'Digital Workflow',
+  equipment:'Equipment',labdeals:'Lab Deals',consults:'Consults',library:'Library',program:'Program'};
+function setViewTitle(v){
+  var small=false; try{ small=window.matchMedia('(max-width:600px)').matches; }catch(e){}
+  document.getElementById('viewTitle').textContent=(small && titlesShort[v]) || titles[v];
+}
 
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
 function closeNav(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
@@ -1000,7 +1009,7 @@ function go(el){
   var v=el.dataset.view;
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
   document.getElementById(v).classList.add('active');
-  document.getElementById('viewTitle').textContent=titles[v];
+  setViewTitle(v);
   try{ history.replaceState(null,'', v==='dashboard' ? location.pathname : '#'+v); }catch(e){}
   try{ localStorage.setItem('iw_last_view', v); }catch(e){}
   closeNav();
