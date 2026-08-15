@@ -53,6 +53,12 @@ a{color:inherit;text-decoration:none}
 .back{display:block;text-align:center;margin-top:22px;font-size:0.85rem;color:var(--cream-70);letter-spacing:.04em}
 .back:hover{color:var(--gold)}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IW">
+<link rel="apple-touch-icon" href="iw-icon-180.png">
 </head>
 <body>
   <div class="shell">
@@ -200,5 +206,6 @@ function requestSubmit(e){
   }).catch(function(){ msg('rqMsg','Could not send request. Email skylar@pulveroralsurgery.com.',false); });
 }
 </script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>

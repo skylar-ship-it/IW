@@ -139,6 +139,12 @@ a{color:inherit;text-decoration:none}
   .menu.open a{transform:none}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IW">
+<link rel="apple-touch-icon" href="iw-icon-180.png">
 </head>
 <body>
 
@@ -323,5 +329,6 @@ a{color:inherit;text-decoration:none}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
 <script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+{
+  "name": "Implanted Wisdom",
+  "short_name": "IW",
+  "description": "Implanted Wisdom Partner Portal",
+  "start_url": "login.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#17110d",
+  "theme_color": "#17110d",
+  "icons": [
+    { "src": "iw-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "iw-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

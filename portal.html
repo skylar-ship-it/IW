@@ -247,6 +247,12 @@ tr:last-child td{border-bottom:0}
 .dz input{display:none}
 .aifill{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(201,169,110,.35)}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IW">
+<link rel="apple-touch-icon" href="iw-icon-180.png">
 </head>
 <body>
 <div class="app">
@@ -2058,5 +2064,6 @@ if(window.iwAuth && iwAuth.enabled()){ iwAuth.requireSession('login.html'); }
 if(typeof mfaInit==='function'){ mfaInit(); }
 if(typeof applyPractice==='function'){ applyPractice(); }
 </script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>

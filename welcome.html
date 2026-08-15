@@ -73,6 +73,12 @@ h1 .l2>span{animation-delay:.85s}
   .mask>span{animation:none;transform:none}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IW">
+<link rel="apple-touch-icon" href="iw-icon-180.png">
 </head>
 <body>
 
@@ -126,5 +132,6 @@ h1 .l2>span{animation-delay:.85s}
 <script>window.IW_MENU_THEME='cream';</script>
 <script src="iw-menu.js"></script>
 <script>if(window.iwAuth&&iwAuth.enabled()){iwAuth.requireSession("login.html");}</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
 </html>
