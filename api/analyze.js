@@ -23,8 +23,8 @@ async function verifyLogin(req){
 }
 
 const FIELD_SPEC = `
-Return ONLY a JSON object, no other text, with this shape:
-{"estimates": { <field label>: <value>, ... }, "summary": "<2-3 sentence overall esthetic impression>", "cautions": "<1-2 sentences on photo-quality limits or low-confidence items>"}
+Return ONLY a JSON object, no other text. Shape (include "views" only if asked to classify):
+{"views":{"Photo 1":"<view name>", ...}, "estimates": { <field label>: <value>, ... }, "summary": "<2-3 sentence overall esthetic impression>", "cautions": "<1-2 sentences on photo-quality limits or low-confidence items>"}
 
 Allowed field labels and their value rules (include ONLY fields you can genuinely assess from the provided photos; omit anything uncertain):
 - "Tooth show at rest (mm)": number, 0-6, steps of 0.5
@@ -59,7 +59,7 @@ module.exports = async function handler(req, res){
     if (!okUser){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
 
     var body = req.body || {};
-    var images = Array.isArray(body.images) ? body.images.slice(0, 8) : [];
+    var images = Array.isArray(body.images) ? body.images.slice(0, 10) : [];
     if (!images.length){ res.status(400).json({ ok:false, error:'No photos provided.' }); return; }
 
     var content = [];
@@ -68,10 +68,16 @@ module.exports = async function handler(req, res){
       content.push({ type:'text', text:'View: ' + String(img.label||'unlabeled').slice(0,80) });
       content.push({ type:'image', source:{ type:'base64', media_type:'image/jpeg', data: String(img.data) } });
     });
+    var classify = !!body.classify;
+    var classifySpec = classify ? (
+      'FIRST, classify EVERY photo above into exactly one view. In your JSON include "views": an object mapping each photo label (e.g. "Photo 1") to exactly one of: '+
+      '"Frontal full face — in repose" | "Maximum smile" | "Exaggerated smile" | "Tongue blade (horizontal) — CANT" | "Profile view" | "Left lateral" | "Right lateral" | "Miscellaneous" | "Unreadable". '+
+      'Use "Unreadable" only when the photo is too blurry, dark, or off-subject to use clinically. THEN produce the estimates.\n') : '';
     content.push({ type:'text', text:
       'You are a prosthodontic treatment-planning assistant supporting a full-arch (All-on-X) esthetic and functional workup. '+
       'The patient arch under consideration: ' + String(body.arch||'unspecified') + '. '+
-      'Analyze the labeled photo series above and estimate what you can for the workup form.\n' + FIELD_SPEC });
+      classifySpec +
+      'Analyze the photos above and estimate what you can for the workup form.\n' + FIELD_SPEC });
 
     var r = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
@@ -93,6 +99,7 @@ module.exports = async function handler(req, res){
 
     res.setHeader('Cache-Control','no-store');
     res.status(200).json({ ok:true,
+      views: parsed.views || null,
       estimates: parsed.estimates || {},
       summary: parsed.summary || '',
       cautions: parsed.cautions || '' });
