@@ -251,6 +251,8 @@ tr:last-child td{border-bottom:0}
 .dz img{width:100%;height:70px;object-fit:cover;border-radius:6px}
 .dz input{display:none}
 .aifill{border-color:var(--gold)!important;box-shadow:0 0 0 1px rgba(201,169,110,.35)}
+.aiunread{border-color:rgba(232,165,152,.6)!important}
+.aiunread::placeholder{color:#e8a598!important;font-weight:500}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -409,7 +411,13 @@ tr:last-child td{border-bottom:0}
 
         <div class="card" style="margin-bottom:18px">
           <div class="eyebrow">Step 2 &middot; Photo Series</div>
-          <p style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">Drop each photo into its box &mdash; consistent views make the esthetic workup reliable.</p>
+          <div class="dz" id="smartDrop" style="margin-bottom:14px;min-height:96px;border-color:rgba(201,169,110,.6);background:rgba(201,169,110,.05)">
+            <span class="dzl" style="color:var(--gold)">&#10022; Smart Drop &mdash; add ALL photos at once</span>
+            <span class="dzs">AI sorts them into the views below and drafts your measurements</span>
+            <input type="file" accept="image/*" multiple>
+          </div>
+          <p id="smartStatus" style="display:none;font-size:.88rem;color:var(--gold);margin-bottom:12px"></p>
+          <p style="font-size:.86rem;color:var(--ink-70);margin-bottom:14px">Or place photos manually &mdash; drop each into its box.</p>
           <div id="photoZones" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px"></div>
         </div>
 
@@ -1092,6 +1100,82 @@ function shrinkPhoto(file){
     img.src=url;
   });
 }
+function applyEstimates(d2){
+  var est=d2.estimates||{}, filled=0, skipped=0;
+  Object.keys(est).forEach(function(label){
+    var el=document.querySelector('#csForm [data-w="'+label+'"]');
+    if(!el) return;
+    var v=String(est[label]);
+    if((el.value||'').trim()!=='' && el.tagName==='INPUT'){ skipped++; return; }
+    if(el.tagName==='SELECT'){
+      var has=false; [].slice.call(el.options).forEach(function(o){ if(o.value===v||o.text===v){ el.value=o.value; has=true; } });
+      if(!has) return;
+    } else { el.value=v; }
+    el.classList.add('aifill'); el.title='AI estimate — verify';
+    filled++;
+  });
+  /* anything the AI was asked for but could not read → red flag */
+  [].slice.call(document.querySelectorAll('#csForm .wgrid input[data-w]')).forEach(function(el){
+    if((el.value||'').trim()===''){ el.placeholder="Couldn't read"; el.classList.add('aiunread'); }
+  });
+  var sum=document.getElementById('aiSummary');
+  if(sum){ sum.style.display='block';
+    document.getElementById('aiSummaryText').textContent=d2.summary||'';
+    document.getElementById('aiCautions').textContent=(d2.cautions?d2.cautions+' ':'')+'Gold fields are AI estimates — confirm each. Red "Couldn\'t read" fields need a better photo or a manual measurement.';
+  }
+  return {filled:filled, skipped:skipped};
+}
+var VIEW_TO_KEY={'Frontal full face — in repose':'repose','Maximum smile':'maxsmile','Exaggerated smile':'exsmile',
+  'Tongue blade (horizontal) — CANT':'cant','Profile view':'profile','Left lateral':'left','Right lateral':'right'};
+function smartMsg(html){ var el=document.getElementById('smartStatus'); if(el){ el.style.display=html?'block':'none'; el.innerHTML=html||''; } }
+function initSmartDrop(){
+  var dz=document.getElementById('smartDrop'); if(!dz||dz.dataset.wired) return;
+  dz.dataset.wired='1';
+  var inp=dz.querySelector('input');
+  dz.addEventListener('click',function(){ inp.click(); });
+  inp.addEventListener('change',function(){ smartSort(inp.files); inp.value=''; });
+  dz.addEventListener('dragover',function(ev){ ev.preventDefault(); dz.classList.add('over'); });
+  dz.addEventListener('dragleave',function(){ dz.classList.remove('over'); });
+  dz.addEventListener('drop',function(ev){ ev.preventDefault(); dz.classList.remove('over'); smartSort(ev.dataTransfer.files); });
+}
+async function smartSort(fileList){
+  var files=[].slice.call(fileList||[]).filter(function(f){ return f.type&&f.type.indexOf('image')===0; }).slice(0,10);
+  if(!files.length){ smartMsg('No photos found — drop image files.'); return; }
+  if(!(window.iwAuth&&iwAuth.enabled())){ smartMsg('Preview mode — sign in to use Smart Drop.'); return; }
+  try{
+    smartMsg('Reading '+files.length+' photo'+(files.length>1?'s':'')+' — sorting and measuring, about 25 seconds…');
+    var images=[];
+    for(var i=0;i<files.length;i++){
+      var d=await shrinkPhoto(files[i]);
+      if(d) images.push({label:'Photo '+(i+1), data:d});
+    }
+    var tok=null; try{ tok=await iwAuth.accessToken(); }catch(e){}
+    var r=await fetch('/api/analyze',{
+      method:'POST',
+      headers: tok?{'Content-Type':'application/json','Authorization':'Bearer '+tok}:{'Content-Type':'application/json'},
+      body: JSON.stringify({ classify:true, arch:document.getElementById('csArch').value, images:images })
+    });
+    var d2=await r.json();
+    if(!d2.ok){ smartMsg('<span style="color:#e8a598">'+(d2.error||'Smart sort failed — place photos manually below.')+'</span>'); return; }
+    var views=d2.views||{}; var placed=0, misc=0, unread=[];
+    files.forEach(function(f,i){
+      var v=views['Photo '+(i+1)];
+      var key=VIEW_TO_KEY[v];
+      if(v==='Unreadable'){ unread.push(f.name); CS_MISC.push(f); }
+      else if(key && !CS_PHOTOS[key]){ CS_PHOTOS[key]=f; placed++; }
+      else { CS_MISC.push(f); misc++; }
+    });
+    var pz=document.getElementById('photoZones'); if(pz){ pz.innerHTML=''; initPhotoZones(); }
+    var res=applyEstimates(d2);
+    var parts=['Sorted '+placed+' into views'];
+    if(misc) parts.push(misc+' to Miscellaneous');
+    parts.push('filled '+res.filled+' measurement'+(res.filled===1?'':'s'));
+    var html='✓ '+parts.join(' · ')+'.';
+    if(unread.length) html+=' <span style="color:#e8a598;font-weight:500">Couldn\'t read: '+unread.map(esc).join(', ')+' — retake or place manually.</span>';
+    smartMsg(html);
+    if(typeof saveCaseDraft==='function') saveCaseDraft();
+  }catch(err){ smartMsg('<span style="color:#e8a598">Something went wrong: '+esc(err.message||String(err))+'</span>'); }
+}
 async function runAiAnalysis(){
   var btn=document.getElementById('aiBtn');
   var keys=Object.keys(CS_PHOTOS);
@@ -1121,25 +1205,8 @@ async function runAiAnalysis(){
     });
     var d2=await r.json();
     if(!d2.ok){ aiMsg(d2.error||'Analysis failed — try again.'); btn.disabled=false; return; }
-    var est=d2.estimates||{}, filled=0, skipped=0;
-    Object.keys(est).forEach(function(label){
-      var el=document.querySelector('#csForm [data-w="'+label+'"]');
-      if(!el) return;
-      var v=String(est[label]);
-      if((el.value||'').trim()!=='' && el.tagName==='INPUT'){ skipped++; return; }   /* never overwrite typed numbers */
-      if(el.tagName==='SELECT'){
-        var has=false; [].slice.call(el.options).forEach(function(o){ if(o.value===v||o.text===v){ el.value=o.value; has=true; } });
-        if(!has) return;
-      } else { el.value=v; }
-      el.classList.add('aifill'); el.title='AI estimate — verify';
-      filled++;
-    });
-    var sum=document.getElementById('aiSummary');
-    if(sum){ sum.style.display='block';
-      document.getElementById('aiSummaryText').textContent=d2.summary||'';
-      document.getElementById('aiCautions').textContent=(d2.cautions?d2.cautions+' ':'')+'Gold-outlined fields are AI estimates from photos — confirm or correct each before submitting.';
-    }
-    aiMsg('Filled '+filled+' field'+(filled===1?'':'s')+(skipped?(' — left '+skipped+' you had already entered'):'')+'. Review each gold-outlined value.');
+    var res=applyEstimates(d2);
+    aiMsg('Filled '+res.filled+' field'+(res.filled===1?'':'s')+(res.skipped?(' — left '+res.skipped+' you had already entered'):'')+'. Review each gold-outlined value.');
     if(typeof saveCaseDraft==='function') saveCaseDraft();
   }catch(err){ aiMsg('Something went wrong: '+(err.message||err)); }
   btn.disabled=false;
@@ -2095,7 +2162,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker(); initCaseDraft(); restoreView();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initSmartDrop(); initIosPicker(); initCaseDraft(); restoreView();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
