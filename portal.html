@@ -992,9 +992,21 @@ function go(el){
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
   document.getElementById(v).classList.add('active');
   document.getElementById('viewTitle').textContent=titles[v];
+  try{ history.replaceState(null,'', v==='dashboard' ? location.pathname : '#'+v); }catch(e){}
+  try{ localStorage.setItem('iw_last_view', v); }catch(e){}
   closeNav();
   window.scrollTo(0,0);
 }
+/* restore the view after a refresh: URL hash wins, then last-visited */
+function restoreView(){
+  var v=(location.hash||'').replace('#','');
+  if(!v){ try{ v=localStorage.getItem('iw_last_view')||''; }catch(e){} }
+  if(v && v!=='dashboard' && document.getElementById(v) && titles[v]) goView(v);
+}
+window.addEventListener('hashchange',function(){
+  var v=(location.hash||'').replace('#','');
+  if(v && document.getElementById(v) && titles[v]) goView(v);
+});
 function goView(v){var n=document.querySelector('.nav-item[data-view="'+v+'"]'); if(n) go(n);}
 function setRole(r){
   document.querySelectorAll('.nav-item').forEach(n=>{
@@ -2053,7 +2065,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker(); initCaseDraft();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initIosPicker(); initCaseDraft(); restoreView();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
