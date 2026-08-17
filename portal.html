@@ -173,6 +173,9 @@ tr:last-child td{border-bottom:0}
   .kpi .big{font-size:2.1rem}
   .preview-hero h3{font-size:1.45rem}
 }
+.smx-spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(201,169,110,.3);
+  border-top-color:var(--gold);border-radius:50%;animation:smxspin .8s linear infinite;vertical-align:-1px}
+@keyframes smxspin{to{transform:rotate(360deg)}}
 /* ---- Smile Preview: comparison slider + reveal ---- */
 .smcmp{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(0,0,0,.25)}
 .smcmp-empty{padding:60px 20px;text-align:center;color:var(--ink-70);font-size:.92rem}
@@ -970,109 +973,117 @@ tr:last-child td{border-bottom:0}
       <!-- ===== SMILE PREVIEW ===== -->
       <section class="view" id="smile">
 
-        <div class="card" style="margin-bottom:18px;overflow-x:auto">
-          <div class="eyebrow">Smile Preview &middot; How it flows</div>
-          <div style="display:flex;align-items:stretch;gap:0;min-width:700px">
-            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">1</div><strong style="font-size:.85rem">Patient</strong><div style="font-size:.76rem;color:var(--ink-70)">Name &middot; photos</div></div>
-            <div style="align-self:center;color:var(--gold)">&rarr;</div>
-            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">2</div><strong style="font-size:.85rem">Risk intake</strong><div style="font-size:.76rem;color:var(--ink-70)">Four domains</div></div>
-            <div style="align-self:center;color:var(--gold)">&rarr;</div>
-            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">3</div><strong style="font-size:.85rem">Design targets</strong><div style="font-size:.76rem;color:var(--ink-70)">AI-drafted</div></div>
-            <div style="align-self:center;color:var(--gold)">&rarr;</div>
-            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">4</div><strong style="font-size:.85rem">Reveal</strong><div style="font-size:.76rem;color:var(--ink-70)">Patient-facing</div></div>
-          </div>
-        </div>
-
         <form id="smForm" onsubmit="saveSmile(event)">
-
         <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Step 1 &middot; Patient &amp; Photos</div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Patient name *</label><input type="text" id="smName" required placeholder="First Last"></div>
-            <div class="field"><label>Shade target</label>
-              <select id="smShade"><option>Bleach White</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select>
-            </div>
+          <div class="field" style="margin-bottom:16px">
+            <label>Patient name</label>
+            <input type="text" id="smName" required placeholder="First Last" style="font-size:1.05rem">
           </div>
           <div class="split" style="gap:14px">
-            <div class="field"><label>Morphology style</label>
-              <select id="smStyle"><option>Natural-softened</option><option>Youthful-rounded</option><option>Bold-square</option><option>Conservative</option></select>
-            </div>
-            <div class="field"><label>Arch</label><select id="smArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
+            <div class="field"><label>1 &middot; Before photo</label><input type="file" id="smBefore" accept="image/*"></div>
+            <div class="field"><label>2 &middot; After mockup</label><input type="file" id="smAfter" accept="image/*"></div>
           </div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Before &mdash; full smile photo *</label><input type="file" id="smBefore" accept="image/*"></div>
-            <div class="field"><label>After &mdash; design mockup</label><input type="file" id="smAfter" accept="image/*"></div>
-          </div>
-          <p class="co" style="font-size:.86rem;color:var(--ink-70)">The mockup image comes from your design tool. Upload both to build the patient-facing comparison.</p>
-        </div>
-
-        <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Step 2 &middot; Risk Assessment</div>
-          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">Four domains. This does not change the image &mdash; it flags case complexity and narrows which design options are appropriate.</p>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Periodontal risk</label><select class="smrisk" id="smPerio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
-            <div class="field"><label>Biomechanical risk</label><select class="smrisk" id="smBio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
-          </div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Functional risk</label><select class="smrisk" id="smFunc"><option>Low</option><option>Moderate</option><option>High</option></select></div>
-            <div class="field"><label>Dentofacial risk</label><select class="smrisk" id="smDento"><option>Low</option><option>Moderate</option><option>High</option></select></div>
-          </div>
-          <div class="callout" id="smRiskNote" style="border-left:3px solid var(--gold)">Set the four risk levels to see the complexity flag.</div>
-        </div>
-
-        <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Step 3 &middot; Facially-Driven Design Targets</div>
-          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">AI reads the before photo and drafts the facial reference targets. <strong>Estimates only &mdash; the surgeon verifies every value.</strong></p>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Facial midline vs. dental midline</label><select id="smMid"><option>On</option><option>Shift left</option><option>Shift right</option></select></div>
-            <div class="field"><label>Incisal edge position</label><select id="smIncisal"><option>Good</option><option>Lengthen</option><option>Shorten</option></select></div>
-          </div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Tooth show at rest (mm)</label><input type="number" step="0.5" id="smRest" placeholder="0–6"></div>
-            <div class="field"><label>Tooth show at max smile (mm)</label><input type="number" step="0.5" id="smMax" placeholder="0–14"></div>
-          </div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>Smile line follows lower lip</label><select id="smLine"><option>Yes</option><option>No</option></select></div>
-            <div class="field"><label>Occlusal plane vs. interpupillary line</label><select id="smPlane"><option>Parallel</option><option>Canted left</option><option>Canted right</option></select></div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px">
-            <button type="button" class="btn btn-out" id="smAiBtn" onclick="smileAI()">✦ AI Design Targets</button>
-            <span id="smAiStatus" style="display:none;font-size:.88rem;color:var(--ink-70)"></span>
-          </div>
-          <div class="callout" id="smAiSummary" style="display:none;margin-top:14px;border-left:3px solid var(--teal)"></div>
-        </div>
-
-        <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Step 4 &middot; Notes &amp; Save</div>
-          <div class="field"><label>Clinical notes for this design</label><textarea id="smNotes" rows="3" placeholder="Anything the design should account for…"></textarea></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <button class="btn btn-gold" type="submit">Save Smile Preview</button>
-            <button type="button" class="btn btn-out" onclick="openReveal()">▶ Reveal Mode</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
+            <button type="button" class="btn btn-gold" onclick="openReveal()">▶ Show the Patient</button>
+            <button class="btn btn-out" type="submit">Save</button>
             <span id="smStatus" style="font-size:.9rem;color:var(--ink-70)"></span>
           </div>
         </div>
-        </form>
 
         <div class="card" style="margin-bottom:18px">
-          <div class="eyebrow">Before &amp; After</div>
           <div id="smCompare" class="smcmp">
-            <div class="smcmp-empty" id="smCmpEmpty">Upload a before and after photo to compare.</div>
+            <div class="smcmp-empty" id="smCmpEmpty">Add both photos to compare.</div>
             <div class="smcmp-stage" id="smCmpStage" style="display:none">
               <img id="smImgBefore" alt="Before">
               <div class="smcmp-after" id="smCmpAfter"><img id="smImgAfter" alt="After"></div>
-              <div class="smcmp-handle" id="smCmpHandle"><span>‹ ›</span></div>
+              <div class="smcmp-handle" id="smCmpHandle"><span>&lsaquo; &rsaquo;</span></div>
               <span class="smcmp-tag l">Before</span><span class="smcmp-tag r">After</span>
             </div>
           </div>
           <input type="range" id="smCmpRange" min="0" max="100" value="50" style="width:100%;margin-top:14px;display:none">
         </div>
 
+        <div class="card" style="margin-bottom:18px;border:1px solid rgba(201,169,110,.45)">
+          <div class="eyebrow">Smile Simulation &middot; Prototype</div>
+          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">
+            Detects the facial landmarks in the before photo, then draws teeth at the positions the
+            proportion rules dictate. Nothing is imagined &mdash; only the area inside the lips is redrawn.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button type="button" class="btn btn-gold" id="smxBtn" onclick="smxGenerate()">✦ Generate Simulation</button>
+            <button type="button" class="btn btn-out" onclick="smxUseAsAfter()">Use as After</button>
+          </div>
+          <div id="smxStatus" class="callout" style="display:none;margin-top:14px;border-left:3px solid var(--gold)"></div>
+          <div id="smxWrap" style="display:none;margin-top:16px">
+            <canvas id="smxCanvas" style="width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line)"></canvas>
+            <div class="field" style="margin-top:14px">
+              <label>Incisal edge &mdash; lengthen / shorten</label>
+              <input type="range" id="smxLen" min="-14" max="14" value="0" step="1" style="width:100%">
+            </div>
+            <p class="co" style="font-size:.82rem;color:var(--ink-70)">
+              Style and shade in Clinical detail update this live. Prototype quality &mdash; for design
+              direction, not patient presentation.
+            </p>
+          </div>
+        </div>
+
+        <details class="card" style="margin-bottom:18px">
+          <summary style="cursor:pointer;font-family:var(--body);font-weight:500;letter-spacing:.14em;
+            text-transform:uppercase;font-size:.78rem;color:var(--gold)">Clinical detail &mdash; optional</summary>
+          <div style="margin-top:20px">
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Shade</label>
+                <select id="smShade"><option>Bleach White</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select></div>
+              <div class="field"><label>Style</label>
+                <select id="smStyle"><option>Natural-softened</option><option>Youthful-rounded</option><option>Bold-square</option><option>Conservative</option></select></div>
+            </div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Arch</label><select id="smArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
+              <div class="field"><label>Notes</label><input type="text" id="smNotes" placeholder="Anything the design should account for…"></div>
+            </div>
+
+            <div style="height:1px;background:var(--line);margin:20px 0"></div>
+            <div class="eyebrow">Risk assessment</div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Periodontal</label><select class="smrisk" id="smPerio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+              <div class="field"><label>Biomechanical</label><select class="smrisk" id="smBio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+            </div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Functional</label><select class="smrisk" id="smFunc"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+              <div class="field"><label>Dentofacial</label><select class="smrisk" id="smDento"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+            </div>
+            <div class="callout" id="smRiskNote" style="border-left:3px solid var(--gold)">Set the four levels to see the complexity flag.</div>
+
+            <div style="height:1px;background:var(--line);margin:20px 0"></div>
+            <div class="eyebrow">Design targets</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+              <button type="button" class="btn btn-out" id="smAiBtn" onclick="smileAI()">✦ Fill from photo</button>
+              <span id="smAiStatus" style="display:none;font-size:.88rem;color:var(--ink-70)"></span>
+            </div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Midline</label><select id="smMid"><option>On</option><option>Shift left</option><option>Shift right</option></select></div>
+              <div class="field"><label>Incisal edge</label><select id="smIncisal"><option>Good</option><option>Lengthen</option><option>Shorten</option></select></div>
+            </div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Tooth show at rest (mm)</label><input type="number" step="0.5" id="smRest" placeholder="0–6"></div>
+              <div class="field"><label>Tooth show at max smile (mm)</label><input type="number" step="0.5" id="smMax" placeholder="0–14"></div>
+            </div>
+            <div class="split" style="gap:14px">
+              <div class="field"><label>Smile line follows lower lip</label><select id="smLine"><option>Yes</option><option>No</option></select></div>
+              <div class="field"><label>Occlusal plane</label><select id="smPlane"><option>Parallel</option><option>Canted left</option><option>Canted right</option></select></div>
+            </div>
+            <div class="callout" id="smAiSummary" style="display:none;border-left:3px solid var(--teal)"></div>
+            <p class="co" style="font-size:.84rem;color:var(--ink-70);margin-top:12px">AI values are estimates &mdash; verify each one.</p>
+          </div>
+        </details>
+        </form>
+
         <div class="card">
-          <div class="eyebrow">Saved Smile Previews</div>
+          <div class="eyebrow">Saved</div>
           <div style="overflow-x:auto">
             <table>
-              <thead><tr><th>Patient</th><th>Style · Shade</th><th>Complexity</th><th>Saved</th><th></th></tr></thead>
-              <tbody id="smBody"><tr><td colspan="5" style="color:var(--ink-70)">No smile previews saved yet.</td></tr></tbody>
+              <thead><tr><th>Patient</th><th>Saved</th><th></th></tr></thead>
+              <tbody id="smBody"><tr><td colspan="3" style="color:var(--ink-70)">Nothing saved yet.</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -2038,18 +2049,16 @@ async function loadSmiles(){
     var r=await sb.from(SM_TABLE).select('*').order('created_at',{ascending:false}).limit(50);
     if(r.error) throw r.error;
     SM_LIST=r.data||[];
-    if(!SM_LIST.length){ body.innerHTML='<tr><td colspan="5" style="color:var(--ink-70)">No smile previews saved yet.</td></tr>'; return; }
+    if(!SM_LIST.length){ body.innerHTML='<tr><td colspan="3" style="color:var(--ink-70)">Nothing saved yet.</td></tr>'; return; }
     body.innerHTML=SM_LIST.map(function(c){
       var d=c.design||{};
       var when=c.created_at?new Date(c.created_at).toLocaleDateString():'';
       return '<tr><td><strong>'+esc(c.patient||'—')+'</strong></td>'+
-        '<td>'+esc((d.style||'—')+' · '+(d.shade||'—'))+'</td>'+
-        '<td>'+esc(c.complexity||'—')+'</td>'+
         '<td style="color:var(--ink-70)">'+when+'</td>'+
         '<td style="text-align:right"><a class="qbtn" style="cursor:pointer" onclick="openSmile(\''+c.id+'\')">Open</a> '+
         '<a class="qbtn" style="cursor:pointer;color:#e8a598" onclick="deleteSmile(\''+c.id+'\')">Delete</a></td></tr>';
     }).join('');
-  }catch(e){ body.innerHTML='<tr><td colspan="5" style="color:var(--ink-70)">Run the Smile Preview SQL setup to enable saving.</td></tr>'; }
+  }catch(e){ body.innerHTML='<tr><td colspan="3" style="color:var(--ink-70)">Run the Smile Preview SQL setup to enable saving.</td></tr>'; }
 }
 async function openSmile(id){
   var sb=sbc(); if(!sb) return;
@@ -2088,7 +2097,230 @@ async function deleteSmile(id){
     loadSmiles();
   }catch(e){ smMsg('Could not delete.'); }
 }
-function initSmile(){ initSmPickers(); initSmRisk(); initReveal(); loadSmiles(); }
+
+/* ============================================================
+   Smile Simulation prototype — MediaPipe landmarks + rules + canvas render
+   AI finds the face. Math draws the teeth. Nothing is imagined.
+   ============================================================ */
+var SMX = { landmarker:null, loading:false, pts:null, img:null, ready:false };
+
+/* MediaPipe lip landmark indices (Face Landmarker 478-point mesh) */
+var LIP_OUTER=[61,185,40,39,37,0,267,269,270,409,291,375,321,405,314,17,84,181,91,146];
+var LIP_INNER=[78,191,80,81,82,13,312,311,310,415,308,324,318,402,317,14,87,178,88,95];
+
+function smxMsg(t,busy){
+  var el=document.getElementById('smxStatus');
+  if(el){ el.style.display=t?'block':'none'; el.innerHTML=(busy?'<span class="smx-spin"></span> ':'')+esc(t||''); }
+}
+
+async function smxLoadModel(){
+  if(SMX.landmarker) return SMX.landmarker;
+  if(SMX.loading) { while(SMX.loading){ await new Promise(function(r){setTimeout(r,200);}); } return SMX.landmarker; }
+  SMX.loading=true;
+  smxMsg('Loading the face model (first time only)…',true);
+  try{
+    var vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
+    var files=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+    SMX.landmarker=await vision.FaceLandmarker.createFromOptions(files,{
+      baseOptions:{ modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task' },
+      runningMode:'IMAGE', numFaces:1
+    });
+  }catch(e){ SMX.loading=false; throw e; }
+  SMX.loading=false;
+  return SMX.landmarker;
+}
+
+function smxLoadImage(url){
+  return new Promise(function(res,rej){
+    var im=new Image(); im.crossOrigin='anonymous';
+    im.onload=function(){ res(im); }; im.onerror=rej; im.src=url;
+  });
+}
+
+/* ---- clinical rules ---- */
+function smxPlan(pts, W, H, style){
+  function P(i){ return { x:pts[i].x*W, y:pts[i].y*H }; }
+  var inner=LIP_INNER.map(P), outer=LIP_OUTER.map(P);
+  var xs=inner.map(function(p){return p.x;}), ys=inner.map(function(p){return p.y;});
+  var left=Math.min.apply(null,xs), right=Math.max.apply(null,xs);
+  var top=Math.min.apply(null,ys), bot=Math.max.apply(null,ys);
+  var mouthW=right-left, mouthH=bot-top;
+
+  /* facial midline from eye centres + nose bridge */
+  var le=P(33), re=P(263), nose=P(168);
+  var midX=(le.x+re.x)/2;
+  var faceMid=(midX*0.5 + nose.x*0.5);
+  /* interpupillary tilt → occlusal plane cant */
+  var tilt=Math.atan2(re.y-le.y, re.x-le.x);
+
+  /* upper lip lower border across the arch = gingival ceiling */
+  var upperInner=[78,191,80,81,82,13,312,311,310,415,308].map(P);
+  /* lower lip upper border = incisal edge guide (smile line follows it) */
+  var lowerInner=[308,324,318,402,317,14,87,178,88,95,78].map(P);
+
+  function curveYAt(x, arr){
+    var best=null, second=null;
+    arr.forEach(function(p){
+      var d=Math.abs(p.x-x);
+      if(!best||d<best.d){ second=best; best={d:d,p:p}; }
+      else if(!second||d<second.d){ second={d:d,p:p}; }
+    });
+    if(!best) return null;
+    if(!second||best.d===0) return best.p.y;
+    var t=best.d/(best.d+second.d);
+    return best.p.y*(1-t)+second.p.y*t;
+  }
+
+  /* RED proportion: central 100%, lateral ~78%, canine ~78% of lateral */
+  var red = style==='Bold-square' ? 0.82 : (style==='Youthful-rounded' ? 0.74 : 0.78);
+  var units = 2*(1 + red + red*red);          /* 6 anterior teeth across */
+  var visibleW = mouthW*0.92;
+  var centralW = visibleW/units;
+  var widths = [centralW*red*red, centralW*red, centralW, centralW, centralW*red, centralW*red*red];
+
+  return {
+    left:left, right:right, top:top, bot:bot, mouthW:mouthW, mouthH:mouthH,
+    faceMid:faceMid, tilt:tilt, inner:inner, outer:outer,
+    upperInner:upperInner, lowerInner:lowerInner, curveYAt:curveYAt,
+    widths:widths, centralW:centralW
+  };
+}
+
+/* ---- tooth shape ---- */
+function smxToothPath(ctx,x,y,w,h,style,idx){
+  var r = style==='Bold-square' ? 0.10 : (style==='Youthful-rounded' ? 0.36 : (style==='Conservative' ? 0.16 : 0.24));
+  var rad=Math.min(w,h)*r;
+  var x0=x-w/2, x1=x+w/2, y0=y-h, y1=y;
+  ctx.beginPath();
+  ctx.moveTo(x0, y0+rad*0.5);
+  ctx.quadraticCurveTo(x0, y0, x0+rad*0.5, y0);      /* gingival left */
+  ctx.lineTo(x1-rad*0.5, y0);
+  ctx.quadraticCurveTo(x1, y0, x1, y0+rad*0.5);      /* gingival right */
+  ctx.lineTo(x1, y1-rad);
+  ctx.quadraticCurveTo(x1, y1, x1-rad, y1);          /* incisal corner R */
+  ctx.lineTo(x0+rad, y1);
+  ctx.quadraticCurveTo(x0, y1, x0, y1-rad);          /* incisal corner L */
+  ctx.closePath();
+}
+
+var SMX_SHADES = {
+  'Bleach White':['#FEFEFB','#F3F1E8'],
+  'A1':['#F8F4E9','#EAE3D2'],
+  'A2':['#F3EDDD','#E2D9C2'],
+  'B1':['#F9F5EA','#ECE5D4'],
+  'B2':['#F0E8D4','#DED2B6']
+};
+
+function smxRender(){
+  if(!SMX.ready) return;
+  var img=SMX.img, plan=SMX.plan;
+  var cv=document.getElementById('smxCanvas'); if(!cv) return;
+  var W=img.naturalWidth, H=img.naturalHeight;
+  cv.width=W; cv.height=H;
+  var ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.drawImage(img,0,0,W,H);
+
+  var style=(document.getElementById('smStyle')||{}).value||'Natural-softened';
+  var shade=(document.getElementById('smShade')||{}).value||'A2';
+  var lengthen=parseFloat((document.getElementById('smxLen')||{}).value||'0');
+  var p=smxPlan(SMX.pts,W,H,style);
+  SMX.plan=p;
+
+  ctx.save();
+  /* clip to the mouth opening so lips/skin are never touched */
+  ctx.beginPath();
+  p.inner.forEach(function(pt,i){ i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y); });
+  ctx.closePath();
+  ctx.clip();
+
+  /* dark oral cavity behind the new teeth */
+  ctx.fillStyle='#241a17';
+  ctx.fill();
+
+  /* six anterior teeth centred on the facial midline */
+  var totalW=p.widths.reduce(function(a,b){return a+b;},0);
+  var x=p.faceMid-totalW/2;
+  var sh=SMX_SHADES[shade]||SMX_SHADES['A2'];
+
+  for(var i=0;i<p.widths.length;i++){
+    var w=p.widths[i], cx=x+w/2;
+    var gum=p.curveYAt(cx,p.upperInner);      /* gingival ceiling */
+    var lip=p.curveYAt(cx,p.lowerInner);      /* lower lip curve */
+    if(gum==null||lip==null){ x+=w; continue; }
+    var incisal=lip - p.mouthH*0.06 + lengthen;   /* smile line follows lower lip */
+    var h=Math.max(6, incisal-gum);
+    /* laterals sit slightly shorter — Robbins embrasure progression */
+    var isLateral=(i===1||i===4), isCanine=(i===0||i===5);
+    var hh = isLateral ? h*0.92 : (isCanine ? h*0.96 : h);
+
+    var g=ctx.createLinearGradient(0,incisal-hh,0,incisal);
+    g.addColorStop(0, sh[1]); g.addColorStop(0.55, sh[0]); g.addColorStop(1, sh[0]);
+    smxToothPath(ctx,cx,incisal,w*0.97,hh,style,i);
+    ctx.fillStyle=g; ctx.fill();
+    /* incisal translucency */
+    var t=ctx.createLinearGradient(0,incisal-hh*0.16,0,incisal);
+    t.addColorStop(0,'rgba(255,255,255,0)'); t.addColorStop(1,'rgba(190,205,215,.30)');
+    ctx.fillStyle=t; ctx.fill();
+    /* interproximal separation */
+    ctx.strokeStyle='rgba(120,95,80,.22)'; ctx.lineWidth=Math.max(1,w*0.035); ctx.stroke();
+    x+=w;
+  }
+
+  /* soft shadow under the upper lip so teeth sit behind it */
+  var sg=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.4);
+  sg.addColorStop(0,'rgba(40,22,16,.55)'); sg.addColorStop(1,'rgba(40,22,16,0)');
+  ctx.fillStyle=sg; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.4);
+  ctx.restore();
+
+  var wrap=document.getElementById('smxWrap'); if(wrap) wrap.style.display='block';
+}
+
+async function smxGenerate(){
+  if(!SM_BEFORE){ smxMsg('Upload the before photo first.'); return; }
+  var btn=document.getElementById('smxBtn'); if(btn) btn.disabled=true;
+  try{
+    var lm=await smxLoadModel();
+    smxMsg('Finding facial landmarks…',true);
+    var img=await smxLoadImage(SM_BEFORE.url);
+    SMX.img=img;
+    var res=lm.detect(img);
+    if(!res.faceLandmarks||!res.faceLandmarks.length){
+      smxMsg('No face detected — try a straight-on photo with the smile clearly visible.');
+      if(btn) btn.disabled=false; return;
+    }
+    SMX.pts=res.faceLandmarks[0];
+    SMX.ready=true;
+    smxRender();
+    smxMsg('Simulation drawn from detected landmarks. Adjust below, then Use as After.');
+  }catch(e){
+    smxMsg('Could not run the simulation: '+((e&&e.message)||'model failed to load'));
+  }
+  if(btn) btn.disabled=false;
+}
+
+function smxUseAsAfter(){
+  var cv=document.getElementById('smxCanvas'); if(!cv||!SMX.ready) return;
+  cv.toBlob(function(blob){
+    if(!blob) return;
+    var f=new File([blob],'simulation.png',{type:'image/png'});
+    SM_AFTER={file:f,url:URL.createObjectURL(blob)};
+    (document.getElementById('smImgAfter')||{}).src=SM_AFTER.url;
+    smSyncCompare();
+    smxMsg('Set as the After image — open Show the Patient.');
+  },'image/png');
+}
+
+function initSmx(){
+  ['smStyle','smShade','smxLen'].forEach(function(id){
+    var el=document.getElementById(id); if(!el||el.dataset.smx) return;
+    el.dataset.smx='1';
+    el.addEventListener('input',function(){ if(SMX.ready) smxRender(); });
+    el.addEventListener('change',function(){ if(SMX.ready) smxRender(); });
+  });
+}
+
+function initSmile(){ initSmPickers(); initSmRisk(); initReveal(); initSmx(); loadSmiles(); }
 
 /* ============================================================
    Lead Scoring v2 — live lead feed + notes + call log + nurture
