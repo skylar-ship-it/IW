@@ -111,6 +111,31 @@ section{padding:104px 0}
   border:1px solid rgba(255,255,255,.55);border-radius:999px;width:48px;height:48px;
   color:var(--ink);font-size:1.4rem;cursor:pointer;box-shadow:0 10px 30px -16px rgba(30,22,18,.3)}
 
+/* intro veil — espresso welcome that fades to reveal the page */
+#introVeil{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:40px 26px;visibility:hidden;opacity:1;
+  background:linear-gradient(160deg,var(--espresso) 0%,#241c17 55%,var(--ink) 100%);
+  transition:opacity .9s var(--ease),visibility 0s .9s}
+#introVeil.show{visibility:visible}
+#introVeil.leave{opacity:0}
+#introVeil .iv-logo{width:min(360px,64vw);opacity:0;transform:translateY(-24px) scale(.96);
+  transition:opacity .9s var(--ease),transform .9s var(--ease)}
+#introVeil .iv-greet{margin-top:38px;font-family:var(--display);font-weight:500;color:var(--cream);
+  font-size:clamp(2rem,5.4vw,3.6rem);line-height:1.15;opacity:0;transform:translateY(18px);
+  transition:opacity .9s var(--ease) .25s,transform .9s var(--ease) .25s}
+#introVeil .iv-greet em{font-style:italic;color:var(--gold-soft);font-weight:400}
+#introVeil .iv-enter{margin-top:46px;display:inline-flex;align-items:center;gap:12px;cursor:pointer;
+  font-family:var(--body);font-weight:500;letter-spacing:.24em;text-transform:uppercase;font-size:.84rem;
+  background:var(--gold);color:var(--ink);border:0;border-radius:999px;padding:18px 44px;
+  opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease) .55s,transform .9s var(--ease) .55s,background .25s}
+#introVeil .iv-enter:hover{background:var(--gold-soft)}
+#introVeil .iv-enter .ar{transition:transform .25s}
+#introVeil .iv-enter:hover .ar{transform:translateX(5px)}
+#introVeil.show .iv-logo{opacity:1;transform:none}
+#introVeil.show .iv-greet{opacity:1;transform:none}
+#introVeil.show .iv-enter{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){#introVeil,#introVeil .iv-logo,#introVeil .iv-greet{transition:none}}
+
 /* Buttons */
 .btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;
   letter-spacing:.14em;font-size:0.88rem;padding:16px 34px;border-radius:999px;cursor:pointer;
@@ -127,11 +152,10 @@ section{padding:104px 0}
 
 /* Hero — big black headline + hero shot (template style) */
 .hero{position:relative;background:var(--white);color:var(--ink);
-  padding:180px 0 0;overflow:visible}
+  padding:190px 0 110px;overflow:visible}
 .hero .wrap{position:relative;z-index:2;max-width:1100px}
-.hero h1{margin:0;color:#000;font-weight:700;
-  -webkit-text-stroke:1px #000;
-  font-size:clamp(3.2rem,10.5vw,7.6rem);line-height:1.02;letter-spacing:-.005em}
+.hero h1{margin:0;color:#000;font-weight:700;-webkit-text-stroke:1px #000;
+  font-size:clamp(3rem,9vw,6.8rem);line-height:1.04;letter-spacing:-.005em}
 .hero-shot{max-width:1240px;margin:26px auto 0;padding:0}
 .hero-shot img{width:100%;height:auto;display:block}
 .scroll-cue{position:relative;z-index:2;margin-top:58px;font-family:var(--mono);
@@ -317,7 +341,7 @@ section{padding:104px 0}
   .nav-toggle{display:block;position:fixed;top:16px;right:16px;z-index:60}
   .footer-grid{grid-template-columns:1fr}
   section{padding:64px 0}
-  .hero{padding:120px 0 0}
+  .hero{padding:130px 0 80px}
   .cmp-head{grid-template-columns:1fr;gap:14px;margin-bottom:30px}
   .cmp{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
@@ -326,6 +350,35 @@ section{padding:104px 0}
 </style>
 </head>
 <body>
+
+<!-- ============ INTRO VEIL ============ -->
+<div id="introVeil" aria-hidden="true">
+  <img class="iv-logo" src="https://raw.githubusercontent.com/skylar-ship-it/IW/main/logo3D.png" alt="">
+  <div class="iv-greet" id="ivGreet">Good evening,<br><em>welcome to Implanted Wisdom.</em></div>
+  <button class="iv-enter" id="ivEnter" type="button">Enter <span class="ar">&rarr;</span></button>
+</div>
+<script>
+(function(){
+  var veil=document.getElementById('introVeil'); if(!veil) return;
+  var KEY='iw_home_last_visit', HOUR=3600000, now=Date.now(), last=0;
+  try{ last=parseInt(localStorage.getItem(KEY)||'0',10)||0; }catch(e){}
+  try{ localStorage.setItem(KEY, String(now)); }catch(e){}
+  if(last && (now-last) < HOUR){ veil.parentNode.removeChild(veil); return; }
+  var h=new Date().getHours();
+  var g = h<12 ? 'Good morning,' : (h<17 ? 'Good afternoon,' : 'Good evening,');
+  document.getElementById('ivGreet').innerHTML = g + '<br><em>welcome to Implanted Wisdom.</em>';
+  document.documentElement.style.overflow='hidden';
+  veil.classList.add('show');
+  function leave(){
+    if(!veil.parentNode) return;
+    veil.classList.add('leave');
+    document.documentElement.style.overflow='';
+    setTimeout(function(){ if(veil.parentNode) veil.parentNode.removeChild(veil); }, 1000);
+  }
+  var btn=document.getElementById('ivEnter');
+  if(btn) btn.addEventListener('click', leave);
+})();
+</script>
 
 <!-- ============ HEADER ============ -->
 <header class="site-header">
@@ -349,42 +402,15 @@ section{padding:104px 0}
   </nav>
 </header>
 
-<!-- ============ HERO (template-style: one huge headline + hero shot) ============ -->
+<!-- ============ HERO (minimal — white) ============ -->
 <section class="hero center">
   <div class="wrap">
-    <h1 class="rv in">Raise the standard.</h1>
-    <p class="label rv d1" style="margin-top:26px">A Surgeon-Led Boutique Consultancy for Full-Arch Programs</p>
+    <h1 class="rv in">A Surgeon-Led<br>Boutique Consultancy</h1>
   </div>
-  <div class="hero-shot rv d1">
-    <img src="heroimage.png" alt="The IW Partner Portal" onerror="this.parentNode.style.display='none'">
-  </div>
-</section>
-
-<!-- ============ CREDENTIALS MARQUEE (template "Trusted by" band) ============ -->
-<section class="credband">
-  <div class="wrap">
-    <p class="label teal rv" style="margin-bottom:36px">Built For And Led By A Surgeon</p>
-  </div>
-  <div class="credmq" aria-hidden="true">
-    <div class="credtrack">
-      <div class="credset">
-        <img src="1.png" alt=""><img src="2.png" alt=""><img src="3.png" alt=""><img src="4.png" alt=""><img src="5.png" alt=""><img src="6.png" alt=""><img src="7.png" alt=""><img src="8.png" alt=""><img src="9.png" alt=""><img src="10.png" alt=""><img src="11.png" alt="">
-      </div>
-      <div class="credset">
-        <img src="1.png" alt=""><img src="2.png" alt=""><img src="3.png" alt=""><img src="4.png" alt=""><img src="5.png" alt=""><img src="6.png" alt=""><img src="7.png" alt=""><img src="8.png" alt=""><img src="9.png" alt=""><img src="10.png" alt=""><img src="11.png" alt="">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ WE'VE CRACKED THE CODE (template "Benefits" intro) ============ -->
-<section class="crack">
-  <div class="wrap">
-    <p class="crack-label rv">The Program</p>
-    <h2 class="crack-h rv d1">We&rsquo;ve cracked the code.</h2>
-    <p class="crack-sub rv d2"><span class="crack-name">Dr. L. Eric Pulver, DDS, FRCD(C)</span><br>
-    <span class="crack-stats">35+ Years of Experience &nbsp;&middot;&nbsp; Former Surgeon for the Chicago Blackhawks &nbsp;&middot;&nbsp; 15,000+ Implants Placed</span><br>
-    <em class="crack-kicker">Not just knowledge &mdash; wisdom, implanted into your practice.</em></p>
+  <div class="scroll-cue">
+    <span class="sc-label">Scroll</span>
+    <span class="sc-line"><span class="sc-dot"></span></span>
+    <span class="sc-arrows"><i></i><i></i><i></i></span>
   </div>
 </section>
 
@@ -392,10 +418,6 @@ section{padding:104px 0}
 <section class="shift-section center">
   <div class="wrap narrow">
     <p class="label teal eyebrow rv" style="font-size:1rem">The Shift</p>
-  </div>
-  <div class="scroll-cue" style="margin-top:10px;margin-bottom:26px">
-    <span class="sc-line"><span class="sc-dot"></span></span>
-    <span class="sc-arrows"><i></i><i></i><i></i></span>
   </div>
   <div class="wrap">
     <div class="dtc-viz rv d1">
@@ -546,72 +568,6 @@ section{padding:104px 0}
   </div>
 </section>
 
-<!-- ============ COMPARISON (template "Why Choose Area?") ============ -->
-<section style="background:var(--paper);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)">
-  <div class="wrap">
-    <div class="cmp-head">
-      <div>
-        <p class="label teal eyebrow rv">The Comparison</p>
-        <h2 class="rv d1">Why partner with IW?</h2>
-      </div>
-      <p class="lead rv d2">You need a partner that covers the whole program — clinical, workflow, marketing, and referrals — not one slice of it.</p>
-    </div>
-    <div class="cmp">
-      <div class="cmp-col hero-col rv">
-        <h3 style="color:var(--cream)">Implanted Wisdom</h3>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Surgeon-led — built in a working practice</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Clinical training with live-surgery mentorship</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>In-house digital workflow, end to end</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Transparent ad spend &amp; KPI tracking</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Referral protection via the Inner Circle</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Aligned by structure — we win as you grow</span></div>
-      </div>
-      <div class="cmp-col rv d1">
-        <h3>Marketing agency</h3>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Can generate leads</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No clinical training or mentorship</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No workflow or operations support</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>Reporting is often opaque</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No referral strategy</span></div>
-      </div>
-      <div class="cmp-col rv d2">
-        <h3>Weekend course</h3>
-        <div class="cmp-row"><span class="cmp-ic ic-y">✓</span><span>Clinical exposure</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>Ends when the weekend ends</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No patient acquisition system</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No implementation in your office</span></div>
-        <div class="cmp-row"><span class="cmp-ic ic-n">✕</span><span>No long-term partnership</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ STATEMENT BAND (template quote moment) ============ -->
-<section class="center">
-  <div class="wrap narrow">
-    <p class="statement-q rv">&ldquo;Patient-Specific. Experience-Driven.<br>Clinically Responsible.&rdquo;</p>
-    <p class="label rv d1" style="margin-top:26px">The Patient-Specific Protocol™</p>
-  </div>
-</section>
-
-<!-- ============ MAP YOUR SUCCESS — 3 STEPS ============ -->
-<section style="background:var(--paper);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)">
-  <div class="wrap">
-    <div class="center narrow" style="margin:0 auto 48px">
-      <p class="label teal eyebrow rv">How Partnership Works</p>
-      <h2 class="rv d1">Map your success.</h2>
-    </div>
-    <div class="steps">
-      <div class="scard rv"><span class="bignum">01</span><h3>Introduction Call</h3><p>A 30-minute conversation on your goals, case mix, and fit — and which surgeons opt into phase one.</p></div>
-      <div class="scard rv d1"><span class="bignum">02</span><h3>Partner Session</h3><p>A working session with our operations lead and strategic advisor to lock scope, timeline, and the full model.</p></div>
-      <div class="scard rv d2"><span class="bignum">03</span><h3>Onboarding Kickoff</h3><p>Begin the Months 1–3 build: systems, training, equipment, and CRM go live.</p></div>
-    </div>
-    <div class="btn-row rv d2" style="justify-content:center">
-      <a href="partner.html#book" class="btn btn-gold">Request an Introduction Call</a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ FOUNDER ============ -->
 <section class="section-dark" id="founder">
   <div class="wrap narrow center">
@@ -746,20 +702,6 @@ section{padding:104px 0}
   setTimeout(build,60); build();
 })();
 
-/* credentials marquee: start only when images settle; drop broken slots */
-(function(){
-  var track=document.querySelector('.credtrack'); if(!track) return;
-  var imgs=[].slice.call(track.querySelectorAll('img')), pending=imgs.length;
-  if(!pending){ track.classList.add('go'); return; }
-  function done(){ pending--; if(pending>0) return;
-    imgs.forEach(function(im){ if(!im.naturalWidth && im.parentNode){ im.parentNode.removeChild(im); } });
-    track.classList.add('go');
-  }
-  imgs.forEach(function(im){
-    if(im.complete){ setTimeout(done,0); }
-    else { im.addEventListener('load',done); im.addEventListener('error',done); }
-  });
-})();
 </script>
 
 </body>
