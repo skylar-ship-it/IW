@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 /* ============================================================
-   IMPLANTED WISDOM — HOME (white editorial redesign v2)
-   Base: index-6 · Brand tokens from Brand Identity System 2026.
+   IMPLANTED WISDOM — HOME (white redesign · final)
+   Hero → The Shift → Roadmap → Founder → CTA → Footer
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap');
@@ -74,6 +74,7 @@ h3{font-size:clamp(1.4rem,2.4vw,1.9rem)}
 section{padding:104px 0}
 .section-dark{background:var(--espresso);color:var(--cream)}
 .section-dark .lead{color:var(--cream-70)}
+.section-dark .label{color:var(--grey-light)}
 .eyebrow{margin-bottom:18px}
 .center{text-align:center}
 .center .lead{margin-left:auto;margin-right:auto}
@@ -85,7 +86,7 @@ section{padding:104px 0}
 .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.28s}
 @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
 
-/* Header / Nav — floating frosted pill (template style) */
+/* ---------- Header / Nav — floating frosted pill ---------- */
 .site-header{position:absolute;top:0;left:0;right:0;z-index:50;background:transparent;pointer-events:none}
 .nav{display:flex;align-items:center;justify-content:space-between;
   height:auto;max-width:none;margin:0;padding:16px 26px;position:relative}
@@ -111,7 +112,7 @@ section{padding:104px 0}
   border:1px solid rgba(255,255,255,.55);border-radius:999px;width:48px;height:48px;
   color:var(--ink);font-size:1.4rem;cursor:pointer;box-shadow:0 10px 30px -16px rgba(30,22,18,.3)}
 
-/* intro veil — espresso welcome that fades to reveal the page */
+/* ---------- intro veil — espresso welcome, Enter to continue ---------- */
 #introVeil{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;
   justify-content:center;text-align:center;padding:40px 26px;visibility:hidden;opacity:1;
   background:linear-gradient(160deg,var(--espresso) 0%,#241c17 55%,var(--ink) 100%);
@@ -134,9 +135,9 @@ section{padding:104px 0}
 #introVeil.show .iv-logo{opacity:1;transform:none}
 #introVeil.show .iv-greet{opacity:1;transform:none}
 #introVeil.show .iv-enter{opacity:1;transform:none}
-@media (prefers-reduced-motion: reduce){#introVeil,#introVeil .iv-logo,#introVeil .iv-greet{transition:none}}
+@media (prefers-reduced-motion: reduce){#introVeil,#introVeil .iv-logo,#introVeil .iv-greet,#introVeil .iv-enter{transition:none}}
 
-/* Buttons */
+/* ---------- Buttons ---------- */
 .btn{display:inline-block;font-family:var(--body);font-weight:500;text-transform:uppercase;
   letter-spacing:.14em;font-size:0.88rem;padding:16px 34px;border-radius:999px;cursor:pointer;
   transition:all .25s;border:1px solid transparent}
@@ -150,14 +151,12 @@ section{padding:104px 0}
 .center .btn-row{justify-content:center}
 .btn-row.center{justify-content:center}
 
-/* Hero — big black headline + hero shot (template style) */
+/* ---------- Hero — minimal, big black headline ---------- */
 .hero{position:relative;background:var(--white);color:var(--ink);
   padding:190px 0 110px;overflow:visible}
 .hero .wrap{position:relative;z-index:2;max-width:1100px}
 .hero h1{margin:0;color:#000;font-weight:700;-webkit-text-stroke:1px #000;
   font-size:clamp(3rem,9vw,6.8rem);line-height:1.04;letter-spacing:-.005em}
-.hero-shot{max-width:1240px;margin:26px auto 0;padding:0}
-.hero-shot img{width:100%;height:auto;display:block}
 .scroll-cue{position:relative;z-index:2;margin-top:58px;font-family:var(--mono);
   letter-spacing:.34em;text-transform:uppercase;font-size:0.72rem;color:var(--grey);
   display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -180,17 +179,7 @@ section{padding:104px 0}
   40%{opacity:1}100%{opacity:0;transform:translateY(6px) rotate(45deg)}}
 @media(prefers-reduced-motion:reduce){.scroll-cue *{animation:none}}
 
-/* "We've cracked the code" intro (template Benefits header) */
-.crack{padding:130px 0 110px;background:var(--white)}
-.crack-label{font-family:var(--mono);font-size:.88rem;letter-spacing:.05em;color:var(--teal);margin-bottom:36px}
-.crack-h{font-family:var(--display);font-weight:700;color:#000;-webkit-text-stroke:1px #000;
-  font-size:clamp(2.8rem,7.5vw,5.8rem);line-height:1.05;letter-spacing:-.004em}
-.crack-sub{margin-top:44px;font-size:1.06rem;color:var(--ink-70);max-width:72ch}
-.crack-name{font-family:var(--display);font-weight:600;font-size:1.5rem;color:var(--ink);display:inline-block;margin-bottom:10px}
-.crack-stats{font-family:var(--body);font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:.92rem;color:var(--ink-70)}
-.crack-kicker{display:inline-block;margin-top:14px;font-family:var(--display);font-style:italic;font-weight:500;font-size:1.35rem;color:var(--ink)}
-
-/* DTC — sphere & track cinematic animation (dark panel on white page) */
+/* ---------- The Shift — sphere & track viz (dark panel on white) ---------- */
 .shift-section{background:var(--paper);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
 .dtc-viz{max-width:960px;margin:0 auto;background:linear-gradient(150deg,var(--espresso) 0%,#241c17 55%,var(--ink) 100%);
   border:1px solid var(--hairline);border-radius:24px;padding:20px clamp(12px,3vw,30px);
@@ -208,34 +197,51 @@ section{padding:104px 0}
 .st-chev{opacity:.12;animation:stFlash 1.5s ease-in-out infinite}
 @keyframes stFlash{0%,100%{opacity:.12}45%{opacity:1}}
 
-/* Concern -> Pillar winding roadmap — white version */
-.rm-road{position:relative;max-width:1120px;margin:0 auto}
-.rm-svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:0}
-.rm-base{fill:none;stroke:rgba(201,169,110,.35);stroke-width:4;stroke-linecap:round;stroke-dasharray:.1 18}
-.rm-prog{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;stroke-dasharray:.1 18}
-.rm-dot{position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--gold);
-  transform:translate(-50%,-50%);box-shadow:0 0 22px rgba(201,169,110,.9);opacity:0;transition:opacity .3s;z-index:3}
-.rm-node{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:50%;transform:translate(-50%,-50%);
-  background:var(--white);border:2px solid rgba(201,169,110,.55);display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--grey-deep);z-index:2;transition:all .45s;
-  box-shadow:0 10px 30px -14px rgba(30,22,18,.25)}
-.rm-stop.in .rm-node{background:var(--gold);color:var(--ink);border-color:var(--gold);box-shadow:0 0 26px rgba(201,169,110,.55)}
-.rm-stop{display:flex;align-items:center;min-height:80vh}
-.rm-stop.left{justify-content:flex-end}
-.rm-stop.right{justify-content:flex-start}
-.rm-card{width:min(580px,54%);padding:10px 6px;position:relative;z-index:2;
-  transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
-.rm-road.js .rm-card{opacity:0;transform:translateY(34px)}
-.rm-road.js .rm-stop.in .rm-card{opacity:1;transform:translateY(0)}
-.rm-concern{font-family:var(--display);font-style:italic;color:var(--ink);
-  font-size:clamp(2.1rem,3.4vw,3rem);line-height:1.2;margin-bottom:26px}
-.rm-div{height:1px;background:rgba(201,169,110,.35);margin:0 0 22px}
-.rm-tag{display:block;font-family:var(--body);font-weight:600;text-transform:uppercase;
-  letter-spacing:.16em;font-size:.82rem;color:var(--teal);margin-bottom:8px}
-.rm-plabel{display:block;font-family:var(--display);font-weight:600;letter-spacing:.01em;
-  font-size:clamp(1.7rem,2.7vw,2.35rem);line-height:1.15;color:var(--grey-deep);margin-bottom:14px}
-.rm-desc{color:var(--ink-70);font-size:0.97rem;line-height:1.65}
-/* gold orb background — soft on white */
+/* ---------- The Roadmap ---------- */
+.roadmap-section{background:#FFFFFF;min-height:200vh;overflow-x:hidden;padding:0}
+.roadmap-header{position:sticky;top:0;z-index:10;background:#2D241F;border-bottom:1px solid rgba(201,169,110,.2);padding:3rem 1.5rem}
+.roadmap-header-content{max-width:1280px;margin:0 auto}
+.roadmap-header-label{color:#F7F2EC;text-align:center;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem}
+.roadmap-header-title{color:#C9A96E;text-align:center;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:3rem;line-height:1.1}
+.roadmap-container{max-width:1280px;margin:0 auto;padding:5rem 1.5rem;position:relative}
+.roadmap-progress-line-bg{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:rgba(201,169,110,.2);border-radius:9999px}
+.roadmap-progress-line-fill{position:absolute;left:50%;top:0;width:2px;transform:translateX(-50%);background:#C9A96E;border-radius:9999px;transform-origin:top;transition:height .1s ease-out;height:0}
+.roadmap-milestones{position:relative}
+.roadmap-milestone{display:flex;align-items:center;gap:2rem;margin-bottom:8rem;opacity:0;transform:translateX(-100px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.roadmap-milestone.visible{opacity:1;transform:translateX(0)}
+.roadmap-milestone.right{flex-direction:row-reverse;transform:translateX(100px)}
+.roadmap-milestone.right.visible{transform:translateX(0)}
+.roadmap-card{width:41.666%;background:#F7F2EC;border:1px solid rgba(201,169,110,.3);border-radius:2px;padding:2rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);transition:transform .3s ease,box-shadow .3s ease;position:relative}
+.roadmap-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 25px -5px rgba(0,0,0,.15)}
+.roadmap-concern-text{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:2.25rem;line-height:1.3}
+.roadmap-action-heading{color:#C9A96E;font-family:'Jost',sans-serif;font-weight:500;font-size:11px;letter-spacing:.18em;margin-bottom:1.25rem;display:block}
+.roadmap-pillar-title{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;margin-bottom:1rem}
+.roadmap-description{color:#2D241F;font-family:'Jost',sans-serif;font-weight:300;font-size:15px;line-height:1.75}
+.roadmap-icon-wrapper{position:relative;z-index:10;flex-shrink:0}
+.roadmap-icon-circle{width:4rem;height:4rem;border-radius:50%;background:#245C5C;display:flex;align-items:center;justify-content:center;color:#F7F2EC;box-shadow:0 10px 15px -3px rgba(0,0,0,.2);border:2px solid rgba(201,169,110,.5);transition:transform .5s ease;opacity:0;transform:scale(0) rotate(-180deg)}
+.roadmap-icon-circle.visible{opacity:1;transform:scale(1) rotate(0deg)}
+.roadmap-icon-circle:hover{transform:scale(1.15) rotate(360deg)}
+.roadmap-icon-pulse{position:absolute;inset:0;border-radius:50%;background:#C9A96E;z-index:-1;animation:roadmap-pulse 3s ease-in-out infinite}
+@keyframes roadmap-pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.4);opacity:0}}
+.roadmap-icon{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.roadmap-end-message{text-align:center;margin-top:8rem;position:relative;z-index:10;opacity:0;transform:translateY(50px);transition:opacity 1s ease,transform 1s ease}
+.roadmap-end-message.visible{opacity:1;transform:translateY(0)}
+.roadmap-end-border{display:inline-block;border:2px solid #C9A96E;border-radius:2px;padding:4px}
+.roadmap-end-content{background:#F7F2EC;border-radius:2px;padding:2.5rem 3rem}
+.roadmap-end-title{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:2.25rem;margin-bottom:.75rem}
+.roadmap-end-text{color:#2D241F;font-family:'Jost',sans-serif;font-weight:300;font-size:15px;line-height:1.75}
+@media (max-width:768px){
+  .roadmap-milestone{flex-direction:column !important;gap:1rem}
+  .roadmap-card{width:100%}
+  .roadmap-header-title{font-size:2rem}
+  .roadmap-concern-text{font-size:1.5rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .roadmap-milestone,.roadmap-icon-circle,.roadmap-end-message{opacity:1;transform:none;transition:none}
+  .roadmap-icon-pulse{animation:none;opacity:0}
+}
+
+/* ---------- orbs (CTA band ambience) ---------- */
 .orbs{position:relative;overflow:hidden}
 .orbs-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .orb{position:absolute;border-radius:50%;filter:blur(24px);opacity:.35;
@@ -252,110 +258,16 @@ section{padding:104px 0}
   66%{transform:translate(-30px,30px) scale(.94)}
   100%{transform:translate(0,0) scale(1)}
 }
+.orb.teal{background:radial-gradient(circle at 35% 35%, rgba(15,48,48,.9), rgba(15,48,48,0) 70%);opacity:.6}
 @media(prefers-reduced-motion:reduce){.orb{animation:none}}
-@media(max-width:760px){
-  .rm-stop{min-height:62vh}
-  .rm-stop.left,.rm-stop.right{justify-content:flex-start}
-  .rm-card{width:auto;margin-left:60px;padding:30px 26px}
-  .rm-concern{font-size:1.75rem}
-  .rm-plabel{font-size:1.5rem}
-}
 
-/* credentials marquee (template trusted-by band) */
-.credband{padding:66px 0 72px;background:var(--white);border-bottom:1px solid var(--hairline)}
-.credmq{overflow:hidden;position:relative}
-.credmq::before,.credmq::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
-.credmq::before{left:0;background:linear-gradient(90deg,var(--white),rgba(255,255,255,0))}
-.credmq::after{right:0;background:linear-gradient(270deg,var(--white),rgba(255,255,255,0))}
-.credtrack{display:flex;width:max-content}
-.credtrack.go{animation:credslide 46s linear infinite;will-change:transform}
-.credset{display:flex;align-items:center;gap:clamp(46px,6vw,88px);padding-right:clamp(46px,6vw,88px)}
-.credset img{height:54px;width:auto}
-@keyframes credslide{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion: reduce){.credtrack.go{animation:none}.credtrack{flex-wrap:wrap}}
-@media (max-width:760px){.credset img{height:42px}.credband{padding:48px 0 54px}}
-
-/* comparison (template "Why Choose Area?") */
-.cmp-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:44px}
-.cmp{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:18px;align-items:stretch}
-.cmp-col{border:1px solid var(--hairline);border-radius:20px;padding:32px 28px;background:var(--white)}
-.cmp-col.hero-col{background:linear-gradient(160deg,var(--espresso),#241c17);color:var(--cream);
-  border-color:var(--espresso);box-shadow:0 44px 90px -44px rgba(30,22,18,.55)}
-.cmp-col h3{margin-bottom:14px}
-.cmp-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;
-  border-top:1px solid rgba(201,169,110,.2);font-size:.97rem;color:var(--ink-70)}
-.cmp-col.hero-col .cmp-row{border-top-color:rgba(201,169,110,.28);color:var(--cream-70)}
-.cmp-ic{width:22px;height:22px;border-radius:50%;flex:0 0 22px;display:flex;align-items:center;
-  justify-content:center;font-size:.78rem;font-weight:600;margin-top:4px}
-.ic-y{background:var(--gold);color:var(--ink)}
-.ic-n{background:rgba(176,106,82,.16);color:var(--clay)}
-
-.section-dark .label,.cta-band .label{color:var(--grey-light)}
-
-/* statement band (template quote moment) */
-.statement-q{font-family:var(--display);font-weight:400;font-style:italic;
-  font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.25;color:var(--ink)}
-
-/* steps (template "Map Your Success") */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.scard{border:1px solid var(--hairline);border-radius:20px;padding:38px 30px;background:var(--white);
-  transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-.scard:hover{transform:translateY(-6px);box-shadow:0 26px 55px -32px rgba(30,22,18,.28)}
-.scard .bignum{font-family:var(--display);font-weight:300;font-size:3.2rem;line-height:1;
-  color:var(--grey);display:block;margin-bottom:14px}
-.scard p{font-size:.97rem;color:var(--ink-70);margin-top:8px}
-
-/* The Roadmap (updated) */
-#rmap2{background:#FFFFFF;padding:0}
-#rmap2 .rhead{position:sticky;top:0;z-index:30;background:#2D241F;border-bottom:1px solid rgba(201,169,110,.2);padding:3rem 1.5rem}
-#rmap2 .rhead-content{max-width:1280px;margin:0 auto}
-#rmap2 .header-label{color:#F7F2EC;text-align:center;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem}
-#rmap2 .header-title{color:#C9A96E;text-align:center;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:3rem;line-height:1.1}
-#rmap2 .roadmap-container{max-width:1280px;margin:0 auto;padding:5rem 1.5rem;position:relative}
-#rmap2 .progress-line-bg{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:rgba(201,169,110,.2);border-radius:9999px}
-#rmap2 .progress-line-fill{position:absolute;left:50%;top:0;width:2px;transform:translateX(-50%);background:#C9A96E;border-radius:9999px;transform-origin:top;transition:height .1s ease-out;height:0}
-#rmap2 .milestones{position:relative}
-#rmap2 .milestone{display:flex;align-items:center;gap:2rem;margin-bottom:8rem;opacity:0;transform:translateX(-100px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-#rmap2 .milestone.visible{opacity:1;transform:translateX(0)}
-#rmap2 .milestone.right{flex-direction:row-reverse;transform:translateX(100px)}
-#rmap2 .milestone.right.visible{transform:translateX(0)}
-#rmap2 .mcard{width:41.666%;background:#F7F2EC;border:1px solid rgba(201,169,110,.3);border-radius:2px;padding:2rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);transition:transform .3s ease,box-shadow .3s ease;position:relative}
-#rmap2 .mcard:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 25px -5px rgba(0,0,0,.15)}
-#rmap2 .concern-text{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:2.25rem;line-height:1.3}
-#rmap2 .action-heading{color:#C9A96E;font-family:'Jost',sans-serif;font-weight:500;font-size:11px;letter-spacing:.18em;margin-bottom:1.25rem;display:block}
-#rmap2 .pillar-title{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;margin-bottom:1rem}
-#rmap2 .description{color:#2D241F;font-family:'Jost',sans-serif;font-weight:300;font-size:15px;line-height:1.75}
-#rmap2 .icon-wrapper{position:relative;z-index:10;flex-shrink:0}
-#rmap2 .icon-circle{width:4rem;height:4rem;border-radius:50%;background:#245C5C;display:flex;align-items:center;justify-content:center;color:#F7F2EC;box-shadow:0 10px 15px -3px rgba(0,0,0,.2);border:2px solid rgba(201,169,110,.5);transition:transform .5s ease;opacity:0;transform:scale(0) rotate(-180deg)}
-#rmap2 .icon-circle.visible{opacity:1;transform:scale(1) rotate(0deg)}
-#rmap2 .icon-circle:hover{transform:scale(1.15) rotate(360deg)}
-#rmap2 .icon-pulse{position:absolute;inset:0;border-radius:50%;background:#C9A96E;z-index:-1;animation:rmPulse 3s ease-in-out infinite}
-@keyframes rmPulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.4);opacity:0}}
-#rmap2 .end-message{text-align:center;margin-top:8rem;position:relative;z-index:10;opacity:0;transform:translateY(50px);transition:opacity 1s ease,transform 1s ease}
-#rmap2 .end-message.visible{opacity:1;transform:translateY(0)}
-#rmap2 .end-border{display:inline-block;border:2px solid #C9A96E;border-radius:2px;padding:4px}
-#rmap2 .end-content{background:#F7F2EC;border-radius:2px;padding:2.5rem 3rem}
-#rmap2 .end-title{color:#1E1612;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:2.25rem;margin-bottom:.75rem}
-#rmap2 .end-text{color:#2D241F;font-family:'Jost',sans-serif;font-weight:300;font-size:15px;line-height:1.75}
-#rmap2 .icon{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
-@media (max-width:768px){
-  #rmap2 .milestone{flex-direction:column !important;gap:1rem}
-  #rmap2 .mcard{width:100%}
-  #rmap2 .header-title{font-size:2rem}
-  #rmap2 .concern-text{font-size:1.5rem}
-}
-@media (prefers-reduced-motion: reduce){
-  #rmap2 .milestone,#rmap2 .icon-circle,#rmap2 .end-message{opacity:1;transform:none;transition:none}
-  #rmap2 .icon-pulse{animation:none;opacity:0}
-}
-
-/* CTA band */
+/* ---------- CTA band ---------- */
 .cta-band{background:var(--teal);color:var(--cream);text-align:center;position:relative;overflow:hidden}
 .cta-band h2{color:var(--cream)}
 .cta-band .lead{margin:18px auto 0;color:var(--cream-70)}
-.orb.teal{background:radial-gradient(circle at 35% 35%, rgba(15,48,48,.9), rgba(15,48,48,0) 70%);opacity:.6}
+.cta-band .label{color:var(--grey-light)}
 
-/* Footer */
+/* ---------- Footer ---------- */
 .site-footer{background:var(--ink);color:var(--cream-70);padding:64px 0 30px;font-size:.9rem}
 .footer-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;padding-bottom:40px;
   border-bottom:1px solid rgba(201,169,110,.18)}
@@ -365,13 +277,11 @@ section{padding:104px 0}
 .footer-grid a:hover{color:var(--cream)}
 .footer-logo{height:54px;width:auto;display:block;margin-bottom:16px;object-fit:contain}
 .footer-brand .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
-.footer-brand .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
-  letter-spacing:.2em;font-size:0.69rem;color:var(--grey-light);margin-top:4px}
 .footer-brand p{margin-top:16px;max-width:34ch;font-size:1.01rem}
 .footer-legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
   padding-top:24px;font-family:var(--mono);font-size:0.83rem;letter-spacing:.04em;color:rgba(247,242,236,.8)}
 
-/* Responsive */
+/* ---------- Responsive ---------- */
 @media(max-width:880px){
   .brand .brand-logo{height:44px}
   .brand .wordmark .name{font-size:1.1rem}
@@ -386,15 +296,10 @@ section{padding:104px 0}
   .footer-grid{grid-template-columns:1fr}
   section{padding:64px 0}
   .hero{padding:130px 0 80px}
-  .cmp-head{grid-template-columns:1fr;gap:14px;margin-bottom:30px}
-  .cmp{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr}
 }
-
 </style>
 <noscript><style>
-  #rmap2 .milestone,#rmap2 .icon-circle,#rmap2 .end-message,.rv{opacity:1 !important;transform:none !important}
-  .rm-road.js .rm-card{opacity:1;transform:none}
+  .roadmap-milestone,.roadmap-icon-circle,.roadmap-end-message,.rv{opacity:1 !important;transform:none !important}
 </style></noscript>
 </head>
 <body>
@@ -426,7 +331,6 @@ section{padding:104px 0}
   var btn=document.getElementById('ivEnter');
   if(btn) btn.addEventListener('click', leave);
 })();
-
 </script>
 
 <!-- ============ HEADER ============ -->
@@ -489,10 +393,8 @@ section{padding:104px 0}
             </filter>
           </defs>
 
-          <!-- the rising track -->
           <path id="stPath" class="st-track" d="M120 312 L 780 92"></path>
 
-          <!-- ambient flashing arrows: red down on the left, gold up on the right -->
           <g fill="none" stroke="#E7594C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
             <path class="st-chev" style="animation-delay:0s"    d="M26 300 L42 316 L58 300"></path>
             <path class="st-chev" style="animation-delay:.18s"  d="M26 320 L42 336 L58 320"></path>
@@ -504,7 +406,6 @@ section{padding:104px 0}
             <path class="st-chev" style="animation-delay:.36s"  d="M842 60 L858 44 L874 60"></path>
           </g>
 
-          <!-- LEFT: standard of care fell (red, low) — hover for full stat -->
           <g id="txtRed">
             <text class="st-eyebrow" x="118" y="362" fill="#E7594C" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.6">STANDARD OF CARE FELL &#8595;</text>
             <rect x="114" y="344" width="380" height="34" fill="rgba(0,0,0,0)" pointer-events="all"></rect>
@@ -517,7 +418,6 @@ section{padding:104px 0}
             </g>
           </g>
 
-          <!-- RIGHT: specialists taking full-arch back (gold, high) — hover for full stat -->
           <g id="txtGold">
             <text class="st-eyebrow" x="600" y="94" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">QUALIFIED SPECIALISTS TAKING</text>
             <text class="st-eyebrow" x="600" y="120" text-anchor="end" fill="#C9A96E" font-family="Jost, sans-serif" font-size="21" font-weight="500" letter-spacing="2.4">FULL-ARCH BACK &mdash; LEADING IT &#8593;</text>
@@ -531,7 +431,6 @@ section{padding:104px 0}
             </g>
           </g>
 
-          <!-- single ball: red -> gold as it climbs -->
           <g id="stBall">
             <ellipse cx="0" cy="26" rx="24" ry="6" fill="rgba(0,0,0,.42)" filter="url(#stShadow)"></ellipse>
             <circle r="26" fill="url(#gRed)"></circle>
@@ -544,87 +443,87 @@ section{padding:104px 0}
   </div>
 </section>
 
-<!-- ============ THE ROADMAP (updated) ============ -->
-<section id="rmap2">
-  <div class="rhead">
-    <div class="rhead-content">
-      <p class="header-label">THE ROADMAP</p>
-      <h2 class="header-title">We Listened to Your Concerns</h2>
+<!-- ============ THE ROADMAP ============ -->
+<section class="roadmap-section" id="roadmap-section">
+  <div class="roadmap-header">
+    <div class="roadmap-header-content">
+      <p class="roadmap-header-label">THE ROADMAP</p>
+      <h2 class="roadmap-header-title">We Listened to Your Concerns</h2>
     </div>
   </div>
-  <div class="roadmap-container" id="roadmap">
-    <div class="progress-line-bg"></div>
-    <div class="progress-line-fill" id="progressLine"></div>
-    <div class="milestones">
-      <div class="milestone" data-index="0">
-        <div class="mcard concern-card">
-          <p class="concern-text">&ldquo;I&rsquo;m not confident taking the complex cases.&rdquo;</p>
+  <div class="roadmap-container" id="roadmapContainer">
+    <div class="roadmap-progress-line-bg"></div>
+    <div class="roadmap-progress-line-fill" id="roadmapProgressLine"></div>
+    <div class="roadmap-milestones">
+      <div class="roadmap-milestone" data-index="0">
+        <div class="roadmap-card">
+          <p class="roadmap-concern-text">"I'm not confident taking the complex cases."</p>
         </div>
-        <div class="icon-wrapper">
-          <div class="icon-circle">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        <div class="roadmap-icon-wrapper">
+          <div class="roadmap-icon-circle">
+            <svg class="roadmap-icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
           </div>
-          <div class="icon-pulse"></div>
+          <div class="roadmap-icon-pulse"></div>
         </div>
-        <div class="mcard content-card">
-          <span class="action-heading">MAKE A CHANGE FROM DAY 1</span>
-          <h3 class="pillar-title">Pillar 1 &mdash; Clinical Training</h3>
-          <p class="description">All-on-X and FP1 through pterygoid and zygomatic implants, with surgical mentorship and live-surgery support until your team is fully fluent &mdash; so the highest-value cases stay in your practice.</p>
+        <div class="roadmap-card">
+          <span class="roadmap-action-heading">MAKE A CHANGE FROM DAY 1</span>
+          <h3 class="roadmap-pillar-title">Pillar 1 — Clinical Training</h3>
+          <p class="roadmap-description">All-on-X and FP1 through pterygoid and zygomatic implants, with surgical mentorship and live-surgery support until your team is fully fluent — so the highest-value cases stay in your practice.</p>
         </div>
       </div>
-      <div class="milestone right" data-index="1">
-        <div class="mcard concern-card">
-          <p class="concern-text">&ldquo;I&rsquo;m concerned that the patients will disrupt our office flow.&rdquo;</p>
+      <div class="roadmap-milestone right" data-index="1">
+        <div class="roadmap-card">
+          <p class="roadmap-concern-text">"I'm concerned that the patients will disrupt our office flow."</p>
         </div>
-        <div class="icon-wrapper">
-          <div class="icon-circle">
-            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6m8.66-11L16 12l4.66 4.66M7.34 3.34 3.68 7l4.66 4.66M20.66 16.34 17 12l3.66-3.66M7.34 20.66 3.68 17l4.66-4.66"></path></svg>
+        <div class="roadmap-icon-wrapper">
+          <div class="roadmap-icon-circle">
+            <svg class="roadmap-icon" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
           </div>
-          <div class="icon-pulse"></div>
+          <div class="roadmap-icon-pulse"></div>
         </div>
-        <div class="mcard content-card">
-          <span class="action-heading">RUN DAY-TO-DAY SMOOTHLY</span>
-          <h3 class="pillar-title">Pillar 2 &mdash; Workflow Intelligence</h3>
-          <p class="description">Photogrammetry, IOS scanning, planning, printing, and prosthetics brought in-house &mdash; so cases move faster and more predictably, on your schedule, not your lab&rsquo;s availability.</p>
+        <div class="roadmap-card">
+          <span class="roadmap-action-heading">RUN DAY-TO-DAY SMOOTHLY</span>
+          <h3 class="roadmap-pillar-title">Pillar 2 — Workflow Intelligence</h3>
+          <p class="roadmap-description">Photogrammetry, IOS scanning, planning, printing, and prosthetics brought in-house — so cases move faster and more predictably, on your schedule, not your lab's availability.</p>
         </div>
       </div>
-      <div class="milestone" data-index="2">
-        <div class="mcard concern-card">
-          <p class="concern-text">&ldquo;There&rsquo;s no transparency in paid ads.&rdquo;</p>
+      <div class="roadmap-milestone" data-index="2">
+        <div class="roadmap-card">
+          <p class="roadmap-concern-text">"There's no transparency in paid ads."</p>
         </div>
-        <div class="icon-wrapper">
-          <div class="icon-circle">
-            <svg class="icon" viewBox="0 0 24 24"><path d="m21 3-9 9-9-9"></path><path d="m3 21 9-9 9 9"></path></svg>
+        <div class="roadmap-icon-wrapper">
+          <div class="roadmap-icon-circle">
+            <svg class="roadmap-icon" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg>
           </div>
-          <div class="icon-pulse"></div>
+          <div class="roadmap-icon-pulse"></div>
         </div>
-        <div class="mcard content-card">
-          <span class="action-heading">SET UP YOUR INFRASTRUCTURE FROM DAY 1</span>
-          <h3 class="pillar-title">Pillar 3 &mdash; DTC Marketing</h3>
-          <p class="description">Landing pages, Meta and Google advertising, and CRM nurture automation with call management and KPI tracking.</p>
+        <div class="roadmap-card">
+          <span class="roadmap-action-heading">SET UP YOUR INFRASTRUCTURE FROM DAY 1</span>
+          <h3 class="roadmap-pillar-title">Pillar 3 — DTC Marketing</h3>
+          <p class="roadmap-description">Landing pages, Meta and Google advertising, and CRM nurture automation with call management and KPI tracking.</p>
         </div>
       </div>
-      <div class="milestone right" data-index="3">
-        <div class="mcard concern-card">
-          <p class="concern-text">&ldquo;If I market direct-to-consumer, I&rsquo;ll torch my GP referrals.&rdquo;</p>
+      <div class="roadmap-milestone right" data-index="3">
+        <div class="roadmap-card">
+          <p class="roadmap-concern-text">"If I market direct-to-consumer, I'll torch my GP referrals."</p>
         </div>
-        <div class="icon-wrapper">
-          <div class="icon-circle">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <div class="roadmap-icon-wrapper">
+          <div class="roadmap-icon-circle">
+            <svg class="roadmap-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
           </div>
-          <div class="icon-pulse"></div>
+          <div class="roadmap-icon-pulse"></div>
         </div>
-        <div class="mcard content-card">
-          <h3 class="pillar-title">Pillar 4 &mdash; Inner Circle</h3>
-          <p class="description">Connect to your community and protect your referrals &mdash; an inner circle built to be ready for the future.</p>
+        <div class="roadmap-card">
+          <h3 class="roadmap-pillar-title">Pillar 4 — Inner Circle</h3>
+          <p class="roadmap-description">Connect to your community and protect your referrals — an inner circle built to be ready for the future.</p>
         </div>
       </div>
     </div>
-    <div class="end-message" id="endMessage">
-      <div class="end-border">
-        <div class="end-content">
-          <h2 class="end-title">And Beyond...</h2>
-          <p class="end-text">The journey continues with more exciting updates</p>
+    <div class="roadmap-end-message" id="roadmapEndMessage">
+      <div class="roadmap-end-border">
+        <div class="roadmap-end-content">
+          <h2 class="roadmap-end-title">And Beyond...</h2>
+          <p class="roadmap-end-text">The journey continues with more exciting updates</p>
         </div>
       </div>
     </div>
@@ -691,7 +590,7 @@ section{padding:104px 0}
   els.forEach(function(e){ io.observe(e); });
 })();
 
-/* Sphere & track — continuous looping physics animation */
+/* Sphere & track — looping physics animation */
 (function(){
   var stage=document.getElementById('shiftStage'); if(!stage) return;
   var path=document.getElementById('stPath'),
@@ -707,9 +606,9 @@ section{padding:104px 0}
     var t=Math.min((now-t0)/D,1);
     var f=eIO(t);
     place(f);
-    ballGold.style.opacity=f;                                   // red -> gold as it climbs
-    setText(txtRed,  Math.min(Math.max((t-0.04)/0.16,0),1));    // fallen state shows first
-    setText(txtGold, Math.min(Math.max((t-0.55)/0.3,0),1));     // leading reveals as it arrives
+    ballGold.style.opacity=f;
+    setText(txtRed,  Math.min(Math.max((t-0.04)/0.16,0),1));
+    setText(txtGold, Math.min(Math.max((t-0.55)/0.3,0),1));
     if(t<1){ rafId=requestAnimationFrame(frame); } else { rafId=null; }
   }
   function start(){ t0=null; if(rafId)cancelAnimationFrame(rafId); rafId=requestAnimationFrame(frame); }
@@ -721,7 +620,36 @@ section{padding:104px 0}
   } else { start(); }
 })();
 
-
+/* Roadmap Section */
+(function() {
+  const observerOptions = { threshold: 0.2, rootMargin: '-100px' };
+  const milestoneObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const icon = entry.target.querySelector('.roadmap-icon-circle');
+        if (icon) { setTimeout(() => { icon.classList.add('visible'); }, 300); }
+      }
+    });
+  }, observerOptions);
+  document.querySelectorAll('.roadmap-milestone').forEach((m) => { milestoneObserver.observe(m); });
+  const endMessage = document.getElementById('roadmapEndMessage');
+  if (endMessage) { milestoneObserver.observe(endMessage); }
+  const roadmapContainer = document.getElementById('roadmapContainer');
+  const progressLine = document.getElementById('roadmapProgressLine');
+  function updateProgressLine() {
+    if (!roadmapContainer || !progressLine) return;
+    const containerRect = roadmapContainer.getBoundingClientRect();
+    const containerTop = containerRect.top + window.scrollY;
+    const containerHeight = containerRect.height;
+    const scrolled = window.scrollY - containerTop;
+    const percentage = Math.max(0, Math.min(1, scrolled / containerHeight));
+    progressLine.style.height = (percentage * 100) + '%';
+  }
+  window.addEventListener('scroll', updateProgressLine, {passive:true});
+  window.addEventListener('resize', updateProgressLine);
+  updateProgressLine();
+})();
 </script>
 
 </body>
