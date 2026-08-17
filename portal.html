@@ -173,6 +173,18 @@ tr:last-child td{border-bottom:0}
   .kpi .big{font-size:2.1rem}
   .preview-hero h3{font-size:1.45rem}
 }
+.smstep{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--line)}
+.smstep:first-child{border-top:0;padding-top:4px}
+.smnum{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:1.05rem;margin-top:2px}
+.smbody{flex:1;min-width:0}
+.smlab{display:block;font-family:var(--body);font-weight:500;font-size:.95rem;color:var(--cream);margin-bottom:8px}
+.smbody input[type=text],.smbody input[type=file]{width:100%}
+.smhint{font-size:.84rem;color:var(--ink-70);margin-top:6px}
+.smadj{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.smsum{cursor:pointer;font-family:var(--body);font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;font-size:.78rem;color:var(--gold)}
+@media(max-width:600px){.smadj{grid-template-columns:1fr}}
 .smx-spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(201,169,110,.3);
   border-top-color:var(--gold);border-radius:50%;animation:smxspin .8s linear infinite;vertical-align:-1px}
 @keyframes smxspin{to{transform:rotate(360deg)}}
@@ -975,24 +987,39 @@ tr:last-child td{border-bottom:0}
 
         <form id="smForm" onsubmit="saveSmile(event)">
         <div class="card" style="margin-bottom:18px">
-          <div class="field" style="margin-bottom:16px">
-            <label>Patient name</label>
-            <input type="text" id="smName" required placeholder="First Last" style="font-size:1.05rem">
+
+          <div class="smstep">
+            <span class="smnum">1</span>
+            <div class="smbody">
+              <label class="smlab">Patient name</label>
+              <input type="text" id="smName" required placeholder="First Last">
+            </div>
           </div>
-          <div class="split" style="gap:14px">
-            <div class="field"><label>1 &middot; Before photo</label><input type="file" id="smBefore" accept="image/*"></div>
-            <div class="field"><label>2 &middot; After mockup</label><input type="file" id="smAfter" accept="image/*"></div>
+
+          <div class="smstep">
+            <span class="smnum">2</span>
+            <div class="smbody">
+              <label class="smlab">Photo of their smile</label>
+              <input type="file" id="smBefore" accept="image/*">
+              <div class="smhint">Straight on, smiling, good light.</div>
+            </div>
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
-            <button type="button" class="btn btn-gold" onclick="openReveal()">▶ Show the Patient</button>
-            <button class="btn btn-out" type="submit">Save</button>
-            <span id="smStatus" style="font-size:.9rem;color:var(--ink-70)"></span>
+
+          <div class="smstep">
+            <span class="smnum">3</span>
+            <div class="smbody">
+              <button type="button" class="btn btn-gold" id="smxBtn" onclick="smxGenerate()" style="width:100%;padding:18px">
+                Create Smile Preview
+              </button>
+              <div id="smxStatus" class="smhint" style="display:none;margin-top:10px"></div>
+            </div>
           </div>
+
         </div>
 
-        <div class="card" style="margin-bottom:18px">
+        <div class="card" id="smResultCard" style="margin-bottom:18px;display:none">
           <div id="smCompare" class="smcmp">
-            <div class="smcmp-empty" id="smCmpEmpty">Add both photos to compare.</div>
+            <div class="smcmp-empty" id="smCmpEmpty" style="display:none"></div>
             <div class="smcmp-stage" id="smCmpStage" style="display:none">
               <img id="smImgBefore" alt="Before">
               <div class="smcmp-after" id="smCmpAfter"><img id="smImgAfter" alt="After"></div>
@@ -1001,46 +1028,33 @@ tr:last-child td{border-bottom:0}
             </div>
           </div>
           <input type="range" id="smCmpRange" min="0" max="100" value="50" style="width:100%;margin-top:14px;display:none">
-        </div>
 
-        <div class="card" style="margin-bottom:18px;border:1px solid rgba(201,169,110,.45)">
-          <div class="eyebrow">Smile Simulation &middot; Prototype</div>
-          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">
-            Detects the facial landmarks in the before photo, then draws teeth at the positions the
-            proportion rules dictate. Nothing is imagined &mdash; only the area inside the lips is redrawn.
-          </p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <button type="button" class="btn btn-gold" id="smxBtn" onclick="smxGenerate()">✦ Generate Simulation</button>
-            <button type="button" class="btn btn-out" onclick="smxUseAsAfter()">Use as After</button>
+          <div class="smadj">
+            <div class="field"><label>Tooth shape</label>
+              <select id="smStyle"><option>Natural-softened</option><option>Youthful-rounded</option><option>Bold-square</option><option>Conservative</option></select></div>
+            <div class="field"><label>Shade</label>
+              <select id="smShade"><option>Bleach White</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select></div>
+            <div class="field"><label>Length</label>
+              <input type="range" id="smxLen" min="-14" max="14" value="0" step="1"></div>
           </div>
-          <div id="smxStatus" class="callout" style="display:none;margin-top:14px;border-left:3px solid var(--gold)"></div>
-          <div id="smxWrap" style="display:none;margin-top:16px">
-            <canvas id="smxCanvas" style="width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line)"></canvas>
-            <div class="field" style="margin-top:14px">
-              <label>Incisal edge &mdash; lengthen / shorten</label>
-              <input type="range" id="smxLen" min="-14" max="14" value="0" step="1" style="width:100%">
-            </div>
-            <p class="co" style="font-size:.82rem;color:var(--ink-70)">
-              Style and shade in Clinical detail update this live. Prototype quality &mdash; for design
-              direction, not patient presentation.
-            </p>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px">
+            <button type="button" class="btn btn-gold" onclick="openReveal()">▶ Show the Patient</button>
+            <button class="btn btn-out" type="submit">Save</button>
+            <span id="smStatus" style="font-size:.9rem;color:var(--ink-70)"></span>
           </div>
+          <canvas id="smxCanvas" style="display:none"></canvas>
+          <div id="smxWrap" style="display:none"></div>
         </div>
 
         <details class="card" style="margin-bottom:18px">
-          <summary style="cursor:pointer;font-family:var(--body);font-weight:500;letter-spacing:.14em;
-            text-transform:uppercase;font-size:.78rem;color:var(--gold)">Clinical detail &mdash; optional</summary>
+          <summary class="smsum">More options</summary>
           <div style="margin-top:20px">
             <div class="split" style="gap:14px">
-              <div class="field"><label>Shade</label>
-                <select id="smShade"><option>Bleach White</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select></div>
-              <div class="field"><label>Style</label>
-                <select id="smStyle"><option>Natural-softened</option><option>Youthful-rounded</option><option>Bold-square</option><option>Conservative</option></select></div>
-            </div>
-            <div class="split" style="gap:14px">
               <div class="field"><label>Arch</label><select id="smArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
-              <div class="field"><label>Notes</label><input type="text" id="smNotes" placeholder="Anything the design should account for…"></div>
+              <div class="field"><label>Notes</label><input type="text" id="smNotes" placeholder="Notes for this case…"></div>
             </div>
+            <div class="field"><label>Use my own after image instead</label><input type="file" id="smAfter" accept="image/*"></div>
 
             <div style="height:1px;background:var(--line);margin:20px 0"></div>
             <div class="eyebrow">Risk assessment</div>
@@ -1055,7 +1069,7 @@ tr:last-child td{border-bottom:0}
             <div class="callout" id="smRiskNote" style="border-left:3px solid var(--gold)">Set the four levels to see the complexity flag.</div>
 
             <div style="height:1px;background:var(--line);margin:20px 0"></div>
-            <div class="eyebrow">Design targets</div>
+            <div class="eyebrow">Measured targets</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
               <button type="button" class="btn btn-out" id="smAiBtn" onclick="smileAI()">✦ Fill from photo</button>
               <span id="smAiStatus" style="display:none;font-size:.88rem;color:var(--ink-70)"></span>
@@ -1073,7 +1087,6 @@ tr:last-child td{border-bottom:0}
               <div class="field"><label>Occlusal plane</label><select id="smPlane"><option>Parallel</option><option>Canted left</option><option>Canted right</option></select></div>
             </div>
             <div class="callout" id="smAiSummary" style="display:none;border-left:3px solid var(--teal)"></div>
-            <p class="co" style="font-size:.84rem;color:var(--ink-70);margin-top:12px">AI values are estimates &mdash; verify each one.</p>
           </div>
         </details>
         </form>
@@ -1920,7 +1933,8 @@ function smSyncCompare(){
   stage.style.display = ready ? 'block' : 'none';
   if(empty) empty.style.display = ready ? 'none' : 'block';
   if(range) range.style.display = ready ? 'block' : 'none';
-  if(ready) smSetSplit(50, 'smCmpAfter','smCmpHandle','smImgAfter','smCmpStage');
+  if(ready){ smSetSplit(50,'smCmpAfter','smCmpHandle','smImgAfter','smCmpStage');
+    var rc=document.getElementById('smResultCard'); if(rc) rc.style.display='block'; }
 }
 function smSetSplit(pct, afterId, handleId, imgId, stageId){
   var after=document.getElementById(afterId), handle=document.getElementById(handleId),
@@ -2117,7 +2131,7 @@ async function smxLoadModel(){
   if(SMX.landmarker) return SMX.landmarker;
   if(SMX.loading) { while(SMX.loading){ await new Promise(function(r){setTimeout(r,200);}); } return SMX.landmarker; }
   SMX.loading=true;
-  smxMsg('Loading the face model (first time only)…',true);
+  smxMsg('Getting ready…',true);
   try{
     var vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
     var files=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
@@ -2273,43 +2287,48 @@ function smxRender(){
   ctx.fillStyle=sg; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.4);
   ctx.restore();
 
-  var wrap=document.getElementById('smxWrap'); if(wrap) wrap.style.display='block';
+  smxPushAfter();
+}
+
+/* canvas result becomes the After image automatically */
+function smxPushAfter(){
+  var cv=document.getElementById('smxCanvas'); if(!cv||!SMX.ready) return;
+  cv.toBlob(function(blob){
+    if(!blob) return;
+    var f=new File([blob],'simulation.png',{type:'image/png'});
+    if(SM_AFTER&&SM_AFTER.url&&SM_AFTER.generated) URL.revokeObjectURL(SM_AFTER.url);
+    SM_AFTER={file:f,url:URL.createObjectURL(blob),generated:true};
+    var el=document.getElementById('smImgAfter'); if(el) el.src=SM_AFTER.url;
+    var card=document.getElementById('smResultCard'); if(card) card.style.display='block';
+    smSyncCompare();
+  },'image/png');
 }
 
 async function smxGenerate(){
-  if(!SM_BEFORE){ smxMsg('Upload the before photo first.'); return; }
+  if(!SM_BEFORE){ smxMsg('Add a photo in step 2 first.'); return; }
   var btn=document.getElementById('smxBtn'); if(btn) btn.disabled=true;
   try{
     var lm=await smxLoadModel();
-    smxMsg('Finding facial landmarks…',true);
+    smxMsg('Reading the photo…',true);
     var img=await smxLoadImage(SM_BEFORE.url);
     SMX.img=img;
     var res=lm.detect(img);
     if(!res.faceLandmarks||!res.faceLandmarks.length){
-      smxMsg('No face detected — try a straight-on photo with the smile clearly visible.');
+      smxMsg('Couldn’t find a face. Try a straight-on photo with the smile showing.');
       if(btn) btn.disabled=false; return;
     }
     SMX.pts=res.faceLandmarks[0];
     SMX.ready=true;
     smxRender();
-    smxMsg('Simulation drawn from detected landmarks. Adjust below, then Use as After.');
+    smxMsg('');
+    var card=document.getElementById('smResultCard');
+    if(card){ card.style.display='block'; setTimeout(function(){ card.scrollIntoView({behavior:'smooth',block:'start'}); },200); }
   }catch(e){
-    smxMsg('Could not run the simulation: '+((e&&e.message)||'model failed to load'));
+    smxMsg('Something went wrong — check the connection and try again.');
   }
   if(btn) btn.disabled=false;
 }
 
-function smxUseAsAfter(){
-  var cv=document.getElementById('smxCanvas'); if(!cv||!SMX.ready) return;
-  cv.toBlob(function(blob){
-    if(!blob) return;
-    var f=new File([blob],'simulation.png',{type:'image/png'});
-    SM_AFTER={file:f,url:URL.createObjectURL(blob)};
-    (document.getElementById('smImgAfter')||{}).src=SM_AFTER.url;
-    smSyncCompare();
-    smxMsg('Set as the After image — open Show the Patient.');
-  },'image/png');
-}
 
 function initSmx(){
   ['smStyle','smShade','smxLen'].forEach(function(id){
