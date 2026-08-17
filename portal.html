@@ -2207,7 +2207,7 @@ function smxPlan(pts, W, H, style){
   /* RED proportion: central 100%, lateral ~78%, canine ~78% of lateral */
   var red = style==='Bold-square' ? 0.82 : (style==='Youthful-rounded' ? 0.74 : 0.78);
   var units = 2*(1 + red + red*red);          /* 6 anterior teeth across */
-  var visibleW = mouthW*0.92;
+  var visibleW = mouthW*0.80;
   var centralW = visibleW/units;
   var widths = [centralW*red*red, centralW*red, centralW, centralW, centralW*red, centralW*red*red];
 
@@ -2221,18 +2221,27 @@ function smxPlan(pts, W, H, style){
 
 /* ---- tooth shape ---- */
 function smxToothPath(ctx,x,y,w,h,style,idx){
-  var r = style==='Bold-square' ? 0.10 : (style==='Youthful-rounded' ? 0.36 : (style==='Conservative' ? 0.16 : 0.24));
-  var rad=Math.min(w,h)*r;
-  var x0=x-w/2, x1=x+w/2, y0=y-h, y1=y;
+  /* y = incisal edge, h = crown height. Cervical is narrower than incisal. */
+  var sq = style==='Bold-square' ? 1 : (style==='Youthful-rounded' ? 0 : (style==='Conservative' ? .55 : .35));
+  var taper = 0.80 + 0.14*sq;            /* cervical width ratio */
+  var incRound = (1-sq)*0.30 + 0.06;     /* incisal corner rounding */
+  var cw = w*taper;
+  var yG = y-h, yI = y;
+  var xL=x-w/2, xR=x+w/2, xLc=x-cw/2, xRc=x+cw/2;
+  var r = w*incRound;
+  var belly = h*0.16;                    /* fullest point below the cervical third */
   ctx.beginPath();
-  ctx.moveTo(x0, y0+rad*0.5);
-  ctx.quadraticCurveTo(x0, y0, x0+rad*0.5, y0);      /* gingival left */
-  ctx.lineTo(x1-rad*0.5, y0);
-  ctx.quadraticCurveTo(x1, y0, x1, y0+rad*0.5);      /* gingival right */
-  ctx.lineTo(x1, y1-rad);
-  ctx.quadraticCurveTo(x1, y1, x1-rad, y1);          /* incisal corner R */
-  ctx.lineTo(x0+rad, y1);
-  ctx.quadraticCurveTo(x0, y1, x0, y1-rad);          /* incisal corner L */
+  /* gingival margin — a soft arc, not a flat line */
+  ctx.moveTo(xLc, yG+h*0.06);
+  ctx.quadraticCurveTo(x, yG-h*0.05, xRc, yG+h*0.06);
+  /* distal contour bulging out to the contact point */
+  ctx.bezierCurveTo(xR, yG+belly, xR, yI-r*1.4, xR-r*0.15, yI-r);
+  /* incisal edge — slightly convex, rounded corners */
+  ctx.quadraticCurveTo(xR-r*0.1, yI, xR-r, yI);
+  ctx.quadraticCurveTo(x, yI+h*0.035, xL+r, yI);
+  ctx.quadraticCurveTo(xL+r*0.1, yI, xL+r*0.15, yI-r);
+  /* mesial contour back up to the gingiva */
+  ctx.bezierCurveTo(xL, yI-r*1.4, xL, yG+belly, xLc, yG+h*0.06);
   ctx.closePath();
 }
 
@@ -2246,7 +2255,7 @@ var SMX_SHADES = {
 
 function smxRender(){
   if(!SMX.ready) return;
-  var img=SMX.img, plan=SMX.plan;
+  var img=SMX.img;
   var cv=document.getElementById('smxCanvas'); if(!cv) return;
   var W=img.naturalWidth, H=img.naturalHeight;
   cv.width=W; cv.height=H;
@@ -2260,50 +2269,138 @@ function smxRender(){
   var p=smxPlan(SMX.pts,W,H,style);
   SMX.plan=p;
 
+  /* --- sample the photo's own lighting inside the mouth so teeth match it --- */
+  var lum=1;
+  try{
+    var sx=Math.max(0,Math.round(p.left)), sy=Math.max(0,Math.round(p.top));
+    var sw=Math.max(1,Math.round(p.mouthW)), sh=Math.max(1,Math.round(p.mouthH));
+    var d=ctx.getImageData(sx,sy,sw,sh).data, sum=0, n=0, best=0;
+    for(var q=0;q<d.length;q+=16){
+      var v=(0.299*d[q]+0.587*d[q+1]+0.114*d[q+2]);
+      sum+=v; n++; if(v>best) best=v;
+    }
+    var mean=n?sum/n:150;
+    lum = Math.max(0.55, Math.min(1.25, (mean*0.4 + best*0.6)/205));
+  }catch(e){}
+  function tint(hex,k){
+    var r=parseInt(hex.substr(1,2),16), g=parseInt(hex.substr(3,2),16), b=parseInt(hex.substr(5,2),16);
+    r=Math.min(255,Math.round(r*k)); g=Math.min(255,Math.round(g*k)); b=Math.min(255,Math.round(b*k));
+    return 'rgb('+r+','+g+','+b+')';
+  }
+
   ctx.save();
-  /* clip to the mouth opening so lips/skin are never touched */
+  /* clip to the mouth opening — lips, skin and gums are never touched */
   ctx.beginPath();
   p.inner.forEach(function(pt,i){ i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y); });
   ctx.closePath();
   ctx.clip();
 
-  /* dark oral cavity behind the new teeth */
-  ctx.fillStyle='#241a17';
-  ctx.fill();
+  /* dark oral cavity */
+  var cav=ctx.createLinearGradient(0,p.top,0,p.bot);
+  cav.addColorStop(0,'#160f0d'); cav.addColorStop(1,'#2a1a18');
+  ctx.fillStyle=cav; ctx.fill();
 
-  /* six anterior teeth centred on the facial midline */
-  var totalW=p.widths.reduce(function(a,b){return a+b;},0);
-  var x=p.faceMid-totalW/2;
   var sh=SMX_SHADES[shade]||SMX_SHADES['A2'];
+  var arch = p.widths.reduce(function(a,b){return a+b;},0);
+  var x = p.faceMid - arch/2;
+  var mid = (p.widths.length-1)/2;
+
+  /* gingival band so the teeth don't float */
+  ctx.save();
+  for(var gi=0, gx=x; gi<p.widths.length; gi++){
+    var gw=p.widths[gi], gcx=gx+gw/2;
+    var gy=p.curveYAt(gcx,p.upperInner);
+    if(gy!=null){
+      var gg=ctx.createLinearGradient(0,gy-p.mouthH*0.10,0,gy+p.mouthH*0.06);
+      gg.addColorStop(0,'rgba(120,60,58,0)'); gg.addColorStop(1,'rgba(178,104,104,'+(0.55*lum)+')');
+      ctx.fillStyle=gg;
+      ctx.fillRect(gcx-gw/2-1, gy-p.mouthH*0.10, gw+2, p.mouthH*0.18);
+    }
+    gx+=gw;
+  }
+  ctx.restore();
 
   for(var i=0;i<p.widths.length;i++){
     var w=p.widths[i], cx=x+w/2;
-    var gum=p.curveYAt(cx,p.upperInner);      /* gingival ceiling */
-    var lip=p.curveYAt(cx,p.lowerInner);      /* lower lip curve */
+    var gum=p.curveYAt(cx,p.upperInner);
+    var lip=p.curveYAt(cx,p.lowerInner);
     if(gum==null||lip==null){ x+=w; continue; }
-    var incisal=lip - p.mouthH*0.06 + lengthen;   /* smile line follows lower lip */
-    var h=Math.max(6, incisal-gum);
-    /* laterals sit slightly shorter — Robbins embrasure progression */
-    var isLateral=(i===1||i===4), isCanine=(i===0||i===5);
-    var hh = isLateral ? h*0.92 : (isCanine ? h*0.96 : h);
 
-    var g=ctx.createLinearGradient(0,incisal-hh,0,incisal);
-    g.addColorStop(0, sh[1]); g.addColorStop(0.55, sh[0]); g.addColorStop(1, sh[0]);
-    smxToothPath(ctx,cx,incisal,w*0.97,hh,style,i);
-    ctx.fillStyle=g; ctx.fill();
-    /* incisal translucency */
-    var t=ctx.createLinearGradient(0,incisal-hh*0.16,0,incisal);
-    t.addColorStop(0,'rgba(255,255,255,0)'); t.addColorStop(1,'rgba(190,205,215,.30)');
-    ctx.fillStyle=t; ctx.fill();
-    /* interproximal separation */
-    ctx.strokeStyle='rgba(120,95,80,.22)'; ctx.lineWidth=Math.max(1,w*0.035); ctx.stroke();
+    /* how far from the midline, 0 at centre → 1 at the corners */
+    var t=Math.abs(i-mid)/mid;
+
+    /* arch curve: teeth recede and shorten toward the corners */
+    var recede = p.mouthH*0.10*t*t;
+    var incisal = lip - p.mouthH*0.05 + lengthen - recede*0.35;
+    var h = Math.max(6, (incisal-gum) - recede);
+    var isLateral=(i===1||i===4), isCanine=(i===0||i===5);
+    if(isLateral) h*=0.90; if(isCanine) h*=0.94;
+
+    ctx.save();
+    smxToothPath(ctx,cx,incisal,w*0.985,h,style,i);
+    ctx.clip();
+
+    /* body: vertical gradient, warmer and darker at the cervical */
+    var g=ctx.createLinearGradient(0,incisal-h,0,incisal);
+    g.addColorStop(0,   tint(sh[1], lum*0.90));
+    g.addColorStop(0.30,tint(sh[1], lum*0.99));
+    g.addColorStop(0.72,tint(sh[0], lum));
+    g.addColorStop(1,   tint(sh[0], lum*0.985));
+    ctx.fillStyle=g;
+    ctx.fillRect(cx-w, incisal-h-4, w*2, h+8);
+
+    /* incisal translucency — bluish, stronger on younger morphology */
+    var tr=ctx.createLinearGradient(0,incisal-h*0.22,0,incisal);
+    tr.addColorStop(0,'rgba(200,215,225,0)');
+    tr.addColorStop(1,'rgba(176,196,210,'+(style==='Youthful-rounded'?0.42:0.28)+')');
+    ctx.fillStyle=tr; ctx.fillRect(cx-w, incisal-h*0.22, w*2, h*0.22+3);
+
+    /* soft specular highlight on the labial face, offset from centre */
+    var hl=ctx.createRadialGradient(cx-w*0.14, incisal-h*0.62, 1, cx-w*0.14, incisal-h*0.62, w*0.62);
+    hl.addColorStop(0,'rgba(255,255,255,'+(0.30*lum)+')');
+    hl.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=hl; ctx.fillRect(cx-w, incisal-h-4, w*2, h+8);
+
+    /* ambient occlusion where the tooth meets the gingiva */
+    var ao=ctx.createLinearGradient(0,incisal-h,0,incisal-h*0.78);
+    ao.addColorStop(0,'rgba(90,52,44,.34)'); ao.addColorStop(1,'rgba(90,52,44,0)');
+    ctx.fillStyle=ao; ctx.fillRect(cx-w, incisal-h-2, w*2, h*0.26);
+
+    /* corners sit deeper in shadow */
+    if(t>0.15){
+      ctx.fillStyle='rgba(40,24,20,'+(0.30*t*t)+')';
+      ctx.fillRect(cx-w, incisal-h-4, w*2, h+8);
+    }
+    ctx.restore();
+
+    /* interproximal contact line */
+    ctx.save();
+    smxToothPath(ctx,cx,incisal,w*0.985,h,style,i);
+    ctx.strokeStyle='rgba(96,66,54,.30)';
+    ctx.lineWidth=Math.max(0.8,w*0.028);
+    ctx.stroke();
+    ctx.restore();
+
     x+=w;
   }
 
-  /* soft shadow under the upper lip so teeth sit behind it */
-  var sg=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.4);
-  sg.addColorStop(0,'rgba(40,22,16,.55)'); sg.addColorStop(1,'rgba(40,22,16,0)');
-  ctx.fillStyle=sg; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.4);
+  /* buccal corridor shadow at both commissures */
+  var bcL=ctx.createLinearGradient(p.left,0,p.left+p.mouthW*0.20,0);
+  bcL.addColorStop(0,'rgba(28,16,14,.72)'); bcL.addColorStop(1,'rgba(28,16,14,0)');
+  ctx.fillStyle=bcL; ctx.fillRect(p.left-2,p.top-2,p.mouthW*0.20,p.mouthH+4);
+  var bcR=ctx.createLinearGradient(p.right,0,p.right-p.mouthW*0.20,0);
+  bcR.addColorStop(0,'rgba(28,16,14,.72)'); bcR.addColorStop(1,'rgba(28,16,14,0)');
+  ctx.fillStyle=bcR; ctx.fillRect(p.right-p.mouthW*0.20,p.top-2,p.mouthW*0.20+2,p.mouthH+4);
+
+  /* upper lip drop shadow so the arch sits behind the lip */
+  var sgd=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.34);
+  sgd.addColorStop(0,'rgba(34,18,14,.62)'); sgd.addColorStop(1,'rgba(34,18,14,0)');
+  ctx.fillStyle=sgd; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.34);
+  ctx.restore();
+
+  /* feather the clip edge so there is no hard cut against the lips */
+  ctx.save();
+  ctx.globalCompositeOperation='destination-over';
   ctx.restore();
 
   smxPushAfter();
@@ -2926,10 +3023,10 @@ if(typeof applyPractice==='function'){ applyPractice(); }
 <div id="camOverlay">
   <video id="camVideo" playsinline muted autoplay></video>
   <svg id="camGuide" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <ellipse cx="50" cy="46" rx="27" ry="36" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.4" stroke-dasharray="2 1.6"/>
-    <line x1="50" y1="10" x2="50" y2="82" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
-    <line x1="23" y1="46" x2="77" y2="46" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
-    <path d="M40 60 q10 9 20 0 q-10 4 -20 0z" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.45"/>
+    <ellipse cx="50" cy="45" rx="20.5" ry="31" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.4" stroke-dasharray="2 1.6"/>
+    <line x1="50" y1="16" x2="50" y2="78" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
+    <line x1="31" y1="43" x2="69" y2="43" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
+    <path d="M43 58 q7 6 14 0 q-7 3 -14 0z" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.45"/>
   </svg>
   <div id="camHint">Line the face up inside the oval</div>
   <div id="camBar">
