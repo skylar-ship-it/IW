@@ -173,6 +173,21 @@ tr:last-child td{border-bottom:0}
   .kpi .big{font-size:2.1rem}
   .preview-hero h3{font-size:1.45rem}
 }
+#camOverlay{position:fixed;inset:0;z-index:320;background:#000;display:none}
+#camOverlay.open{display:block}
+#camVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#camGuide{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#camGuide.ok ellipse{stroke:#7ee0b8}
+#camHint{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 24px);text-align:center;
+  font-family:var(--body);font-size:.9rem;letter-spacing:.06em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7);padding:0 20px}
+#camHint.ok{color:#7ee0b8}
+#camBar{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);
+  display:flex;align-items:center;justify-content:center;gap:44px}
+#camShoot{width:76px;height:76px;border-radius:50%;background:#fff;border:5px solid rgba(255,255,255,.45);
+  cursor:pointer;box-shadow:0 6px 26px rgba(0,0,0,.5)}
+#camShoot:active{transform:scale(.94)}
+.cam-side{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.16);border:0;
+  color:#fff;font-size:1.3rem;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .smstep{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--line)}
 .smstep:first-child{border-top:0;padding-top:4px}
 .smnum{flex:0 0 32px;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);
@@ -1000,8 +1015,12 @@ tr:last-child td{border-bottom:0}
             <span class="smnum">2</span>
             <div class="smbody">
               <label class="smlab">Photo of their smile</label>
+              <button type="button" class="btn btn-gold" onclick="camOpen()" style="width:100%;padding:16px;margin-bottom:10px">📷 Take Photo</button>
               <input type="file" id="smBefore" accept="image/*">
-              <div class="smhint">Straight on, smiling, good light.</div>
+              <div class="smhint">Or choose an existing photo. Straight on, smiling, good light.</div>
+              <div id="smShot" style="display:none;margin-top:12px">
+                <img id="smShotImg" style="width:120px;border-radius:10px;border:1px solid var(--line)" alt="">
+              </div>
             </div>
           </div>
 
@@ -2330,6 +2349,96 @@ async function smxGenerate(){
 }
 
 
+
+/* ---- guided camera capture ---- */
+var CAM={stream:null,facing:'user',raf:null,ok:false};
+async function camOpen(){
+  var ov=document.getElementById('camOverlay'); if(!ov) return;
+  ov.classList.add('open');
+  try{
+    CAM.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:CAM.facing,width:{ideal:1920},height:{ideal:1440}},audio:false});
+    var v=document.getElementById('camVideo');
+    v.srcObject=CAM.stream; await v.play();
+    camWatch();
+  }catch(e){
+    camHint('Camera unavailable — use Choose File instead.',false);
+    setTimeout(camClose,2200);
+  }
+}
+function camHint(t,ok){
+  var h=document.getElementById('camHint'), g=document.getElementById('camGuide');
+  if(h){ h.textContent=t; h.classList.toggle('ok',!!ok); }
+  if(g) g.classList.toggle('ok',!!ok);
+  CAM.ok=!!ok;
+}
+/* live guidance: is a face centred and big enough in frame? */
+async function camWatch(){
+  var lm=null;
+  try{ lm=await smxLoadModel(); }catch(e){ camHint('Line the face up inside the oval',false); return; }
+  var v=document.getElementById('camVideo');
+  var last=0;
+  function tick(ts){
+    if(!document.getElementById('camOverlay').classList.contains('open')) return;
+    if(ts-last>220 && v.videoWidth){
+      last=ts;
+      try{
+        var r=lm.detect(v);
+        if(r.faceLandmarks&&r.faceLandmarks.length){
+          var pts=r.faceLandmarks[0];
+          var xs=pts.map(function(p){return p.x;}), ys=pts.map(function(p){return p.y;});
+          var cx=(Math.min.apply(null,xs)+Math.max.apply(null,xs))/2;
+          var cy=(Math.min.apply(null,ys)+Math.max.apply(null,ys))/2;
+          var h=Math.max.apply(null,ys)-Math.min.apply(null,ys);
+          /* mouth open enough to see teeth? */
+          var upper=pts[13], lower=pts[14];
+          var gap=Math.abs(lower.y-upper.y);
+          if(h<0.35) camHint('Move a little closer',false);
+          else if(h>0.92) camHint('Move back slightly',false);
+          else if(Math.abs(cx-0.5)>0.09) camHint('Centre the face',false);
+          else if(Math.abs(cy-0.46)>0.12) camHint('Move up or down a little',false);
+          else if(gap<0.012) camHint('Now smile — show the teeth',false);
+          else camHint('Perfect — take the photo',true);
+        } else { camHint('Line the face up inside the oval',false); }
+      }catch(e){}
+    }
+    CAM.raf=requestAnimationFrame(tick);
+  }
+  CAM.raf=requestAnimationFrame(tick);
+}
+function camFlip(){
+  CAM.facing = CAM.facing==='user' ? 'environment' : 'user';
+  camStop(); camOpen();
+}
+function camStop(){
+  if(CAM.raf){ cancelAnimationFrame(CAM.raf); CAM.raf=null; }
+  if(CAM.stream){ CAM.stream.getTracks().forEach(function(t){ t.stop(); }); CAM.stream=null; }
+}
+function camClose(){
+  camStop();
+  var ov=document.getElementById('camOverlay'); if(ov) ov.classList.remove('open');
+}
+function camShoot(){
+  var v=document.getElementById('camVideo'); if(!v||!v.videoWidth) return;
+  var c=document.createElement('canvas');
+  c.width=v.videoWidth; c.height=v.videoHeight;
+  var ctx=c.getContext('2d');
+  if(CAM.facing==='user'){ ctx.translate(c.width,0); ctx.scale(-1,1); }   /* un-mirror selfie */
+  ctx.drawImage(v,0,0,c.width,c.height);
+  c.toBlob(function(blob){
+    if(!blob) return;
+    var f=new File([blob],'capture.jpg',{type:'image/jpeg'});
+    if(SM_BEFORE&&SM_BEFORE.url) try{ URL.revokeObjectURL(SM_BEFORE.url); }catch(e){}
+    SM_BEFORE={file:f,url:URL.createObjectURL(blob)};
+    var im=document.getElementById('smImgBefore'); if(im) im.src=SM_BEFORE.url;
+    var th=document.getElementById('smShotImg'); if(th) th.src=SM_BEFORE.url;
+    var box=document.getElementById('smShot'); if(box) box.style.display='block';
+    SMX.ready=false;
+    camClose();
+    smSyncCompare();
+    smxGenerate();     /* straight into the simulation */
+  },'image/jpeg',0.92);
+}
+
 function initSmx(){
   ['smStyle','smShade','smxLen'].forEach(function(id){
     var el=document.getElementById(id); if(!el||el.dataset.smx) return;
@@ -2813,6 +2922,21 @@ if(typeof applyPractice==='function'){ applyPractice(); }
     </div></div>
   </div>
   <div class="rv-hint">Drag to reveal &middot; Esc to close</div>
+</div>
+<div id="camOverlay">
+  <video id="camVideo" playsinline muted autoplay></video>
+  <svg id="camGuide" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <ellipse cx="50" cy="46" rx="27" ry="36" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.4" stroke-dasharray="2 1.6"/>
+    <line x1="50" y1="10" x2="50" y2="82" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
+    <line x1="23" y1="46" x2="77" y2="46" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
+    <path d="M40 60 q10 9 20 0 q-10 4 -20 0z" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.45"/>
+  </svg>
+  <div id="camHint">Line the face up inside the oval</div>
+  <div id="camBar">
+    <button type="button" class="cam-side" onclick="camFlip()" aria-label="Switch camera">⟲</button>
+    <button type="button" id="camShoot" onclick="camShoot()" aria-label="Take photo"></button>
+    <button type="button" class="cam-side" onclick="camClose()" aria-label="Close">✕</button>
+  </div>
 </div>
 </body>
 </html>
