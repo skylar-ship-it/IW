@@ -173,6 +173,30 @@ tr:last-child td{border-bottom:0}
   .kpi .big{font-size:2.1rem}
   .preview-hero h3{font-size:1.45rem}
 }
+/* ---- Smile Preview: comparison slider + reveal ---- */
+.smcmp{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(0,0,0,.25)}
+.smcmp-empty{padding:60px 20px;text-align:center;color:var(--ink-70);font-size:.92rem}
+.smcmp-stage{position:relative;line-height:0;user-select:none}
+.smcmp-stage img{width:100%;display:block}
+.smcmp-after{position:absolute;inset:0;width:50%;overflow:hidden}
+.smcmp-after img{width:auto;height:100%;max-width:none;position:absolute;top:0;left:0}
+.smcmp-handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);
+  box-shadow:0 0 18px rgba(201,169,110,.8);transform:translateX(-1px);pointer-events:none}
+.smcmp-handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:600;letter-spacing:-1px}
+.smcmp-tag{position:absolute;bottom:12px;font-family:var(--body);font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;background:rgba(11,8,7,.7);color:var(--cream);padding:5px 12px;border-radius:999px}
+.smcmp-tag.l{left:12px}.smcmp-tag.r{right:12px}
+#smRevealOverlay{position:fixed;inset:0;z-index:300;background:var(--deeper);display:none;
+  align-items:center;justify-content:center;flex-direction:column;padding:24px}
+#smRevealOverlay.open{display:flex}
+#smRevealOverlay .rv-name{font-family:var(--display);font-size:clamp(1.6rem,4vw,2.6rem);color:var(--cream);margin-bottom:18px;text-align:center}
+#smRevealOverlay .rv-stage{max-width:min(1000px,92vw);width:100%;position:relative;border-radius:16px;overflow:hidden}
+#smRevealOverlay .rv-close{position:absolute;top:18px;right:20px;background:rgba(242,238,231,.1);
+  border:1px solid rgba(201,169,110,.4);color:var(--cream);border-radius:999px;width:44px;height:44px;
+  font-size:1.3rem;cursor:pointer}
+#smRevealOverlay .rv-hint{margin-top:16px;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-70)}
 .wfstep{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
 .wfstep:first-child{border-top:0}
 .wfstep>div{flex:1}
@@ -289,6 +313,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Calls &amp; Texts</div>
       <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
       <div class="nav-item" data-view="casereview" data-roles="owner,surgeon,pm" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
+      <div class="nav-item" data-view="smile" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">☺</span> Smile Preview</div>
       <div class="nav-item" data-view="library" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◫</span> Clinical Library</div>
       <div class="nav-item" data-view="setupguide" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">◑</span> Digital Workflow</div>
       <div class="nav-item" data-view="equipment" data-roles="owner,pm" onclick="go(this)"><span class="ic">▢</span> Equipment</div>
@@ -933,13 +958,123 @@ tr:last-child td{border-bottom:0}
           </form>
           <div class="result-box" id="rdResult">
 <div id="rdMsg"></div></div>
-          </div>
         </div>
         <div class="card" style="max-width:740px;margin-top:18px">
           <div class="eyebrow">Full Assessment</div>
           <h3 style="margin-bottom:6px">Surgeon Experience Assessment</h3>
           <p class="co" style="font-size:0.95rem;color:var(--ink-70);margin-bottom:14px">The complete pre-onboarding assessment — case experience by procedure (All-on-X, FP1, zygomatic, pterygoid), volume, equipment, and team. Generates your Partner Readiness Profile with a recommended curriculum and onboarding path. ~5 minutes.</p>
           <a class="btn btn-gold" href="surgeon-assessment.html">Take the Full Assessment</a>
+        </div>
+      </section>
+
+      <!-- ===== SMILE PREVIEW ===== -->
+      <section class="view" id="smile">
+
+        <div class="card" style="margin-bottom:18px;overflow-x:auto">
+          <div class="eyebrow">Smile Preview &middot; How it flows</div>
+          <div style="display:flex;align-items:stretch;gap:0;min-width:700px">
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">1</div><strong style="font-size:.85rem">Patient</strong><div style="font-size:.76rem;color:var(--ink-70)">Name &middot; photos</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">2</div><strong style="font-size:.85rem">Risk intake</strong><div style="font-size:.76rem;color:var(--ink-70)">Four domains</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">3</div><strong style="font-size:.85rem">Design targets</strong><div style="font-size:.76rem;color:var(--ink-70)">AI-drafted</div></div>
+            <div style="align-self:center;color:var(--gold)">&rarr;</div>
+            <div style="flex:1;text-align:center;padding:10px 6px"><div style="font-family:var(--display);font-size:1.5rem;color:var(--gold)">4</div><strong style="font-size:.85rem">Reveal</strong><div style="font-size:.76rem;color:var(--ink-70)">Patient-facing</div></div>
+          </div>
+        </div>
+
+        <form id="smForm" onsubmit="saveSmile(event)">
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 1 &middot; Patient &amp; Photos</div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Patient name *</label><input type="text" id="smName" required placeholder="First Last"></div>
+            <div class="field"><label>Shade target</label>
+              <select id="smShade"><option>Bleach White</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select>
+            </div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Morphology style</label>
+              <select id="smStyle"><option>Natural-softened</option><option>Youthful-rounded</option><option>Bold-square</option><option>Conservative</option></select>
+            </div>
+            <div class="field"><label>Arch</label><select id="smArch"><option>Upper</option><option>Lower</option><option>Dual</option></select></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Before &mdash; full smile photo *</label><input type="file" id="smBefore" accept="image/*"></div>
+            <div class="field"><label>After &mdash; design mockup</label><input type="file" id="smAfter" accept="image/*"></div>
+          </div>
+          <p class="co" style="font-size:.86rem;color:var(--ink-70)">The mockup image comes from your design tool. Upload both to build the patient-facing comparison.</p>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 2 &middot; Risk Assessment</div>
+          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">Four domains. This does not change the image &mdash; it flags case complexity and narrows which design options are appropriate.</p>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Periodontal risk</label><select class="smrisk" id="smPerio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+            <div class="field"><label>Biomechanical risk</label><select class="smrisk" id="smBio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Functional risk</label><select class="smrisk" id="smFunc"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+            <div class="field"><label>Dentofacial risk</label><select class="smrisk" id="smDento"><option>Low</option><option>Moderate</option><option>High</option></select></div>
+          </div>
+          <div class="callout" id="smRiskNote" style="border-left:3px solid var(--gold)">Set the four risk levels to see the complexity flag.</div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 3 &middot; Facially-Driven Design Targets</div>
+          <p class="co" style="font-size:.9rem;color:var(--ink-70);margin-bottom:14px">AI reads the before photo and drafts the facial reference targets. <strong>Estimates only &mdash; the surgeon verifies every value.</strong></p>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Facial midline vs. dental midline</label><select id="smMid"><option>On</option><option>Shift left</option><option>Shift right</option></select></div>
+            <div class="field"><label>Incisal edge position</label><select id="smIncisal"><option>Good</option><option>Lengthen</option><option>Shorten</option></select></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Tooth show at rest (mm)</label><input type="number" step="0.5" id="smRest" placeholder="0–6"></div>
+            <div class="field"><label>Tooth show at max smile (mm)</label><input type="number" step="0.5" id="smMax" placeholder="0–14"></div>
+          </div>
+          <div class="split" style="gap:14px">
+            <div class="field"><label>Smile line follows lower lip</label><select id="smLine"><option>Yes</option><option>No</option></select></div>
+            <div class="field"><label>Occlusal plane vs. interpupillary line</label><select id="smPlane"><option>Parallel</option><option>Canted left</option><option>Canted right</option></select></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px">
+            <button type="button" class="btn btn-out" id="smAiBtn" onclick="smileAI()">✦ AI Design Targets</button>
+            <span id="smAiStatus" style="display:none;font-size:.88rem;color:var(--ink-70)"></span>
+          </div>
+          <div class="callout" id="smAiSummary" style="display:none;margin-top:14px;border-left:3px solid var(--teal)"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Step 4 &middot; Notes &amp; Save</div>
+          <div class="field"><label>Clinical notes for this design</label><textarea id="smNotes" rows="3" placeholder="Anything the design should account for…"></textarea></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn btn-gold" type="submit">Save Smile Preview</button>
+            <button type="button" class="btn btn-out" onclick="openReveal()">▶ Reveal Mode</button>
+            <span id="smStatus" style="font-size:.9rem;color:var(--ink-70)"></span>
+          </div>
+        </div>
+        </form>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="eyebrow">Before &amp; After</div>
+          <div id="smCompare" class="smcmp">
+            <div class="smcmp-empty" id="smCmpEmpty">Upload a before and after photo to compare.</div>
+            <div class="smcmp-stage" id="smCmpStage" style="display:none">
+              <img id="smImgBefore" alt="Before">
+              <div class="smcmp-after" id="smCmpAfter"><img id="smImgAfter" alt="After"></div>
+              <div class="smcmp-handle" id="smCmpHandle"><span>‹ ›</span></div>
+              <span class="smcmp-tag l">Before</span><span class="smcmp-tag r">After</span>
+            </div>
+          </div>
+          <input type="range" id="smCmpRange" min="0" max="100" value="50" style="width:100%;margin-top:14px;display:none">
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Saved Smile Previews</div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>Patient</th><th>Style · Shade</th><th>Complexity</th><th>Saved</th><th></th></tr></thead>
+              <tbody id="smBody"><tr><td colspan="5" style="color:var(--ink-70)">No smile previews saved yet.</td></tr></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -989,12 +1124,12 @@ tr:last-child td{border-bottom:0}
 </div>
 
 <script>
-var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',training:'Training Hub',library:'Clinical Library',
+var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',smile:'Smile Preview',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
   coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',program:'The Program',settings:'Settings'};
 /* shorter titles for the phone topbar */
-var titlesShort={leadscore:'Lead Scoring',comms:'Report Card',casereview:'PSP Cases',setupguide:'Digital Workflow',
+var titlesShort={leadscore:'Lead Scoring',comms:'Report Card',casereview:'PSP Cases',smile:'Smile Preview',setupguide:'Digital Workflow',
   equipment:'Equipment',labdeals:'Lab Deals',consults:'Consults',library:'Library',program:'Program'};
 function setViewTitle(v){
   var small=false; try{ small=window.matchMedia('(max-width:600px)').matches; }catch(e){}
@@ -1723,6 +1858,238 @@ function applyPractice(){
   }).catch(function(){});
 }
 
+
+/* ============================================================
+   Smile Preview — intake, design targets, comparison, reveal
+   ============================================================ */
+var SM_TABLE='smile_designs', SM_BEFORE=null, SM_AFTER=null, SM_LIST=[];
+
+function smMsg(t){ var el=document.getElementById('smStatus'); if(el) el.textContent=t||''; }
+function smAiMsg(t){ var el=document.getElementById('smAiStatus'); if(el){ el.style.display=t?'inline':'none'; el.textContent=t||''; } }
+
+/* ---- risk scoring ---- */
+function smRisk(){
+  var ids=['smPerio','smBio','smFunc','smDento'], score=0, high=0;
+  ids.forEach(function(id){
+    var v=(document.getElementById(id)||{}).value||'Low';
+    if(v==='Moderate') score+=1;
+    if(v==='High'){ score+=2; high++; }
+  });
+  var band = score>=5 ? 'High complexity' : (score>=2 ? 'Moderate complexity' : 'Low complexity');
+  var note=document.getElementById('smRiskNote');
+  if(note){
+    var extra='';
+    var bio=(document.getElementById('smBio')||{}).value;
+    if(bio==='High') extra=' Thin-veneer style options are not appropriate for this case.';
+    note.innerHTML='<strong>'+band+'</strong> &middot; '+high+' high-risk domain'+(high===1?'':'s')+'.'+extra;
+  }
+  return band;
+}
+function initSmRisk(){
+  [].forEach.call(document.querySelectorAll('.smrisk'),function(el){
+    if(el.dataset.wired) return; el.dataset.wired='1';
+    el.addEventListener('change', smRisk);
+  });
+  smRisk();
+}
+
+/* ---- photo pickers + comparison slider ---- */
+function smSetImg(which, file){
+  if(!file) return;
+  var url=URL.createObjectURL(file);
+  if(which==='before'){ SM_BEFORE={file:file,url:url}; (document.getElementById('smImgBefore')||{}).src=url; }
+  else { SM_AFTER={file:file,url:url}; (document.getElementById('smImgAfter')||{}).src=url; }
+  smSyncCompare();
+}
+function smSyncCompare(){
+  var stage=document.getElementById('smCmpStage'), empty=document.getElementById('smCmpEmpty'),
+      range=document.getElementById('smCmpRange');
+  if(!stage) return;
+  var ready = SM_BEFORE && SM_AFTER;
+  stage.style.display = ready ? 'block' : 'none';
+  if(empty) empty.style.display = ready ? 'none' : 'block';
+  if(range) range.style.display = ready ? 'block' : 'none';
+  if(ready) smSetSplit(50, 'smCmpAfter','smCmpHandle','smImgAfter','smCmpStage');
+}
+function smSetSplit(pct, afterId, handleId, imgId, stageId){
+  var after=document.getElementById(afterId), handle=document.getElementById(handleId),
+      img=document.getElementById(imgId), stage=document.getElementById(stageId);
+  if(!after||!handle||!stage) return;
+  after.style.width=pct+'%';
+  handle.style.left=pct+'%';
+  if(img) img.style.width=stage.clientWidth+'px';
+}
+function initSmPickers(){
+  var b=document.getElementById('smBefore'), a=document.getElementById('smAfter'),
+      r=document.getElementById('smCmpRange');
+  if(b&&!b.dataset.wired){ b.dataset.wired='1'; b.addEventListener('change',function(){ smSetImg('before', b.files[0]); }); }
+  if(a&&!a.dataset.wired){ a.dataset.wired='1'; a.addEventListener('change',function(){ smSetImg('after', a.files[0]); }); }
+  if(r&&!r.dataset.wired){ r.dataset.wired='1'; r.addEventListener('input',function(){ smSetSplit(r.value,'smCmpAfter','smCmpHandle','smImgAfter','smCmpStage'); }); }
+  window.addEventListener('resize',function(){
+    var rr=document.getElementById('smCmpRange');
+    if(rr && rr.style.display!=='none') smSetSplit(rr.value,'smCmpAfter','smCmpHandle','smImgAfter','smCmpStage');
+  });
+}
+
+/* ---- AI design targets (reuses /api/analyze) ---- */
+async function smileAI(){
+  if(!SM_BEFORE){ smAiMsg('Upload the before photo first.'); return; }
+  var btn=document.getElementById('smAiBtn'); if(btn) btn.disabled=true;
+  smAiMsg('Reading the photo…');
+  try{
+    var small=await shrinkPhoto(SM_BEFORE.file);
+    var tok=(window.iwAuth&&iwAuth.enabled())?await iwAuth.accessToken():null;
+    var r=await fetch('/api/analyze',{method:'POST',
+      headers:Object.assign({'Content-Type':'application/json'}, tok?{Authorization:'Bearer '+tok}:{}),
+      body:JSON.stringify({ arch:(document.getElementById('smArch')||{}).value||'', images:[{label:'Maximum smile',data:small}] })});
+    var d=await r.json();
+    if(!d.ok){ smAiMsg(d.error||'Analysis unavailable.'); if(btn) btn.disabled=false; return; }
+    var e=d.estimates||{};
+    function set(id,val){ var el=document.getElementById(id); if(el&&val!=null&&val!==''){ el.value=val; el.style.color='var(--gold)'; } }
+    if(e['Tooth show at rest (mm)']!=null) set('smRest', e['Tooth show at rest (mm)']);
+    if(e['Tooth show at max smile (mm)']!=null) set('smMax', e['Tooth show at max smile (mm)']);
+    var mx=e['Maxillary midline'];
+    if(mx) set('smMid', mx==='On with facial midline'?'On':(mx==='Move to left'?'Shift left':'Shift right'));
+    var ie=e['Incisal edge horizontal'];
+    if(ie) set('smIncisal', ie==='Good'?'Good':(ie==='Move forward'?'Lengthen':'Shorten'));
+    var sum=document.getElementById('smAiSummary');
+    if(sum){
+      sum.style.display='block';
+      sum.innerHTML='<strong>AI-drafted &middot; surgeon-verified.</strong> '+esc(d.summary||'')+
+        (d.cautions?'<br><span style="color:var(--ink-70);font-size:.9rem">'+esc(d.cautions)+'</span>':'');
+    }
+    smAiMsg('Draft targets filled in gold — verify each one.');
+  }catch(err){ smAiMsg('Could not run the analysis.'); }
+  if(btn) btn.disabled=false;
+}
+
+/* ---- reveal mode ---- */
+function openReveal(){
+  if(!(SM_BEFORE&&SM_AFTER)){ smMsg('Add a before and after photo to use Reveal Mode.'); return; }
+  var ov=document.getElementById('smRevealOverlay'); if(!ov) return;
+  document.getElementById('rvBefore').src=SM_BEFORE.url;
+  document.getElementById('rvAfterImg').src=SM_AFTER.url;
+  var nm=(document.getElementById('smName')||{}).value||'';
+  document.getElementById('rvName').textContent = nm ? (nm.split(' ')[0]+'’s new smile') : 'Your new smile';
+  ov.classList.add('open');
+  setTimeout(function(){ smSetSplit(50,'rvAfter','rvHandle','rvAfterImg','rvStage'); },30);
+}
+function closeReveal(){ var ov=document.getElementById('smRevealOverlay'); if(ov) ov.classList.remove('open'); }
+function initReveal(){
+  var stage=document.getElementById('rvStage'); if(!stage||stage.dataset.wired) return;
+  stage.dataset.wired='1';
+  function move(clientX){
+    var r=stage.getBoundingClientRect();
+    var pct=Math.max(0,Math.min(100,((clientX-r.left)/r.width)*100));
+    smSetSplit(pct,'rvAfter','rvHandle','rvAfterImg','rvStage');
+  }
+  var down=false;
+  stage.addEventListener('mousedown',function(e){ down=true; move(e.clientX); });
+  window.addEventListener('mousemove',function(e){ if(down) move(e.clientX); });
+  window.addEventListener('mouseup',function(){ down=false; });
+  stage.addEventListener('touchstart',function(e){ move(e.touches[0].clientX); },{passive:true});
+  stage.addEventListener('touchmove',function(e){ move(e.touches[0].clientX); },{passive:true});
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeReveal(); });
+}
+
+/* ---- save + list ---- */
+async function smUpload(sb, caseId, kind, file){
+  if(!file) return null;
+  var safe=kind.replace(/[^a-zA-Z0-9._-]/g,'_');
+  var ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  var path='smile/'+caseId+'/'+safe+'.'+ext;
+  var r=await sb.storage.from(CS_BUCKET).upload(path,file,{upsert:true});
+  if(r.error) throw r.error;
+  return { kind:kind, path:path, name:file.name };
+}
+async function saveSmile(ev){
+  ev.preventDefault();
+  var sb=sbc();
+  if(!sb){ smMsg('Sign in to save smile previews.'); return; }
+  if(!SM_BEFORE){ smMsg('A before photo is required.'); return; }
+  smMsg('Saving…');
+  try{
+    var id='sm-'+Date.now();
+    var files=[];
+    var fb=await smUpload(sb,id,'before',SM_BEFORE.file); if(fb) files.push(fb);
+    if(SM_AFTER){ var fa=await smUpload(sb,id,'after',SM_AFTER.file); if(fa) files.push(fa); }
+    var design={
+      shade:(document.getElementById('smShade')||{}).value,
+      style:(document.getElementById('smStyle')||{}).value,
+      arch:(document.getElementById('smArch')||{}).value,
+      risk:{ perio:(document.getElementById('smPerio')||{}).value, bio:(document.getElementById('smBio')||{}).value,
+             func:(document.getElementById('smFunc')||{}).value, dento:(document.getElementById('smDento')||{}).value },
+      targets:{ midline:(document.getElementById('smMid')||{}).value, incisal:(document.getElementById('smIncisal')||{}).value,
+                rest:(document.getElementById('smRest')||{}).value, maxsmile:(document.getElementById('smMax')||{}).value,
+                smileline:(document.getElementById('smLine')||{}).value, plane:(document.getElementById('smPlane')||{}).value }
+    };
+    var row={ practice:window.IW_PRACTICE||'', submitted_by:'', patient:(document.getElementById('smName')||{}).value,
+      complexity:smRisk(), design:design, files:files, notes:(document.getElementById('smNotes')||{}).value };
+    try{ var u=await iwAuth.currentUser(); if(u) row.submitted_by=u.email||''; }catch(e){}
+    var ins=await sb.from(SM_TABLE).insert(row);
+    if(ins.error) throw ins.error;
+    smMsg('Saved to the case vault.');
+    loadSmiles();
+  }catch(err){ smMsg('Could not save: '+((err&&err.message)||'unknown error')); }
+}
+async function loadSmiles(){
+  var sb=sbc(), body=document.getElementById('smBody'); if(!sb||!body) return;
+  try{
+    var r=await sb.from(SM_TABLE).select('*').order('created_at',{ascending:false}).limit(50);
+    if(r.error) throw r.error;
+    SM_LIST=r.data||[];
+    if(!SM_LIST.length){ body.innerHTML='<tr><td colspan="5" style="color:var(--ink-70)">No smile previews saved yet.</td></tr>'; return; }
+    body.innerHTML=SM_LIST.map(function(c){
+      var d=c.design||{};
+      var when=c.created_at?new Date(c.created_at).toLocaleDateString():'';
+      return '<tr><td><strong>'+esc(c.patient||'—')+'</strong></td>'+
+        '<td>'+esc((d.style||'—')+' · '+(d.shade||'—'))+'</td>'+
+        '<td>'+esc(c.complexity||'—')+'</td>'+
+        '<td style="color:var(--ink-70)">'+when+'</td>'+
+        '<td style="text-align:right"><a class="qbtn" style="cursor:pointer" onclick="openSmile(\''+c.id+'\')">Open</a> '+
+        '<a class="qbtn" style="cursor:pointer;color:#e8a598" onclick="deleteSmile(\''+c.id+'\')">Delete</a></td></tr>';
+    }).join('');
+  }catch(e){ body.innerHTML='<tr><td colspan="5" style="color:var(--ink-70)">Run the Smile Preview SQL setup to enable saving.</td></tr>'; }
+}
+async function openSmile(id){
+  var sb=sbc(); if(!sb) return;
+  var c=SM_LIST.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
+  var d=c.design||{}, t=d.targets||{}, rk=d.risk||{};
+  function set(id2,v){ var el=document.getElementById(id2); if(el&&v!=null) el.value=v; }
+  set('smName',c.patient); set('smShade',d.shade); set('smStyle',d.style); set('smArch',d.arch);
+  set('smPerio',rk.perio); set('smBio',rk.bio); set('smFunc',rk.func); set('smDento',rk.dento);
+  set('smMid',t.midline); set('smIncisal',t.incisal); set('smRest',t.rest); set('smMax',t.maxsmile);
+  set('smLine',t.smileline); set('smPlane',t.plane); set('smNotes',c.notes);
+  smRisk();
+  SM_BEFORE=null; SM_AFTER=null;
+  var files=c.files||[];
+  for(var i=0;i<files.length;i++){
+    try{
+      var su=await sb.storage.from(CS_BUCKET).createSignedUrl(files[i].path,3600);
+      if(su.data){
+        if(files[i].kind==='before'){ SM_BEFORE={file:null,url:su.data.signedUrl}; (document.getElementById('smImgBefore')||{}).src=su.data.signedUrl; }
+        if(files[i].kind==='after'){ SM_AFTER={file:null,url:su.data.signedUrl}; (document.getElementById('smImgAfter')||{}).src=su.data.signedUrl; }
+      }
+    }catch(e){}
+  }
+  smSyncCompare();
+  smMsg('Loaded “'+(c.patient||'')+'”.');
+  window.scrollTo(0,0);
+}
+async function deleteSmile(id){
+  if(!confirm('Delete this smile preview and its photos? This cannot be undone.')) return;
+  var sb=sbc(); if(!sb) return;
+  var c=SM_LIST.filter(function(x){ return String(x.id)===String(id); })[0];
+  try{
+    if(c && c.files && c.files.length){
+      try{ await sb.storage.from(CS_BUCKET).remove(c.files.map(function(f){ return f.path; })); }catch(e){}
+    }
+    await sb.from(SM_TABLE).delete().eq('id',id);
+    loadSmiles();
+  }catch(e){ smMsg('Could not delete.'); }
+}
+function initSmile(){ initSmPickers(); initSmRisk(); initReveal(); loadSmiles(); }
+
 /* ============================================================
    Lead Scoring v2 — live lead feed + notes + call log + nurture
    + daily report + consult reports (Kelly's review queue)
@@ -2171,7 +2538,7 @@ var _setRoleBase=setRole;
 setRole=function(r){ _setRoleBase(r); try{ renderConsults(); }catch(e){} };
 
 /* init */
-calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initSmartDrop(); initIosPicker(); initCaseDraft(); restoreView();
+calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); renderOwnerBoard(); initLeadDemo(); initPhotoZones(); initSmartDrop(); initIosPicker(); initCaseDraft(); initSmile(); restoreView();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
@@ -2183,5 +2550,18 @@ if(typeof mfaInit==='function'){ mfaInit(); }
 if(typeof applyPractice==='function'){ applyPractice(); }
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
+<div id="smRevealOverlay">
+  <button class="rv-close" onclick="closeReveal()" aria-label="Close">&times;</button>
+  <div class="rv-name" id="rvName"></div>
+  <div class="rv-stage">
+    <div class="smcmp"><div class="smcmp-stage" id="rvStage">
+      <img id="rvBefore" alt="Before">
+      <div class="smcmp-after" id="rvAfter"><img id="rvAfterImg" alt="After"></div>
+      <div class="smcmp-handle" id="rvHandle"><span>&lsaquo; &rsaquo;</span></div>
+      <span class="smcmp-tag l">Before</span><span class="smcmp-tag r">After</span>
+    </div></div>
+  </div>
+  <div class="rv-hint">Drag to reveal &middot; Esc to close</div>
+</div>
 </body>
 </html>
