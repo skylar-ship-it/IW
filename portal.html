@@ -1076,6 +1076,16 @@ tr:last-child td{border-bottom:0}
             <div class="field"><label>Use my own after image instead</label><input type="file" id="smAfter" accept="image/*"></div>
 
             <div style="height:1px;background:var(--line);margin:20px 0"></div>
+            <div class="eyebrow">Tooth library</div>
+            <p class="co" style="font-size:.86rem;color:var(--ink-70);margin-bottom:12px">
+              Load a straight-on close-up of a finished case &mdash; upper teeth only, cropped to the
+              incisal edges. The preview composites this real photo onto the arch instead of drawing shapes.
+            </p>
+            <div class="field"><input type="file" id="smtFile" accept="image/*"></div>
+            <div id="smtName" style="display:none;font-size:.86rem;color:var(--gold);margin-top:4px"></div>
+            <img id="smtThumb" style="display:none;margin-top:10px;width:180px;border-radius:8px;border:1px solid var(--line)" alt="">
+
+            <div style="height:1px;background:var(--line);margin:20px 0"></div>
             <div class="eyebrow">Risk assessment</div>
             <div class="split" style="gap:14px">
               <div class="field"><label>Periodontal</label><select class="smrisk" id="smPerio"><option>Low</option><option>Moderate</option><option>High</option></select></div>
@@ -2253,6 +2263,82 @@ var SMX_SHADES = {
   'B2':['#F0E8D4','#DED2B6']
 };
 
+
+/* ============================================================
+   Photo-composite renderer — warps a REAL tooth photo onto the arch
+   ============================================================ */
+var SMT = { img:null, url:null, name:'' };
+
+function smtSet(file){
+  if(!file) return;
+  if(SMT.url) try{ URL.revokeObjectURL(SMT.url); }catch(e){}
+  SMT.url=URL.createObjectURL(file); SMT.name=file.name;
+  var im=new Image();
+  im.onload=function(){
+    SMT.img=im;
+    try{ localStorage.setItem('iw_tooth_lib_name', file.name); }catch(e){}
+    var lbl=document.getElementById('smtName');
+    if(lbl){ lbl.textContent=file.name+' — loaded'; lbl.style.display='block'; }
+    var th=document.getElementById('smtThumb'); if(th){ th.src=SMT.url; th.style.display='block'; }
+    if(SMX.ready) smxRender();
+  };
+  im.src=SMT.url;
+}
+
+/* Draw the real tooth strip in vertical slices, each placed on the arch curve.
+   Slices give us the curve + foreshortening without a full 3-D warp. */
+function smtComposite(ctx,p,lum,shadeShift){
+  var src=SMT.img; if(!src) return false;
+  var SW=src.naturalWidth, SH=src.naturalHeight;
+  if(!SW||!SH) return false;
+
+  var archW = p.widths.reduce(function(a,b){return a+b;},0);
+  var x0 = p.faceMid - archW/2;
+  var lengthen=parseFloat((document.getElementById('smxLen')||{}).value||'0');
+  var N = 96;                                  /* slices across the arch */
+  var sliceSrcW = SW/N;
+
+  /* off-screen buffer so we can colour-grade the strip before compositing */
+  var buf=document.createElement('canvas');
+  buf.width=Math.max(2,Math.ceil(archW)); buf.height=Math.max(2,Math.ceil(p.mouthH*1.6));
+  var bx=buf.getContext('2d');
+  var yBase=buf.height*0.5;
+
+  for(var i=0;i<N;i++){
+    var fx=i/(N-1);
+    var cx=x0+archW*fx;                        /* position across the arch */
+    var gum=p.curveYAt(cx,p.upperInner);
+    var lip=p.curveYAt(cx,p.lowerInner);
+    if(gum==null||lip==null) continue;
+
+    var t=Math.abs(fx-0.5)*2;                  /* 0 centre → 1 corners */
+    var recede=p.mouthH*0.10*t*t;              /* arch curves away */
+    var incisal=lip - p.mouthH*0.05 + lengthen - recede*0.35;
+    var h=Math.max(4,(incisal-gum)-recede);
+
+    var dx=(cx-x0), dw=archW/N + 1;
+    bx.save();
+    bx.globalAlpha=1;
+    bx.drawImage(src, i*sliceSrcW, 0, sliceSrcW, SH,
+                      dx, yBase-h, dw, h);
+    bx.restore();
+  }
+
+  /* colour-grade: match the photo's exposure, nudge toward the chosen shade */
+  bx.globalCompositeOperation='source-atop';
+  bx.fillStyle='rgba('+shadeShift[0]+','+shadeShift[1]+','+shadeShift[2]+','+shadeShift[3]+')';
+  bx.fillRect(0,0,buf.width,buf.height);
+  bx.globalCompositeOperation='source-over';
+
+  ctx.save();
+  ctx.globalAlpha=1;
+  if(lum!==1){ ctx.filter='brightness('+lum.toFixed(3)+') saturate(0.96)'; }
+  ctx.drawImage(buf, x0, p.top - (yBase - (p.top)) , buf.width, buf.height);
+  ctx.filter='none';
+  ctx.restore();
+  return true;
+}
+
 function smxRender(){
   if(!SMX.ready) return;
   var img=SMX.img;
@@ -2301,6 +2387,26 @@ function smxRender(){
   ctx.fillStyle=cav; ctx.fill();
 
   var sh=SMX_SHADES[shade]||SMX_SHADES['A2'];
+
+  /* If a real tooth photo is loaded, composite it instead of drawing shapes */
+  var SHIFT={'Bleach White':[255,255,250,.22],'A1':[250,246,235,.14],'A2':[243,237,221,.10],
+             'B1':[250,247,238,.13],'B2':[238,228,206,.16]};
+  if(SMT.img && smtComposite(ctx,p,lum,SHIFT[shade]||SHIFT['A2'])){
+    /* buccal corridors + lip shadow still apply */
+    var bl=ctx.createLinearGradient(p.left,0,p.left+p.mouthW*0.18,0);
+    bl.addColorStop(0,'rgba(28,16,14,.7)'); bl.addColorStop(1,'rgba(28,16,14,0)');
+    ctx.fillStyle=bl; ctx.fillRect(p.left-2,p.top-2,p.mouthW*0.18,p.mouthH+4);
+    var br=ctx.createLinearGradient(p.right,0,p.right-p.mouthW*0.18,0);
+    br.addColorStop(0,'rgba(28,16,14,.7)'); br.addColorStop(1,'rgba(28,16,14,0)');
+    ctx.fillStyle=br; ctx.fillRect(p.right-p.mouthW*0.18,p.top-2,p.mouthW*0.18+2,p.mouthH+4);
+    var ls=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.32);
+    ls.addColorStop(0,'rgba(34,18,14,.55)'); ls.addColorStop(1,'rgba(34,18,14,0)');
+    ctx.fillStyle=ls; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.32);
+    ctx.restore();
+    smxPushAfter();
+    return;
+  }
+
   var arch = p.widths.reduce(function(a,b){return a+b;},0);
   var x = p.faceMid - arch/2;
   var mid = (p.widths.length-1)/2;
@@ -2537,6 +2643,8 @@ function camShoot(){
 }
 
 function initSmx(){
+  var tf=document.getElementById('smtFile');
+  if(tf&&!tf.dataset.wired){ tf.dataset.wired='1'; tf.addEventListener('change',function(){ smtSet(tf.files[0]); }); }
   ['smStyle','smShade','smxLen'].forEach(function(id){
     var el=document.getElementById(id); if(!el||el.dataset.smx) return;
     el.dataset.smx='1';
