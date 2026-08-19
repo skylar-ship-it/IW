@@ -176,8 +176,10 @@ tr:last-child td{border-bottom:0}
 #camOverlay{position:fixed;inset:0;z-index:320;background:#000;display:none}
 #camOverlay.open{display:block}
 #camVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#camGuide{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-#camGuide.ok ellipse{stroke:#7ee0b8}
+#camGuideBox{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  height:min(86vh,124vw);aspect-ratio:100/139;pointer-events:none}
+#camGuide{width:100%;height:100%;display:block}
+#camGuide.ok path{stroke:#7ee0b8}
 #camHint{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 24px);text-align:center;
   font-family:var(--body);font-size:.9rem;letter-spacing:.06em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7);padding:0 20px}
 #camHint.ok{color:#7ee0b8}
@@ -1076,10 +1078,10 @@ tr:last-child td{border-bottom:0}
             <div class="field"><label>Use my own after image instead</label><input type="file" id="smAfter" accept="image/*"></div>
 
             <div style="height:1px;background:var(--line);margin:20px 0"></div>
-            <div class="eyebrow">Tooth library</div>
+            <div class="eyebrow">Tooth library &mdash; optional override</div>
             <p class="co" style="font-size:.86rem;color:var(--ink-70);margin-bottom:12px">
-              Load a straight-on close-up of a finished case &mdash; upper teeth only, cropped to the
-              incisal edges. The preview composites this real photo onto the arch instead of drawing shapes.
+              A built-in tooth photo is used automatically. Load a different close-up here to
+              override it &mdash; upper teeth only, cropped to the incisal edges.
             </p>
             <div class="field"><input type="file" id="smtFile" accept="image/*"></div>
             <div id="smtName" style="display:none;font-size:.86rem;color:var(--gold);margin-top:4px"></div>
@@ -2269,6 +2271,14 @@ var SMX_SHADES = {
    ============================================================ */
 var SMT = { img:null, url:null, name:'' };
 
+/* built-in tooth photo — loads automatically, no upload needed */
+(function(){
+  var im=new Image();
+  im.onload=function(){ SMT.img=im; if(SMX.ready) smxRender(); };
+  im.onerror=function(){ /* falls back to drawn teeth */ };
+  im.src='tooth-01.png';
+})();
+
 function smtSet(file){
   if(!file) return;
   if(SMT.url) try{ URL.revokeObjectURL(SMT.url); }catch(e){}
@@ -2285,55 +2295,54 @@ function smtSet(file){
   im.src=SMT.url;
 }
 
-/* Draw the real tooth strip in vertical slices, each placed on the arch curve.
-   Slices give us the curve + foreshortening without a full 3-D warp. */
-function smtComposite(ctx,p,lum,shadeShift){
-  var src=SMT.img; if(!src) return false;
+/* Composite a REAL tooth photo onto the arch.
+   Each vertical slice of the source is placed at its true position on the
+   smile curve, so the strip bends and foreshortens like a real arch. */
+function smtComposite(ctx,p,lum,shadeShift,W,H){
+  var src=SMT.img; if(!src||!src.naturalWidth) return false;
   var SW=src.naturalWidth, SH=src.naturalHeight;
-  if(!SW||!SH) return false;
 
   var archW = p.widths.reduce(function(a,b){return a+b;},0);
   var x0 = p.faceMid - archW/2;
   var lengthen=parseFloat((document.getElementById('smxLen')||{}).value||'0');
-  var N = 96;                                  /* slices across the arch */
-  var sliceSrcW = SW/N;
+  var N=110, sliceSrcW=SW/N;
 
-  /* off-screen buffer so we can colour-grade the strip before compositing */
+  /* full-size buffer so colour grading only touches the teeth */
   var buf=document.createElement('canvas');
-  buf.width=Math.max(2,Math.ceil(archW)); buf.height=Math.max(2,Math.ceil(p.mouthH*1.6));
+  buf.width=W; buf.height=H;
   var bx=buf.getContext('2d');
-  var yBase=buf.height*0.5;
+  var drew=0;
 
   for(var i=0;i<N;i++){
-    var fx=i/(N-1);
-    var cx=x0+archW*fx;                        /* position across the arch */
+    var f0=i/N, f1=(i+1)/N;
+    var cxA=x0+archW*f0, cxB=x0+archW*f1;
+    var cx=(cxA+cxB)/2;
     var gum=p.curveYAt(cx,p.upperInner);
     var lip=p.curveYAt(cx,p.lowerInner);
     if(gum==null||lip==null) continue;
 
-    var t=Math.abs(fx-0.5)*2;                  /* 0 centre → 1 corners */
-    var recede=p.mouthH*0.10*t*t;              /* arch curves away */
-    var incisal=lip - p.mouthH*0.05 + lengthen - recede*0.35;
-    var h=Math.max(4,(incisal-gum)-recede);
+    var t=Math.abs(f0+ (f1-f0)/2 - 0.5)*2;      /* 0 centre → 1 corner */
+    var recede=p.mouthH*0.10*t*t;
+    var incisal=lip - p.mouthH*0.045 + lengthen - recede*0.35;
+    var h=(incisal-gum)-recede;
+    if(h<4) continue;
 
-    var dx=(cx-x0), dw=archW/N + 1;
-    bx.save();
-    bx.globalAlpha=1;
+    var dw=(cxB-cxA)+1.2;                        /* overlap kills seams */
     bx.drawImage(src, i*sliceSrcW, 0, sliceSrcW, SH,
-                      dx, yBase-h, dw, h);
-    bx.restore();
+                      cxA-0.6, incisal-h, dw, h);
+    drew++;
   }
+  if(!drew) return false;
 
-  /* colour-grade: match the photo's exposure, nudge toward the chosen shade */
+  /* shade shift + exposure match, applied only where teeth were drawn */
   bx.globalCompositeOperation='source-atop';
   bx.fillStyle='rgba('+shadeShift[0]+','+shadeShift[1]+','+shadeShift[2]+','+shadeShift[3]+')';
-  bx.fillRect(0,0,buf.width,buf.height);
+  bx.fillRect(0,0,W,H);
   bx.globalCompositeOperation='source-over';
 
   ctx.save();
-  ctx.globalAlpha=1;
-  if(lum!==1){ ctx.filter='brightness('+lum.toFixed(3)+') saturate(0.96)'; }
-  ctx.drawImage(buf, x0, p.top - (yBase - (p.top)) , buf.width, buf.height);
+  if(lum!==1) ctx.filter='brightness('+Math.max(.6,Math.min(1.3,lum)).toFixed(3)+') saturate(.97)';
+  ctx.drawImage(buf,0,0);
   ctx.filter='none';
   ctx.restore();
   return true;
@@ -2391,7 +2400,7 @@ function smxRender(){
   /* If a real tooth photo is loaded, composite it instead of drawing shapes */
   var SHIFT={'Bleach White':[255,255,250,.22],'A1':[250,246,235,.14],'A2':[243,237,221,.10],
              'B1':[250,247,238,.13],'B2':[238,228,206,.16]};
-  if(SMT.img && smtComposite(ctx,p,lum,SHIFT[shade]||SHIFT['A2'])){
+  if(SMT.img && smtComposite(ctx,p,lum,SHIFT[shade]||SHIFT['A2'],W,H)){
     /* buccal corridors + lip shadow still apply */
     var bl=ctx.createLinearGradient(p.left,0,p.left+p.mouthW*0.18,0);
     bl.addColorStop(0,'rgba(28,16,14,.7)'); bl.addColorStop(1,'rgba(28,16,14,0)');
@@ -3130,12 +3139,21 @@ if(typeof applyPractice==='function'){ applyPractice(); }
 </div>
 <div id="camOverlay">
   <video id="camVideo" playsinline muted autoplay></video>
-  <svg id="camGuide" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <ellipse cx="50" cy="45" rx="20.5" ry="31" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.4" stroke-dasharray="2 1.6"/>
-    <line x1="50" y1="16" x2="50" y2="78" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
-    <line x1="31" y1="43" x2="69" y2="43" stroke="rgba(255,255,255,.55)" stroke-width="0.25" stroke-dasharray="1.4 1.4"/>
-    <path d="M43 58 q7 6 14 0 q-7 3 -14 0z" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="0.45"/>
-  </svg>
+  <div id="camGuideBox">
+    <svg id="camGuide" viewBox="0 0 100 139" preserveAspectRatio="xMidYMid meet">
+      <!-- head silhouette: wide at the temples, tapering to the chin -->
+      <path d="M50 3 C24 3 11 26 11 52 C11 72 15 88 24 102 C33 116 42 128 50 136
+               C58 128 67 116 76 102 C85 88 89 72 89 52 C89 26 76 3 50 3 Z"
+            fill="none" stroke="rgba(255,255,255,.92)" stroke-width="0.7" stroke-dasharray="3 2.4"/>
+      <!-- interpupillary line -->
+      <line x1="20" y1="55" x2="80" y2="55" stroke="rgba(255,255,255,.5)" stroke-width="0.4" stroke-dasharray="2 2"/>
+      <!-- facial midline -->
+      <line x1="50" y1="12" x2="50" y2="124" stroke="rgba(255,255,255,.5)" stroke-width="0.4" stroke-dasharray="2 2"/>
+      <!-- smile guide at mouth level -->
+      <path d="M27 95 Q50 112 73 95" fill="none" stroke="rgba(255,255,255,.95)" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M27 95 Q50 103 73 95" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="0.7" stroke-linecap="round"/>
+    </svg>
+  </div>
   <div id="camHint">Line the face up inside the oval</div>
   <div id="camBar">
     <button type="button" class="cam-side" onclick="camFlip()" aria-label="Switch camera">⟲</button>
