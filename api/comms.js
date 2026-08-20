@@ -89,8 +89,8 @@ async function getTranscript(location, messageId, token){
     var text = segs
       .sort(function(a,b){ return (a.sentenceIndex||0)-(b.sentenceIndex||0); })
       .map(function(s){ return (s.transcript||'').trim(); })
-      .filter(Boolean).join(' ');
-    return text || null;
+      .filter(Boolean).join('\n');
+    return text ? text.slice(0, 60000) : null;
   }catch(e){ return null; }
 }
 
@@ -194,11 +194,11 @@ module.exports = async function handler(req, res){
         var msgs = await getMessages(cv.id, token);
         var card = analyze(cv, msgs, now);
 
-        /* transcripts for up to 2 most recent calls */
-        var callMsgs = msgs.filter(function(m){ return m.messageType==='TYPE_CALL'; }).slice(0,2);
+        /* full transcripts for up to 5 most recent calls */
+        var callMsgs = msgs.filter(function(m){ return m.messageType==='TYPE_CALL'; }).slice(0,5);
         for (var k=0;k<callMsgs.length;k++){
           var txt = await getTranscript(location, callMsgs[k].id, token);
-          if (txt) card.transcripts.push({ at: fmtCDT(ts(callMsgs[k].dateAdded)), text: txt.slice(0, 2200) });
+          if (txt) card.transcripts.push({ at: fmtCDT(ts(callMsgs[k].dateAdded)), text: txt });
         }
 
         /* optional AI notes */
