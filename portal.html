@@ -1080,8 +1080,10 @@ tr:last-child td{border-bottom:0}
             <div style="height:1px;background:var(--line);margin:20px 0"></div>
             <div class="eyebrow">Tooth library &mdash; optional override</div>
             <p class="co" style="font-size:.86rem;color:var(--ink-70);margin-bottom:12px">
-              A built-in tooth photo is used automatically. Load a different close-up here to
-              override it &mdash; upper teeth only, cropped to the incisal edges.
+              Built-in photos load automatically per tooth shape (files <span class="mono">tooth-natural.png</span>,
+              <span class="mono">tooth-rounded.png</span>, <span class="mono">tooth-square.png</span>,
+              <span class="mono">tooth-conservative.png</span> in the site root; <span class="mono">tooth-01.png</span>
+              is the fallback). Upload here to replace the photo for the currently selected shape.
             </p>
             <div class="field"><input type="file" id="smtFile" accept="image/*"></div>
             <div id="smtName" style="display:none;font-size:.86rem;color:var(--gold);margin-top:4px"></div>
@@ -2269,79 +2271,104 @@ var SMX_SHADES = {
 /* ============================================================
    Photo-composite renderer — warps a REAL tooth photo onto the arch
    ============================================================ */
-var SMT = { img:null, url:null, name:'' };
+var SMT = { imgs:{}, fallback:null, img:null };
+var SMT_FILES = {
+  'Natural-softened':'tooth-natural.png',
+  'Youthful-rounded':'tooth-rounded.png',
+  'Bold-square':'tooth-square.png',
+  'Conservative':'tooth-conservative.png'
+};
 
-/* built-in tooth photo — loads automatically, no upload needed */
+/* load per-style photos; tooth-01.png is the fallback for any missing style */
 (function(){
-  var im=new Image();
-  im.onload=function(){ SMT.img=im; if(SMX.ready) smxRender(); };
-  im.onerror=function(){ /* falls back to drawn teeth */ };
-  im.src='tooth-01.png';
+  var fb=new Image();
+  fb.onload=function(){ SMT.fallback=fb; smtPick(); };
+  fb.src='tooth-01.png';
+  Object.keys(SMT_FILES).forEach(function(style){
+    var im=new Image();
+    im.onload=function(){ SMT.imgs[style]=im; smtPick(); };
+    im.onerror=function(){};                 /* missing file → fallback covers it */
+    im.src=SMT_FILES[style];
+  });
 })();
+
+/* choose the image for the current style */
+function smtPick(){
+  var style=(document.getElementById('smStyle')||{}).value||'Natural-softened';
+  SMT.img = SMT.imgs[style] || SMT.fallback || null;
+  if(SMX.ready) smxRender();
+}
 
 function smtSet(file){
   if(!file) return;
-  if(SMT.url) try{ URL.revokeObjectURL(SMT.url); }catch(e){}
-  SMT.url=URL.createObjectURL(file); SMT.name=file.name;
+  var url=URL.createObjectURL(file);
   var im=new Image();
   im.onload=function(){
-    SMT.img=im;
-    try{ localStorage.setItem('iw_tooth_lib_name', file.name); }catch(e){}
+    var style=(document.getElementById('smStyle')||{}).value||'Natural-softened';
+    SMT.imgs[style]=im;                       /* override applies to the selected style */
     var lbl=document.getElementById('smtName');
-    if(lbl){ lbl.textContent=file.name+' — loaded'; lbl.style.display='block'; }
-    var th=document.getElementById('smtThumb'); if(th){ th.src=SMT.url; th.style.display='block'; }
-    if(SMX.ready) smxRender();
+    if(lbl){ lbl.textContent=file.name+' — loaded for '+style; lbl.style.display='block'; }
+    var th=document.getElementById('smtThumb'); if(th){ th.src=url; th.style.display='block'; }
+    smtPick();
   };
-  im.src=SMT.url;
+  im.src=url;
 }
 
-/* Composite a REAL tooth photo onto the arch.
-   Each vertical slice of the source is placed at its true position on the
-   smile curve, so the strip bends and foreshortens like a real arch. */
-function smtComposite(ctx,p,lum,shadeShift,W,H){
+/* Composite a REAL tooth photo onto the arch — full mouth span, shade-graded. */
+function smtComposite(ctx,p,lum,shadeName,W,H){
   var src=SMT.img; if(!src||!src.naturalWidth) return false;
   var SW=src.naturalWidth, SH=src.naturalHeight;
 
-  var archW = p.widths.reduce(function(a,b){return a+b;},0);
-  var x0 = p.faceMid - archW/2;
+  var xStart=p.left + p.mouthW*0.015, xEnd=p.right - p.mouthW*0.015;
+  var span=xEnd-xStart;
   var lengthen=parseFloat((document.getElementById('smxLen')||{}).value||'0');
-  var N=110, sliceSrcW=SW/N;
+  var N=120, sliceSrcW=SW/N;
+  var tuck=p.mouthH*0.14;                     /* run up under the lip so no gap shows */
 
-  /* full-size buffer so colour grading only touches the teeth */
   var buf=document.createElement('canvas');
   buf.width=W; buf.height=H;
   var bx=buf.getContext('2d');
   var drew=0;
 
-  for(var i=0;i<N;i++){
-    var f0=i/N, f1=(i+1)/N;
-    var cxA=x0+archW*f0, cxB=x0+archW*f1;
-    var cx=(cxA+cxB)/2;
+  for(var i2=0;i2<N;i2++){
+    var f0=i2/N, f1=(i2+1)/N;
+    var cxA=xStart+span*f0, cxB=xStart+span*f1, cx=(cxA+cxB)/2;
     var gum=p.curveYAt(cx,p.upperInner);
     var lip=p.curveYAt(cx,p.lowerInner);
     if(gum==null||lip==null) continue;
-
-    var t=Math.abs(f0+ (f1-f0)/2 - 0.5)*2;      /* 0 centre → 1 corner */
-    var recede=p.mouthH*0.10*t*t;
-    var incisal=lip - p.mouthH*0.045 + lengthen - recede*0.35;
-    var h=(incisal-gum)-recede;
+    var t=Math.abs((f0+f1)/2-0.5)*2;
+    var recede=p.mouthH*0.08*t*t;
+    var incisal=lip - p.mouthH*0.02 + lengthen - recede*0.3;
+    var yTop=gum - tuck;
+    var h=(incisal-yTop)-recede;
     if(h<4) continue;
-
-    var dw=(cxB-cxA)+1.2;                        /* overlap kills seams */
-    bx.drawImage(src, i*sliceSrcW, 0, sliceSrcW, SH,
-                      cxA-0.6, incisal-h, dw, h);
+    var dw=(cxB-cxA)+1.2;
+    bx.drawImage(src, i2*sliceSrcW, 0, sliceSrcW, SH, cxA-0.6, yTop, dw, h);
     drew++;
   }
   if(!drew) return false;
 
-  /* shade shift + exposure match, applied only where teeth were drawn */
-  bx.globalCompositeOperation='source-atop';
-  bx.fillStyle='rgba('+shadeShift[0]+','+shadeShift[1]+','+shadeShift[2]+','+shadeShift[3]+')';
-  bx.fillRect(0,0,W,H);
-  bx.globalCompositeOperation='source-over';
+  /* ---- shade: true multiply grading, masked back to the teeth ---- */
+  var MUL={'Bleach White':null,'A1':[252,246,230],'A2':[244,232,205],'B1':[250,244,226],'B2':[238,224,192]};
+  var m=MUL[shadeName];
+  if(m){
+    var mask=document.createElement('canvas'); mask.width=W; mask.height=H;
+    mask.getContext('2d').drawImage(buf,0,0);
+    bx.globalCompositeOperation='multiply';
+    bx.fillStyle='rgb('+m[0]+','+m[1]+','+m[2]+')';
+    bx.fillRect(0,0,W,H);
+    bx.globalCompositeOperation='destination-in';
+    bx.drawImage(mask,0,0);
+    bx.globalCompositeOperation='source-over';
+  } else {
+    bx.globalCompositeOperation='source-atop';
+    bx.fillStyle='rgba(255,255,255,.10)';
+    bx.fillRect(0,0,W,H);
+    bx.globalCompositeOperation='source-over';
+  }
 
   ctx.save();
-  if(lum!==1) ctx.filter='brightness('+Math.max(.6,Math.min(1.3,lum)).toFixed(3)+') saturate(.97)';
+  ctx.filter='brightness('+Math.max(.55,Math.min(1.15,lum)).toFixed(3)+') saturate(.97) blur(0.4px)';
   ctx.drawImage(buf,0,0);
   ctx.filter='none';
   ctx.restore();
@@ -2364,18 +2391,15 @@ function smxRender(){
   var p=smxPlan(SMX.pts,W,H,style);
   SMX.plan=p;
 
-  /* --- sample the photo's own lighting inside the mouth so teeth match it --- */
+  /* --- exposure match: sample the skin above the upper lip --- */
   var lum=1;
   try{
-    var sx=Math.max(0,Math.round(p.left)), sy=Math.max(0,Math.round(p.top));
-    var sw=Math.max(1,Math.round(p.mouthW)), sh=Math.max(1,Math.round(p.mouthH));
-    var d=ctx.getImageData(sx,sy,sw,sh).data, sum=0, n=0, best=0;
-    for(var q=0;q<d.length;q+=16){
-      var v=(0.299*d[q]+0.587*d[q+1]+0.114*d[q+2]);
-      sum+=v; n++; if(v>best) best=v;
-    }
+    var sy0=Math.max(0,Math.round(p.top-p.mouthH*0.9));
+    var d=ctx.getImageData(Math.round(p.left),sy0,Math.max(1,Math.round(p.mouthW)),Math.max(1,Math.round(p.mouthH*0.6))).data;
+    var sum=0,n=0;
+    for(var q=0;q<d.length;q+=16){ sum+=(0.299*d[q]+0.587*d[q+1]+0.114*d[q+2]); n++; }
     var mean=n?sum/n:150;
-    lum = Math.max(0.55, Math.min(1.25, (mean*0.4 + best*0.6)/205));
+    lum=Math.max(0.55,Math.min(1.1, mean/165));
   }catch(e){}
   function tint(hex,k){
     var r=parseInt(hex.substr(1,2),16), g=parseInt(hex.substr(3,2),16), b=parseInt(hex.substr(5,2),16);
@@ -2390,17 +2414,15 @@ function smxRender(){
   ctx.closePath();
   ctx.clip();
 
-  /* dark oral cavity */
+  /* oral cavity — soft warm dark, not pure black */
   var cav=ctx.createLinearGradient(0,p.top,0,p.bot);
-  cav.addColorStop(0,'#160f0d'); cav.addColorStop(1,'#2a1a18');
+  cav.addColorStop(0,'#3a2420'); cav.addColorStop(0.5,'#2c1a17'); cav.addColorStop(1,'#241512');
   ctx.fillStyle=cav; ctx.fill();
 
   var sh=SMX_SHADES[shade]||SMX_SHADES['A2'];
 
   /* If a real tooth photo is loaded, composite it instead of drawing shapes */
-  var SHIFT={'Bleach White':[255,255,250,.22],'A1':[250,246,235,.14],'A2':[243,237,221,.10],
-             'B1':[250,247,238,.13],'B2':[238,228,206,.16]};
-  if(SMT.img && smtComposite(ctx,p,lum,SHIFT[shade]||SHIFT['A2'],W,H)){
+  if(SMT.img && smtComposite(ctx,p,lum,shade,W,H)){
     /* buccal corridors + lip shadow still apply */
     var bl=ctx.createLinearGradient(p.left,0,p.left+p.mouthW*0.18,0);
     bl.addColorStop(0,'rgba(28,16,14,.7)'); bl.addColorStop(1,'rgba(28,16,14,0)');
@@ -2408,9 +2430,13 @@ function smxRender(){
     var br=ctx.createLinearGradient(p.right,0,p.right-p.mouthW*0.18,0);
     br.addColorStop(0,'rgba(28,16,14,.7)'); br.addColorStop(1,'rgba(28,16,14,0)');
     ctx.fillStyle=br; ctx.fillRect(p.right-p.mouthW*0.18,p.top-2,p.mouthW*0.18+2,p.mouthH+4);
-    var ls=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.32);
-    ls.addColorStop(0,'rgba(34,18,14,.55)'); ls.addColorStop(1,'rgba(34,18,14,0)');
-    ctx.fillStyle=ls; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.32);
+    var ls=ctx.createLinearGradient(0,p.top,0,p.top+p.mouthH*0.42);
+    ls.addColorStop(0,'rgba(30,16,12,.72)'); ls.addColorStop(1,'rgba(30,16,12,0)');
+    ctx.fillStyle=ls; ctx.fillRect(p.left,p.top,p.mouthW,p.mouthH*0.42);
+    /* soft shadow rising from the lower lip so incisal edges sit in the mouth */
+    var lo=ctx.createLinearGradient(0,p.bot,0,p.bot-p.mouthH*0.30);
+    lo.addColorStop(0,'rgba(30,16,12,.5)'); lo.addColorStop(1,'rgba(30,16,12,0)');
+    ctx.fillStyle=lo; ctx.fillRect(p.left,p.bot-p.mouthH*0.30,p.mouthW,p.mouthH*0.30);
     ctx.restore();
     smxPushAfter();
     return;
@@ -2657,8 +2683,8 @@ function initSmx(){
   ['smStyle','smShade','smxLen'].forEach(function(id){
     var el=document.getElementById(id); if(!el||el.dataset.smx) return;
     el.dataset.smx='1';
-    el.addEventListener('input',function(){ if(SMX.ready) smxRender(); });
-    el.addEventListener('change',function(){ if(SMX.ready) smxRender(); });
+    el.addEventListener('input',function(){ if(id==='smStyle'){ smtPick(); } else if(SMX.ready) smxRender(); });
+    el.addEventListener('change',function(){ if(id==='smStyle'){ smtPick(); } else if(SMX.ready) smxRender(); });
   });
 }
 
@@ -2784,8 +2810,8 @@ function renderComms(d){
               ' · 💬 '+c.textsOut+' sent / '+c.textsIn+' received'+
               (c.responseMins!=null?(' · first reply '+(c.responseMins<60?(c.responseMins+' min'):(Math.round(c.responseMins/60)+' h'))):'');
     var tr=(c.transcripts||[]).map(function(t){
-      return '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.86rem;color:var(--teal)">📞 Call transcript · '+esc(t.at||'')+'</summary>'+
-             '<p style="font-size:.86rem;color:var(--ink-70);margin-top:6px;white-space:pre-wrap">'+esc(t.text)+'</p></details>';
+      return '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.86rem;color:var(--teal)">📞 Full call transcript · '+esc(t.at||'')+'</summary>'+
+             '<div style="font-size:.87rem;color:var(--ink-70);margin-top:8px;white-space:pre-wrap;line-height:1.65;max-height:360px;overflow:auto;padding:12px 14px;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:8px">'+esc(t.text)+'</div></details>';
     }).join('');
     var ai=c.aiNotes?('<div style="margin-top:10px;padding:10px 14px;background:rgba(36,92,92,.06);border-left:3px solid var(--teal);border-radius:4px;font-size:.88rem;white-space:pre-wrap">'+esc(c.aiNotes)+'</div>'):'';
     var thread=(c.thread&&c.thread.length)?('<details style="margin-top:8px"><summary style="cursor:pointer;font-size:.86rem;color:var(--teal)">💬 Text thread ('+c.thread.length+')</summary>'+
