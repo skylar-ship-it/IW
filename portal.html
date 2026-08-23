@@ -1012,7 +1012,36 @@ tr:last-child td{border-bottom:0}
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
             <div class="eyebrow" style="margin:0">Schedule</div>
-            <a class="qbtn" style="cursor:pointer" onclick="loadAppointments()">↻ Refresh</a>
+            <div style="display:flex;gap:8px">
+              <a class="qbtn" style="cursor:pointer;background:var(--gold);color:var(--ink)" onclick="apOpenForm()">＋ New Appointment</a>
+              <a class="qbtn" style="cursor:pointer" onclick="loadAppointments()">↻ Refresh</a>
+            </div>
+          </div>
+
+          <div id="apForm" style="display:none;border:1px solid rgba(201,169,110,.4);border-radius:12px;padding:18px;margin:10px 0 16px">
+            <input type="hidden" id="apfId">
+            <div class="split" style="gap:12px">
+              <div class="field"><label>Patient name *</label><input type="text" id="apfName" placeholder="First Last"></div>
+              <div class="field"><label>Phone</label><input type="tel" id="apfPhone" placeholder="(555) 555-5555"></div>
+            </div>
+            <div class="split" style="gap:12px">
+              <div class="field"><label>Date &amp; time *</label><input type="datetime-local" id="apfWhen"></div>
+              <div class="field"><label>Length</label>
+                <select id="apfLen"><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option><option value="180">3 hours</option></select></div>
+            </div>
+            <div class="split" style="gap:12px">
+              <div class="field"><label>Type</label>
+                <select id="apfType"><option>Consultation</option><option>Records / CBCT</option><option>Surgery</option><option>Post-op</option><option>Follow-up</option><option>Other</option></select></div>
+              <div class="field"><label>Status</label>
+                <select id="apfStatus"><option>Confirmed</option><option>Scheduled</option><option>Showed</option><option>No-show</option><option>Cancelled</option></select></div>
+            </div>
+            <div class="field"><label>Notes</label><input type="text" id="apfNotes" placeholder="Anything the team should know…"></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <button type="button" class="btn btn-gold" onclick="apSave()">Save Appointment</button>
+              <button type="button" class="btn btn-out" onclick="apCloseForm()">Cancel</button>
+              <a id="apfDelete" class="qbtn" style="display:none;cursor:pointer;color:#e8a598" onclick="apDelete()">Delete</a>
+              <span id="apfStatusMsg" style="font-size:.9rem;color:var(--ink-70)"></span>
+            </div>
           </div>
           <div id="apList"><p style="color:var(--ink-70)">Loading…</p></div>
           <p id="apFoot" style="font-size:.82rem;color:var(--ink-70);margin-top:12px"></p>
@@ -1961,38 +1990,154 @@ function apDayLabel(key){
       .format(new Date(+parts[0],+parts[1]-1,+parts[2]));
   }catch(e){ return key; }
 }
+var AP_TABLE='portal_appointments', AP_GHL=[], AP_MINE=[];
+
+function apCT(ms, withDay){
+  try{
+    var o = withDay
+      ? {timeZone:'America/Chicago',weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}
+      : {timeZone:'America/Chicago',hour:'numeric',minute:'2-digit'};
+    return new Intl.DateTimeFormat('en-US',o).format(new Date(ms));
+  }catch(e){ return ''; }
+}
+function apDayKey(ms){
+  try{ return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(ms)); }
+  catch(e){ return ''; }
+}
+
+function apOpenForm(row){
+  var f=document.getElementById('apForm'); if(!f) return;
+  f.style.display='block';
+  var del=document.getElementById('apfDelete');
+  (document.getElementById('apfStatusMsg')||{}).textContent='';
+  if(row){
+    (document.getElementById('apfId')||{}).value=row.id;
+    (document.getElementById('apfName')||{}).value=row.patient||'';
+    (document.getElementById('apfPhone')||{}).value=row.phone||'';
+    (document.getElementById('apfType')||{}).value=row.title||'Consultation';
+    (document.getElementById('apfStatus')||{}).value=row.status||'Confirmed';
+    (document.getElementById('apfNotes')||{}).value=row.notes||'';
+    (document.getElementById('apfLen')||{}).value=String(row.length_min||60);
+    try{
+      var d=new Date(row.start_at);
+      var pad=function(n){return (n<10?'0':'')+n;};
+      (document.getElementById('apfWhen')||{}).value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+    }catch(e){}
+    if(del) del.style.display='inline-block';
+  } else {
+    ['apfId','apfName','apfPhone','apfNotes','apfWhen'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    (document.getElementById('apfType')||{}).value='Consultation';
+    (document.getElementById('apfStatus')||{}).value='Confirmed';
+    (document.getElementById('apfLen')||{}).value='60';
+    if(del) del.style.display='none';
+  }
+  f.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function apCloseForm(){ var f=document.getElementById('apForm'); if(f) f.style.display='none'; }
+function apMsg(t){ var el=document.getElementById('apfStatusMsg'); if(el) el.textContent=t||''; }
+
+async function apSave(){
+  var sb=sbc(); if(!sb){ apMsg('Sign in to save appointments.'); return; }
+  var name=(document.getElementById('apfName')||{}).value, when=(document.getElementById('apfWhen')||{}).value;
+  if(!name||!when){ apMsg('Name and date/time are required.'); return; }
+  apMsg('Saving…');
+  var row={
+    practice: window.IW_PRACTICE||'',
+    patient: name,
+    phone: (document.getElementById('apfPhone')||{}).value||null,
+    title: (document.getElementById('apfType')||{}).value,
+    status: (document.getElementById('apfStatus')||{}).value,
+    notes: (document.getElementById('apfNotes')||{}).value||null,
+    start_at: new Date(when).toISOString(),
+    length_min: parseInt((document.getElementById('apfLen')||{}).value||'60',10)
+  };
+  try{ var u=await iwAuth.currentUser(); if(u) row.created_by=u.email||''; }catch(e){}
+  try{
+    var id=(document.getElementById('apfId')||{}).value;
+    var r = id ? await sb.from(AP_TABLE).update(row).eq('id',id)
+               : await sb.from(AP_TABLE).insert(row);
+    if(r.error) throw r.error;
+    apCloseForm(); loadAppointments();
+  }catch(e){ apMsg('Could not save — run the Appointments SQL setup first.'); }
+}
+async function apDelete(){
+  var id=(document.getElementById('apfId')||{}).value; if(!id) return;
+  if(!confirm('Delete this appointment?')) return;
+  var sb=sbc(); if(!sb) return;
+  try{ await sb.from(AP_TABLE).delete().eq('id',id); apCloseForm(); loadAppointments(); }
+  catch(e){ apMsg('Could not delete.'); }
+}
+function apEdit(id){
+  var row=AP_MINE.filter(function(r){ return String(r.id)===String(id); })[0];
+  if(row) apOpenForm(row);
+}
+
+async function apLoadMine(){
+  var sb=sbc(); if(!sb){ AP_MINE=[]; return; }
+  try{
+    var r=await sb.from(AP_TABLE).select('*').gte('start_at', new Date(Date.now()-12*3600*1000).toISOString()).order('start_at');
+    AP_MINE = r.error ? [] : (r.data||[]);
+  }catch(e){ AP_MINE=[]; }
+}
+
+function apRenderAll(){
+  var list=document.getElementById('apList'); if(!list) return;
+  var now=Date.now();
+  var evs=AP_GHL.filter(function(e){ return e.startMs>=now-12*3600*1000; }).map(function(e){
+    return {who:e.who,title:e.title,phone:e.phone,startMs:e.startMs,timeCT:e.timeCT,dayKey:e.dayKey,status:e.status,src:'sched'};
+  });
+  AP_MINE.forEach(function(r){
+    var st=Date.parse(r.start_at); if(isNaN(st)) return;
+    var en=st+(r.length_min||60)*60000;
+    evs.push({who:r.patient,title:r.title,phone:r.phone,startMs:st,
+      timeCT:apCT(st,false)+'–'+apCT(en,false),dayKey:apDayKey(st),
+      status:(r.status||'confirmed').toLowerCase(),src:'portal',pid:r.id,notes:r.notes});
+  });
+  evs.sort(function(a,b){ return a.startMs-b.startMs; });
+  if(!evs.length){ list.innerHTML='<p style="color:var(--ink-70)">No upcoming appointments. Use ＋ New Appointment to add one.</p>'; return; }
+  var html='', lastDay=null;
+  evs.forEach(function(e){
+    if(e.dayKey!==lastDay){
+      lastDay=e.dayKey;
+      html+='<div style="font-family:var(--body);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;color:var(--gold);margin:18px 0 8px">'+esc(apDayLabel(e.dayKey))+'</div>';
+    }
+    html+='<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)">'+
+      '<span class="mono" style="min-width:120px;color:var(--cream)">'+esc(e.timeCT||'')+'</span>'+
+      '<span style="flex:1;min-width:160px"><strong>'+esc(e.who||'Patient')+'</strong>'+
+        (e.title?('<span style="color:var(--ink-70)"> · '+esc(e.title)+'</span>'):'')+
+        (e.notes?('<div style="font-size:.82rem;color:var(--ink-70)">'+esc(e.notes)+'</div>'):'')+'</span>'+
+      apStatusChip(e.status)+
+      (e.src==='portal'
+        ? '<a class="qbtn" style="cursor:pointer" onclick="apEdit(\''+e.pid+'\')">✎ Edit</a>'
+        : '<span class="lsb" style="background:rgba(242,238,231,.06);color:rgba(242,238,231,.5)">Scheduler</span>')+
+      (e.phone?('<a class="qbtn" href="tel:'+esc(e.phone)+'">☏ Call</a>'):'')+
+    '</div>';
+  });
+  list.innerHTML=html;
+  /* refresh the stat chips including portal rows */
+  var todayKey=apDayKey(now), weekEnd=now+7*86400000;
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  set('apToday', evs.filter(function(e){ return e.dayKey===todayKey; }).length);
+  set('apWeek', evs.filter(function(e){ return e.startMs>=now&&e.startMs<=weekEnd; }).length);
+  set('apUpcoming', evs.filter(function(e){ return e.startMs>=now; }).length);
+  set('apCancelled', evs.filter(function(e){ return /cancel/.test(e.status); }).length);
+}
+
 function loadAppointments(){
   var loc=window.IW_LOCATION;
   var list=document.getElementById('apList');
   if(list) list.innerHTML='<p style="color:var(--ink-70)">Loading…</p>';
-  apiFetch('/api/appointments'+(loc?('?location='+encodeURIComponent(loc)):'')).then(function(d){
-    if(!(d&&d.ok)){ if(list) list.innerHTML='<p style="color:var(--ink-70)">Could not load appointments.</p>'; return; }
-    var s=d.summary||{};
-    var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=(v==null?'—':v); };
-    set('apToday',s.today); set('apWeek',s.week); set('apUpcoming',s.upcoming); set('apCancelled',s.cancelled);
+  Promise.all([
+    apiFetch('/api/appointments'+(loc?('?location='+encodeURIComponent(loc)):'')).catch(function(){return null;}),
+    apLoadMine()
+  ]).then(function(res){
+    var d=res[0];
+    AP_GHL = (d&&d.ok&&d.events)?d.events:[];
     var note=document.getElementById('apNote'); if(note) note.style.display='none';
-    var evs=(d.events||[]).filter(function(e){ return e.startMs>=Date.now()-12*3600*1000; });
-    if(!evs.length){ if(list) list.innerHTML='<p style="color:var(--ink-70)">No upcoming appointments found.</p>'; }
-    else{
-      var html='', lastDay=null;
-      evs.forEach(function(e){
-        if(e.dayKey!==lastDay){
-          lastDay=e.dayKey;
-          html+='<div style="font-family:var(--body);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;color:var(--gold);margin:18px 0 8px">'+esc(apDayLabel(e.dayKey))+'</div>';
-        }
-        html+='<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)">'+
-          '<span class="mono" style="min-width:120px;color:var(--cream)">'+esc(e.timeCT||'')+'</span>'+
-          '<span style="flex:1;min-width:160px"><strong>'+esc(e.who||'Patient')+'</strong>'+
-            (e.title?('<span style="color:var(--ink-70)"> · '+esc(e.title)+'</span>'):'')+'</span>'+
-          apStatusChip(e.status)+
-          (e.phone?('<a class="qbtn" href="tel:'+esc(e.phone)+'">☏ Call</a>'):'')+
-        '</div>';
-      });
-      if(list) list.innerHTML=html;
-    }
+    apRenderAll();
     var foot=document.getElementById('apFoot');
-    if(foot) foot.innerHTML='Live from the <strong>IW Scheduler</strong> · generated '+esc(d.generatedCT||'')+' · times shown in Central.';
-  }).catch(function(){ if(list) list.innerHTML='<p style="color:var(--ink-70)">Could not load appointments.</p>'; });
+    if(foot) foot.innerHTML='Live from the <strong>IW Scheduler</strong> + portal entries · times shown in Central.';
+  });
 }
 
 /* ============================================================
