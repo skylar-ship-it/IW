@@ -343,6 +343,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-item active" data-view="dashboard" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▦</span> Dashboard</div>
       <div class="nav-item" data-view="leadscore" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▲</span> Lead Scoring</div>
       <div class="nav-item" data-view="comms" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">☏</span> Calls &amp; Texts</div>
+      <div class="nav-item" data-view="appts" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">▤</span> Appointments</div>
       <div class="nav-item" data-view="consults" data-roles="owner,coordinator,pm" onclick="go(this)"><span class="ic">✎</span> Consult Reports</div>
       <div class="nav-item" data-view="casereview" data-roles="owner,surgeon,pm" onclick="go(this)"><span class="ic">⛯</span> PSP Case Review</div>
       <div class="nav-item" data-view="smile" data-roles="owner,surgeon,coordinator,pm" onclick="go(this)"><span class="ic">☺</span> Smile Preview</div>
@@ -999,6 +1000,25 @@ tr:last-child td{border-bottom:0}
         </div>
       </section>
 
+      <!-- ===== APPOINTMENTS ===== -->
+      <section class="view" id="appts">
+        <div class="callout" id="apNote" style="margin-bottom:16px;border-left:3px solid var(--gold)">Sign in and open this page to load appointments from the IW Scheduler.</div>
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="card kpi"><div class="big" id="apToday" style="color:var(--gold)">—</div><div class="lab">Today</div></div>
+          <div class="card kpi"><div class="big" id="apWeek">—</div><div class="lab">Next 7 days</div></div>
+          <div class="card kpi"><div class="big" id="apUpcoming">—</div><div class="lab">All upcoming</div></div>
+          <div class="card kpi"><div class="big" id="apCancelled">—</div><div class="lab">Cancelled</div></div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+            <div class="eyebrow" style="margin:0">Schedule</div>
+            <a class="qbtn" style="cursor:pointer" onclick="loadAppointments()">↻ Refresh</a>
+          </div>
+          <div id="apList"><p style="color:var(--ink-70)">Loading…</p></div>
+          <p id="apFoot" style="font-size:.82rem;color:var(--ink-70);margin-top:12px"></p>
+        </div>
+      </section>
+
       <!-- ===== SMILE PREVIEW ===== -->
       <section class="view" id="smile">
 
@@ -1183,10 +1203,10 @@ tr:last-child td{border-bottom:0}
 <script>
 var titles={dashboard:'Dashboard',onboarding:'Onboarding',casereview:'PSP Case Review',smile:'Smile Preview',training:'Training Hub',library:'Clinical Library',
   setupguide:'Digital Workflow Setup',equipment:'Equipment Spec Sheet',labdeals:'Lab & Vendor Deals',
-  coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',referral:'Inner Circle Network',
+  coordinator:'Coordinator Toolkit',consults:'Consult Reports',marketing:'Marketing Studio',funnel:'Funnel Plan',leadscore:'Lead Scoring Tracker',comms:'Call & Text Report Card',appts:'Appointments',referral:'Inner Circle Network',
   benchmark:'Benchmarking',roi:'ROI Modeler',readiness:'Readiness Check',program:'The Program',settings:'Settings'};
 /* shorter titles for the phone topbar */
-var titlesShort={leadscore:'Lead Scoring',comms:'Report Card',casereview:'PSP Cases',smile:'Smile Preview',setupguide:'Digital Workflow',
+var titlesShort={leadscore:'Lead Scoring',comms:'Report Card',appts:'Appointments',casereview:'PSP Cases',smile:'Smile Preview',setupguide:'Digital Workflow',
   equipment:'Equipment',labdeals:'Lab Deals',consults:'Consults',library:'Library',program:'Program'};
 function setViewTitle(v){
   var small=false; try{ small=window.matchMedia('(max-width:600px)').matches; }catch(e){}
@@ -1915,6 +1935,65 @@ function applyPractice(){
   }).catch(function(){});
 }
 
+
+
+/* ============================================================
+   Appointments — live schedule from the IW Scheduler
+   ============================================================ */
+function apStatusChip(st){
+  st=(st||'').toLowerCase();
+  if(/cancel/.test(st)) return '<span class="lsb" style="background:rgba(176,106,82,.18);color:#e8a598">Cancelled</span>';
+  if(/no.?show/.test(st)) return '<span class="lsb" style="background:rgba(176,106,82,.18);color:#e8a598">No-show</span>';
+  if(/show|complete/.test(st)) return '<span class="lsb" style="background:rgba(36,92,92,.16);color:var(--teal)">Showed</span>';
+  if(/confirm/.test(st)) return '<span class="lsb" style="background:var(--gold);color:var(--ink)">Confirmed</span>';
+  return '<span class="lsb" style="background:rgba(242,238,231,.08);color:rgba(242,238,231,.6)">'+esc(st||'Scheduled')+'</span>';
+}
+function apDayLabel(key){
+  try{
+    var now=new Date();
+    var fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'});
+    var today=fmt.format(now);
+    var tom=fmt.format(new Date(now.getTime()+86400000));
+    if(key===today) return 'Today';
+    if(key===tom) return 'Tomorrow';
+    var parts=key.split('-');
+    return new Intl.DateTimeFormat('en-US',{weekday:'long',month:'long',day:'numeric'})
+      .format(new Date(+parts[0],+parts[1]-1,+parts[2]));
+  }catch(e){ return key; }
+}
+function loadAppointments(){
+  var loc=window.IW_LOCATION;
+  var list=document.getElementById('apList');
+  if(list) list.innerHTML='<p style="color:var(--ink-70)">Loading…</p>';
+  apiFetch('/api/appointments'+(loc?('?location='+encodeURIComponent(loc)):'')).then(function(d){
+    if(!(d&&d.ok)){ if(list) list.innerHTML='<p style="color:var(--ink-70)">Could not load appointments.</p>'; return; }
+    var s=d.summary||{};
+    var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=(v==null?'—':v); };
+    set('apToday',s.today); set('apWeek',s.week); set('apUpcoming',s.upcoming); set('apCancelled',s.cancelled);
+    var note=document.getElementById('apNote'); if(note) note.style.display='none';
+    var evs=(d.events||[]).filter(function(e){ return e.startMs>=Date.now()-12*3600*1000; });
+    if(!evs.length){ if(list) list.innerHTML='<p style="color:var(--ink-70)">No upcoming appointments found.</p>'; }
+    else{
+      var html='', lastDay=null;
+      evs.forEach(function(e){
+        if(e.dayKey!==lastDay){
+          lastDay=e.dayKey;
+          html+='<div style="font-family:var(--body);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;color:var(--gold);margin:18px 0 8px">'+esc(apDayLabel(e.dayKey))+'</div>';
+        }
+        html+='<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)">'+
+          '<span class="mono" style="min-width:120px;color:var(--cream)">'+esc(e.timeCT||'')+'</span>'+
+          '<span style="flex:1;min-width:160px"><strong>'+esc(e.who||'Patient')+'</strong>'+
+            (e.title?('<span style="color:var(--ink-70)"> · '+esc(e.title)+'</span>'):'')+'</span>'+
+          apStatusChip(e.status)+
+          (e.phone?('<a class="qbtn" href="tel:'+esc(e.phone)+'">☏ Call</a>'):'')+
+        '</div>';
+      });
+      if(list) list.innerHTML=html;
+    }
+    var foot=document.getElementById('apFoot');
+    if(foot) foot.innerHTML='Live from the <strong>IW Scheduler</strong> · generated '+esc(d.generatedCT||'')+' · times shown in Central.';
+  }).catch(function(){ if(list) list.innerHTML='<p style="color:var(--ink-70)">Could not load appointments.</p>'; });
+}
 
 /* ============================================================
    Smile Preview — intake, design targets, comparison, reveal
@@ -2772,6 +2851,7 @@ function loadLeads(){
   }).catch(function(){});
   loadConsults();
   loadComms();
+  loadAppointments();
 }
 function loadConsults(){
   apiFetch('/api/consults').then(function(d){
