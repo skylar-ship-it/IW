@@ -1245,9 +1245,15 @@ function setViewTitle(v){
 function toggleNav(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('backdrop').classList.toggle('show');}
 function closeNav(){document.getElementById('sidebar').classList.remove('open');document.getElementById('backdrop').classList.remove('show');}
 function go(el){
+  var v=el.dataset.view;
+  /* permission guard — also covers hash deep-links and restoreView */
+  if(window.iwAccess && iwAccess.ready() && !iwAccess.can(v)){
+    iwAccess.audit('view_denied',{view:v});
+    if(v!=='dashboard'){ var d=document.querySelector('.nav-item[data-view="dashboard"]'); if(d){ go(d); } }
+    return;
+  }
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
-  var v=el.dataset.view;
   document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
   document.getElementById(v).classList.add('active');
   setViewTitle(v);
@@ -1269,8 +1275,13 @@ window.addEventListener('hashchange',function(){
 function goView(v){var n=document.querySelector('.nav-item[data-view="'+v+'"]'); if(n) go(n);}
 function setRole(r){
   document.querySelectorAll('.nav-item').forEach(n=>{
-    var roles=(n.dataset.roles||'').split(',');
-    n.classList.toggle('hide', r!=='owner' && roles.indexOf(r)===-1);
+    var v=n.dataset.view;
+    if(window.iwAccess && iwAccess.ready()){
+      n.classList.toggle('hide', !!v && !iwAccess.can(v));
+    } else {
+      var roles=(n.dataset.roles||'').split(',');
+      n.classList.toggle('hide', r!=='owner' && roles.indexOf(r)===-1);
+    }
   });
   // hide pillar group headers whose items are all hidden for this role
   document.querySelectorAll('.navgroup').forEach(g=>{
@@ -1467,6 +1478,7 @@ function saveCaseDraft(){
     var d={};
     caseDraftFields().forEach(function(el,i){
       var k=el.id||el.getAttribute('data-w')||('f'+i);
+      if(k==='csName') return;                 /* patient identifiers never touch localStorage */
       if((el.value||'')!=='') d[k]=el.value;
     });
     if(Object.keys(d).length){ localStorage.setItem(CS_DRAFT_KEY,JSON.stringify(d)); showDraftNote(); }
@@ -1591,6 +1603,7 @@ async function submitCase(e){
       notes:(document.getElementById('csService').value+'. ')+document.getElementById('csNotes').value.trim(),
       workup:collectWorkup(),
       practice:window.IW_PRACTICE||'Partner Practice',
+      practice_id:window.IW_PRACTICE_ID||'pulver',
       submitted_by:user&&user.email||null, status:'Awaiting Review', files:[]
     }).select().single();
     if(ins.error) throw ins.error;
@@ -1622,6 +1635,7 @@ async function submitCase(e){
   btn.disabled=false;
 }
 async function loadCases(){
+  if(window.iwAccess && iwAccess.ready() && !iwAccess.can('casereview')) return;
   var sb=sbc(); var body=document.getElementById('csBody'); if(!sb||!body) return;
   var r=await sb.from('case_submissions').select('*').order('created_at',{ascending:false}).limit(60);
   if(r.error||!r.data){ return; }
@@ -1928,39 +1942,42 @@ function applyPractice(){
   if(!(window.iwAuth && iwAuth.enabled())) return;
   iwAuth.currentUser().then(function(u){
     if(!u) return;
-    var m=u.user_metadata||{}, app=u.app_metadata||{};
-    var byEmail = (u.email ? IW_PRACTICES[String(u.email).toLowerCase()] : null) || {};
-    var practice = byEmail.practice || m.practice || app.practice;
-    var tag      = byEmail.tag      || m.tag      || app.tag;
-    var accent   = byEmail.accent   || m.accent   || app.accent;
-    if(practice){
-      var pn=document.getElementById('practiceName'); if(pn) pn.textContent=practice;
-      var av=document.getElementById('avatar'); if(av) av.textContent=(String(practice).trim()[0]||'P').toUpperCase();
-      var sn=document.getElementById('setName'); if(sn) sn.value=practice;
+    if(!(window.iwAccess && iwAccess.init(u))){
+      /* no role assignment — show nothing sensitive */
+      document.querySelectorAll('.nav-item').forEach(function(n){ if(n.dataset.view && n.dataset.view!=='dashboard') n.classList.add('hide'); });
+      var b=document.getElementById('tailoredBanner');
+      if(b){ b.style.display='block'; b.innerHTML='This login has no practice assignment yet. Ask the IW team to set your role.'; }
+      return;
     }
-    if(tag){
-      var pt=document.getElementById('practiceTag'); if(pt) pt.textContent=tag;
-      var st=document.getElementById('setTag'); if(st) st.value=tag;
-    }
-    if(accent){ document.documentElement.style.setProperty('--accent', accent); }
-    window.IW_LOCATION = byEmail.ghl_location || m.ghl_location || app.ghl_location || null;   /* used by the live lead feed */
-    window.IW_PRACTICE = practice || 'Partner Practice';
-    window.IW_IS_HOME = /home practice/i.test(tag||'') || /pulveroralsurgery|@implantedwisdom\.com/i.test(u.email||'');
-    /* multi-practice accounts get the analytics switcher */
-    if(window.IW_IS_HOME){ var tb=document.getElementById('tailoredBanner'); if(tb) tb.style.display='none'; }
-    window.IW_LOCS = byEmail.locations || null;
-    /* per-user role: no picker — each login gets its own role + label */
-    window.IW_ROLE = byEmail.role || m.role || app.role || 'owner';
-    var rl=document.getElementById('roleLabel');
-    if(rl) rl.textContent = byEmail.role_label || m.role_label || app.role_label || 'Surgeon / Owner';
-    try{ setRole(window.IW_ROLE); }catch(e){}
+    var pr = iwAccess.currentPractice();
+    var pn=document.getElementById('practiceName'); if(pn) pn.textContent=pr.name;
+    var pt=document.getElementById('practiceTag'); if(pt) pt.textContent=pr.tag;
+    var av=document.getElementById('avatar'); if(av) av.textContent=(pr.name.trim()[0]||'P').toUpperCase();
+    var sn=document.getElementById('setName'); if(sn) sn.value=pr.name;
+    var st=document.getElementById('setTag'); if(st) st.value=pr.tag;
+    if(pr.accent) document.documentElement.style.setProperty('--accent', pr.accent);
+
+    window.IW_LOCATION = pr.ghl || null;
+    window.IW_PRACTICE = pr.name;
+    window.IW_PRACTICE_ID = pr.id;
+    window.IW_IS_HOME = iwAccess.isAdmin();
+    window.IW_ROLE = iwAccess.legacyRole();
+    var rl=document.getElementById('roleLabel'); if(rl) rl.textContent=iwAccess.label();
+    if(iwAccess.isAdmin()){ var tb=document.getElementById('tailoredBanner'); if(tb) tb.style.display='none'; }
+
+    /* practice selector: admins always; doctors only when assigned to several */
     var sw=document.getElementById('practiceSwitch');
-    if(sw && window.IW_LOCS && window.IW_LOCS.length>1){
-      sw.innerHTML = window.IW_LOCS.map(function(l,i){ return '<option value="'+i+'">'+l.name+'</option>'; }).join('');
-      sw.style.display='inline-block';
+    var mine=iwAccess.assignedPractices();
+    window.IW_LOCS = mine.map(function(m){ return { name:m.name, tag:m.tag, ghl_location:m.ghl, id:m.id }; });
+    if(sw){
+      if(iwAccess.canSwitchPractice()){
+        sw.innerHTML = mine.map(function(l,i){ return '<option value="'+i+'">'+l.name+'</option>'; }).join('');
+        sw.style.display='inline-block';
+      } else { sw.style.display='none'; }
     }
+    setRole(window.IW_ROLE);
     loadLeads();
-    loadCases();
+    if(iwAccess.can('casereview')) loadCases();
   }).catch(function(){});
 }
 
@@ -2043,6 +2060,7 @@ async function apSave(){
   apMsg('Saving…');
   var row={
     practice: window.IW_PRACTICE||'',
+    practice_id: window.IW_PRACTICE_ID||'pulver',
     patient: name,
     phone: (document.getElementById('apfPhone')||{}).value||null,
     title: (document.getElementById('apfType')||{}).value,
@@ -2305,7 +2323,7 @@ async function saveSmile(ev){
                 rest:(document.getElementById('smRest')||{}).value, maxsmile:(document.getElementById('smMax')||{}).value,
                 smileline:(document.getElementById('smLine')||{}).value, plane:(document.getElementById('smPlane')||{}).value }
     };
-    var row={ practice:window.IW_PRACTICE||'', submitted_by:'', patient:(document.getElementById('smName')||{}).value,
+    var row={ practice:window.IW_PRACTICE||'', practice_id:window.IW_PRACTICE_ID||'pulver', submitted_by:'', patient:(document.getElementById('smName')||{}).value,
       complexity:smRisk(), design:design, files:files, notes:(document.getElementById('smNotes')||{}).value };
     try{ var u=await iwAuth.currentUser(); if(u) row.submitted_by=u.email||''; }catch(e){}
     var ins=await sb.from(SM_TABLE).insert(row);
@@ -2912,7 +2930,8 @@ function initSmx(){
   });
 }
 
-function initSmile(){ initSmPickers(); initSmRisk(); initReveal(); initSmx(); loadSmiles(); }
+function initSmile(){
+  if(window.iwAccess && iwAccess.ready() && !iwAccess.can('smile')) return; initSmPickers(); initSmRisk(); initReveal(); initSmx(); loadSmiles(); }
 
 /* ============================================================
    Lead Scoring v2 — live lead feed + notes + call log + nurture
@@ -2928,7 +2947,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){retur
 
 var IW = { leads:[], priority:[], quiet:[], notesToday:[], notesCache:{}, consults:[], selectedId:null, live:false, consultsLive:false };
 
-function curRole(){ return window.IW_ROLE || 'owner'; }
+function curRole(){ return (window.iwAccess && iwAccess.ready()) ? iwAccess.legacyRole() : (window.IW_ROLE || 'owner'); }
 
 /* fetch wrapper — attaches the Supabase login token when available */
 function apiFetch(path, opts){
@@ -3367,6 +3386,7 @@ calcRoi(); renderAds(); loadTailored(); tailorWorkflow(); renderFunnel(); render
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="iw-auth.js"></script>
+<script src="iw-access.js"></script>
 <script>window.IW_MENU_THEME='cream';</script>
 <script src="iw-menu.js"></script>
 <script>

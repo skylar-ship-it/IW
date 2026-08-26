@@ -10,6 +10,7 @@
      ANTHROPIC_API_KEY   — enables this + call coaching
      SUPABASE_URL / SUPABASE_ANON — login check (already set)
    ============================================================ */
+const { authorize } = require('./_lib/access.js');
 
 async function verifyLogin(req){
   var url = process.env.SUPABASE_URL, anon = process.env.SUPABASE_ANON;
@@ -55,8 +56,8 @@ module.exports = async function handler(req, res){
     var key = process.env.ANTHROPIC_API_KEY;
     if (!key){ res.status(503).json({ ok:false, error:'AI Analysis is not enabled yet — the IW team is activating it.' }); return; }
 
-    var okUser = await verifyLogin(req);
-    if (!okUser){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
+    var auth = await authorize(req, 'analyze');
+    if (!auth.ok){ res.status(auth.status).json({ ok:false, error:auth.error }); return; }
 
     var body = req.body || {};
     var images = Array.isArray(body.images) ? body.images.slice(0, 10) : [];

@@ -17,6 +17,7 @@
    SECRETS (Vercel env vars): SUPABASE_URL, SUPABASE_ANON,
    SUPABASE_SERVICE_ROLE — same three as /api/notes.
    ============================================================ */
+const { authorize } = require('./_lib/access.js');
 
 async function currentUser(req){
   var url = process.env.SUPABASE_URL, anon = process.env.SUPABASE_ANON;
@@ -49,6 +50,8 @@ module.exports = async function handler(req, res){
     }
     var user = await currentUser(req);
     if (!user){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
+    var authz = await authorize(req, 'consults');
+    if (!authz.ok){ res.status(authz.status).json({ ok:false, error:authz.error }); return; }
 
     if (req.method === 'GET'){
       var q = req.query || {};

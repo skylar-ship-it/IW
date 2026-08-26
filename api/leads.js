@@ -20,6 +20,7 @@
      SUPABASE_URL         = https://<project>.supabase.co
      SUPABASE_ANON        = publishable/anon key (login check)
    ============================================================ */
+const { authorize } = require('./_lib/access.js');
 
 const SCORE_PROFILE_ID = '6a2318dce606719d3a50d701';
 const BANDS = { hot: 20, warm: 5, nurture: 0 };
@@ -220,12 +221,11 @@ async function enrichRecent(location, token, limit){
 
 module.exports = async function handler(req, res){
   try{
-    var location = (req.query && req.query.location) || process.env.GHL_PULVER_LOCATION;
+    var auth = await authorize(req, 'leads');
+    if (!auth.ok){ res.status(auth.status).json({ ok:false, error:auth.error }); return; }
+    var location = auth.location;
     var token = tokenFor(location);
-    if (!token){ res.status(400).json({ ok:false, error:'No token configured for this location.' }); return; }
-
-    var okUser = await verifyLogin(req);
-    if (!okUser){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
+    if (!token){ res.status(400).json({ ok:false, error:'No scheduler configured for this practice yet.' }); return; }
 
     var ghl = await fetch('https://services.leadconnectorhq.com/contacts/search', {
       method: 'POST',

@@ -14,6 +14,7 @@
    SECRETS (Vercel env vars): GHL_PULVER_TOKEN, GHL_PULVER_LOCATION,
    SUPABASE_URL, SUPABASE_ANON, SUPABASE_SERVICE_ROLE.
    ============================================================ */
+const { authorize } = require('./_lib/access.js');
 
 const NURTURE_TAG = 'gentle-nurture';
 
@@ -43,6 +44,8 @@ module.exports = async function handler(req, res){
 
     var user = await currentUser(req);
     if (!user){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
+    var authz = await authorize(req, 'nurture');
+    if (!authz.ok){ res.status(authz.status).json({ ok:false, error:authz.error }); return; }
 
     var b = req.body || {};
     if (typeof b === 'string'){ try{ b = JSON.parse(b); }catch(e){ b = {}; } }

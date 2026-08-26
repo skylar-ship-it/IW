@@ -12,6 +12,7 @@
      GHL_WMOS_TOKEN / GHL_WMOS_LOCATION       (later)
      SUPABASE_URL / SUPABASE_ANON             (login check)
    ============================================================ */
+const { authorize } = require('./_lib/access.js');
 
 function tokenFor(location){
   var map = {};
@@ -125,12 +126,11 @@ async function fromConversations(location, token){
 
 module.exports = async function handler(req, res){
   try{
-    var location = (req.query && req.query.location) || process.env.GHL_PULVER_LOCATION;
+    var auth = await authorize(req, 'appointments');
+    if (!auth.ok){ res.status(auth.status).json({ ok:false, error:auth.error }); return; }
+    var location = auth.location;
     var token = tokenFor(location);
-    if (!token){ res.status(400).json({ ok:false, error:'No token configured for this location.' }); return; }
-
-    var okUser = await verifyLogin(req);
-    if (!okUser){ res.status(401).json({ ok:false, error:'Not signed in.' }); return; }
+    if (!token){ res.status(400).json({ ok:false, error:'No scheduler configured for this practice yet.' }); return; }
 
     var now = Date.now();
     var startMs = now - 7*24*3600*1000, endMs = now + 60*24*3600*1000;
