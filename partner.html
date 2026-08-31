@@ -29,6 +29,7 @@
   --espresso:#2D241F;   /* Espresso — hero/section dark */
   --gold:#C9A96E;       /* Antique Gold — primary accent */
   --gold-soft:#d9c099;
+  --gold-deep:#a8874e;
   --teal:#245C5C;       /* Dark Teal — section/CTA accent */
   --teal-deep:#1c4a4a;
   --cream:#F7F2EC;      /* Warm Cream — card/quote bg */
@@ -91,38 +92,31 @@ section{padding:96px 0}
 .center .lead{margin-left:auto;margin-right:auto}
 .narrow{max-width:760px}
 
-/* ---------- Header / Nav ---------- */
-.site-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(30,22,18,.92);
-  backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(201,169,110,.18);
-}
+/* ---------- Header / Nav — floating frosted pill ---------- */
+.site-header{position:absolute;top:0;left:0;right:0;z-index:50;background:transparent;pointer-events:none}
 .nav{display:flex;align-items:center;justify-content:space-between;
-  height:118px;max-width:var(--maxw);margin:0 auto;padding:0 28px}
-.brand{display:flex;align-items:center;gap:13px;color:var(--cream)}
-.brand .brand-logo{height:84px;width:auto;display:block;object-fit:contain}
-.brand .mono-monogram{
-  font-family:var(--display);font-weight:600;font-size:1.05rem;
-  width:38px;height:38px;border:1px solid var(--gold);color:var(--gold);
-  display:flex;align-items:center;justify-content:center;border-radius:50%;
-  letter-spacing:.02em;
-}
+  height:auto;max-width:none;margin:0;padding:16px 26px;position:relative}
+.brand{display:flex;align-items:center;gap:12px;color:var(--cream);pointer-events:auto}
+.brand .brand-logo{height:56px;width:auto;display:block;object-fit:contain}
 .brand .wordmark{line-height:1.05}
-.brand .wordmark .name{font-family:var(--display);font-size:1.5rem;color:var(--cream)}
-.brand .wordmark .sub{font-family:var(--body);font-weight:500;text-transform:uppercase;
-  letter-spacing:.12em;font-size:0.72rem;color:var(--gold)}
-.nav-links{display:flex;align-items:center;gap:30px}
-.nav-links a{font-family:var(--body);font-weight:400;font-size:1.18rem;
-  text-transform:uppercase;letter-spacing:.12em;color:var(--cream-70);transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--gold)}
-.nav-cta{
-  font-family:var(--body)!important;font-weight:500!important;
-  border:1px solid var(--gold);color:var(--gold)!important;
-  padding:9px 18px;border-radius:2px;letter-spacing:.1em!important;font-size:1.05rem!important;
-}
-.nav-cta:hover{background:var(--gold);color:var(--ink)!important}
-.nav-toggle{display:none;background:none;border:0;color:var(--gold);font-size:1.5rem;cursor:pointer}
+.brand .wordmark .name{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--cream)}
+.pillnav{pointer-events:auto;position:fixed;left:50%;top:20px;transform:translateX(-50%);z-index:60;
+  display:flex;align-items:center;gap:34px;
+  background:rgba(250,248,244,.5);backdrop-filter:blur(16px) saturate(1.2);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);
+  border-radius:999px;padding:17px 38px;border:0;
+  box-shadow:0 14px 44px -22px rgba(30,22,18,.22)}
+.pillnav a{font-family:var(--body);font-weight:500;font-size:.97rem;letter-spacing:.01em;
+  color:var(--ink);transition:color .2s;white-space:nowrap}
+.pillnav a:hover,.pillnav a.active{color:var(--gold-deep)}
+.navright{display:flex;align-items:center;gap:10px;pointer-events:auto}
+.nav-cta{font-family:var(--body);font-weight:500;font-size:.92rem;letter-spacing:.04em;
+  background:var(--gold);color:var(--ink);padding:14px 26px;border-radius:999px;transition:all .25s;white-space:nowrap}
+.nav-cta:hover{background:var(--gold-soft);transform:translateY(-1px)}
+.nav-toggle{display:none;pointer-events:auto;background:rgba(250,248,244,.6);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.55);border-radius:999px;width:48px;height:48px;
+  color:var(--ink);font-size:1.4rem;cursor:pointer;box-shadow:0 10px 30px -16px rgba(30,22,18,.3)}
 
 /* ---------- Buttons ---------- */
 .btn{
@@ -264,12 +258,16 @@ section{padding:96px 0}
 
 /* ---------- Responsive ---------- */
 @media(max-width:880px){
-  .nav-links{display:none}
-  .nav-links.open{display:flex;position:absolute;top:74px;left:0;right:0;flex-direction:column;
-    gap:0;background:var(--ink);padding:10px 28px 22px;border-bottom:1px solid var(--hairline)}
-  .nav-links.open a{padding:12px 0;width:100%}
-  .nav-links.open a.nav-cta{padding:12px 18px;text-align:center}
-  .nav-toggle{display:block}
+  .brand .brand-logo{height:44px}
+  .brand .wordmark .name{font-size:1.1rem}
+  .pillnav{display:none}
+  .pillnav.open{display:flex;flex-direction:column;gap:4px;position:fixed;left:16px;right:16px;top:78px;
+    transform:none;border-radius:24px;padding:18px 24px;align-items:stretch;
+    background:rgba(250,248,244,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+  .pillnav.open a{padding:12px 4px;font-size:1.05rem;border-bottom:1px solid rgba(201,169,110,.18)}
+  .pillnav.open a:last-child{border-bottom:0}
+  .nav-cta{display:none}
+  .nav-toggle{display:block;position:fixed;top:16px;right:16px;z-index:60}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
   .split{grid-template-columns:1fr;gap:34px}
   .split.flip .split-media{order:0}
@@ -290,19 +288,21 @@ section{padding:96px 0}
         <span class="name">Implanted Wisdom</span>
       </span>
     </a>
-    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">≡</button>
-    <div class="nav-links" id="navlinks">
+    <div class="pillnav" id="pillnav">
       <a href="index.html">Home</a>
       <a href="the-system.html">The System</a>
       <a href="training-tech.html">Training &amp; Tech</a>
       <a href="login.html">Log In</a>
-      <a href="partner.html" class="nav-cta active">Partner With Us</a>
+    </div>
+    <div class="navright">
+      <a href="partner.html" class="nav-cta">Partner With Us</a>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('pillnav').classList.toggle('open')">≡</button>
     </div>
   </nav>
 </header>
 
 <!-- HERO -->
-<section class="hero" style="padding:96px 0 84px">
+<section class="hero" style="padding:160px 0 84px">
   <div class="wrap">
     <p class="label eyebrow">Partner With Implanted Wisdom</p>
     <h1>Let's build your <span class="italic-gold">full-arch program.</span></h1>

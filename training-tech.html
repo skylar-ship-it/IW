@@ -89,19 +89,19 @@ section{padding:96px 0}
 .narrow{max-width:760px}
 
 /* ---------- Header / Nav — floating frosted pill ---------- */
-.site-header{position:fixed;top:0;left:0;right:0;z-index:50;background:transparent;pointer-events:none}
+.site-header{position:absolute;top:0;left:0;right:0;z-index:50;background:transparent;pointer-events:none}
 .nav{display:flex;align-items:center;justify-content:space-between;
   height:auto;max-width:none;margin:0;padding:16px 26px;position:relative}
 .brand{display:flex;align-items:center;gap:12px;color:var(--ink);pointer-events:auto}
 .brand .brand-logo{height:56px;width:auto;display:block;object-fit:contain}
 .brand .wordmark{line-height:1.05}
 .brand .wordmark .name{font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--ink)}
-.pillnav{pointer-events:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+.pillnav{pointer-events:auto;position:fixed;left:50%;top:20px;transform:translateX(-50%);z-index:60;
   display:flex;align-items:center;gap:34px;
   background:rgba(250,248,244,.5);backdrop-filter:blur(16px) saturate(1.2);
   -webkit-backdrop-filter:blur(16px) saturate(1.2);
-  border-radius:999px;padding:17px 38px;border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 14px 44px -22px rgba(30,22,18,.3)}
+  border-radius:999px;padding:17px 38px;border:0;
+  box-shadow:0 14px 44px -22px rgba(30,22,18,.22)}
 .pillnav a{font-family:var(--body);font-weight:500;font-size:.97rem;letter-spacing:.01em;
   color:var(--ink);transition:color .2s;white-space:nowrap}
 .pillnav a:hover,.pillnav a.active{color:var(--gold-deep)}
@@ -263,7 +263,7 @@ section{padding:96px 0}
   .pillnav.open a{padding:12px 4px;font-size:1.05rem;border-bottom:1px solid rgba(201,169,110,.18)}
   .pillnav.open a:last-child{border-bottom:0}
   .nav-cta{display:none}
-  .nav-toggle{display:block}
+  .nav-toggle{display:block;position:fixed;top:16px;right:16px;z-index:60}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
   .split{grid-template-columns:1fr;gap:34px}
   .split.flip .split-media{order:0}
@@ -381,8 +381,8 @@ section{padding:96px 0}
       </div>
       <div>
         <p class="label teal eyebrow">The Technology Layer</p>
-        <h2>AI photogrammetry, made deployable.</h2>
-        <p class="lead" style="margin-top:20px">AI photogrammetry and 3D planning make the Patient-Specific Protocol™ concrete. We bring the capability into your practice and integrate the hardware — so technology serves the protocol.</p>
+        <h2>Photogrammetry, streamlined.</h2>
+        <p class="lead" style="margin-top:20px">Photogrammetry and 3D print planning make the Patient-Specific Protocol™ concrete. We bring the capability into your practice and integrate the hardware — so technology serves the protocol.</p>
       </div>
     </div>
   </div>
